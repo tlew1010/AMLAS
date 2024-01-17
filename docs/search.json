@@ -184,7 +184,7 @@
   {
     "objectID": "bayesian_inference.html",
     "href": "bayesian_inference.html",
-    "title": "6  Bayesian Inference*",
+    "title": "6  Bayesian Inference",
     "section": "",
     "text": "Bayesian vs. Frequentist Approach: Philosophical differences and their implications in machine learning.\nBayesian Inference and Prior Distributions: How to update beliefs with evidence, essential in many machine learning models.\nPython Code: Implement simple Bayesian inference examples."
   },
@@ -198,21 +198,21 @@
   {
     "objectID": "optimization.html#convex-sets",
     "href": "optimization.html#convex-sets",
-    "title": "8  Optimization*",
+    "title": "8  Optimization",
     "section": "8.1 Convex Sets",
     "text": "8.1 Convex Sets"
   },
   {
     "objectID": "optimization.html#convex-functions",
     "href": "optimization.html#convex-functions",
-    "title": "8  Optimization*",
+    "title": "8  Optimization",
     "section": "8.2 Convex Functions",
     "text": "8.2 Convex Functions"
   },
   {
     "objectID": "optimization.html#some-useful-inequalities",
     "href": "optimization.html#some-useful-inequalities",
-    "title": "8  Optimization*",
+    "title": "8  Optimization",
     "section": "8.3 Some Useful Inequalities",
     "text": "8.3 Some Useful Inequalities"
   },
