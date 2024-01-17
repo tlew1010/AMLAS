@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Applied Machine Learning for Aerospace Systems - 10&nbsp; Data Pre-Processing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./supervised_learning.html" rel="next">
+<link href="./algorithms.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+    MathJax = {
+      tex: {
+        tags: 'ams'  // should be 'ams', 'none', or 'all'
+      }
+    };
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./algorithms.html">Machine Learning Algorithms</a></li><li class="breadcrumb-item"><a href="./data_pre_processing.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Applied Machine Learning for Aerospace Systems</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foundational Mathematics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Algebra</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions &amp; Function Spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_processes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Monte Carlo Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./function_approximation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./algorithms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Machine Learning Algorithms</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_pre_processing.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./supervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unsupervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dimensionality_reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./aerospace_applications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aerospace Applications</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Aerospace Application 1</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Aerospace Application 2</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link active" data-scroll-target="#data-cleaning"><span class="header-section-number">10.1</span> Data Cleaning</a>
+  <ul class="collapse">
+  <li><a href="#handling-missing-values" id="toc-handling-missing-values" class="nav-link" data-scroll-target="#handling-missing-values"><span class="header-section-number">10.1.1</span> Handling Missing Values</a></li>
+  <li><a href="#smoothing-noisy-data" id="toc-smoothing-noisy-data" class="nav-link" data-scroll-target="#smoothing-noisy-data"><span class="header-section-number">10.1.2</span> Smoothing Noisy Data</a></li>
+  <li><a href="#identifying-and-removing-outliers" id="toc-identifying-and-removing-outliers" class="nav-link" data-scroll-target="#identifying-and-removing-outliers"><span class="header-section-number">10.1.3</span> Identifying and Removing Outliers</a></li>
+  </ul></li>
+  <li><a href="#survivorship-bias" id="toc-survivorship-bias" class="nav-link" data-scroll-target="#survivorship-bias"><span class="header-section-number">10.2</span> Survivorship Bias</a></li>
+  <li><a href="#data-transformation" id="toc-data-transformation" class="nav-link" data-scroll-target="#data-transformation"><span class="header-section-number">10.3</span> Data Transformation</a></li>
+  <li><a href="#data-reduction" id="toc-data-reduction" class="nav-link" data-scroll-target="#data-reduction"><span class="header-section-number">10.4</span> Data Reduction</a></li>
+  <li><a href="#data-encoding" id="toc-data-encoding" class="nav-link" data-scroll-target="#data-encoding"><span class="header-section-number">10.5</span> Data Encoding</a></li>
+  <li><a href="#handling-imbalanced-data" id="toc-handling-imbalanced-data" class="nav-link" data-scroll-target="#handling-imbalanced-data"><span class="header-section-number">10.6</span> Handling Imbalanced Data</a></li>
+  <li><a href="#feature-engineering" id="toc-feature-engineering" class="nav-link" data-scroll-target="#feature-engineering"><span class="header-section-number">10.7</span> Feature Engineering</a></li>
+  <li><a href="#time-series-specific-techniques" id="toc-time-series-specific-techniques" class="nav-link" data-scroll-target="#time-series-specific-techniques"><span class="header-section-number">10.8</span> Time Series Specific Techniques</a></li>
+  <li><a href="#data-integration" id="toc-data-integration" class="nav-link" data-scroll-target="#data-integration"><span class="header-section-number">10.9</span> Data Integration</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Data preprocessing is a critical step in the machine learning pipeline. It involves preparing and cleaning the raw data before feeding it into a model. The aim is to make the data more suitable for modeling, improve its quality, and increase the overall efficiency of the learning process. Here are some of the common data preprocessing techniques in machine learning:</p>
+<section id="data-cleaning" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="data-cleaning"><span class="header-section-number">10.1</span> Data Cleaning</h2>
+<p>Data cleaning is a crucial step in the data preprocessing phase, involving the correction or removal of incorrect, corrupted, incorrectly formatted, duplicate, or incomplete data within a dataset. We next describe some of various data cleaning techniques, with real-world examples and Python code for each.</p>
+<section id="handling-missing-values" class="level3" data-number="10.1.1">
+<h3 data-number="10.1.1" class="anchored" data-anchor-id="handling-missing-values"><span class="header-section-number">10.1.1</span> Handling Missing Values</h3>
+<p>Handling missing values is a fundamental aspect of data cleaning in machine learning and data analysis. Missing data can arise due to various reasons like errors during data collection, processing, or transmission. Proper handling of these missing values is crucial as they can lead to biased or incorrect results. Some of the common techniques are summarized next.</p>
+<p>Note that the choice of method depends on the nature of the data, the extent of missingness, and the analysis or modeling task. It is important to consider the potential biases introduced by missing data and the chosen method to handle it. In some cases, it might be informative to create an additional binary feature indicating whether data was missing.</p>
+<section id="meanmedianmode-imputation" class="level4" data-number="10.1.1.1">
+<h4 data-number="10.1.1.1" class="anchored" data-anchor-id="meanmedianmode-imputation"><span class="header-section-number">10.1.1.1</span> Mean/Median/Mode Imputation</h4>
+<p>Replacing missing values with the mean, median, or mode of the column. This method is simple and works well with numerical data. The mean is typically used for normal distributions, while the median is better for skewed distributions. The mode is used for categorical data.</p>
+<p>Let us consider an engineering application involving sensor data from a manufacturing process. In such settings, sensors might record various parameters like temperature, pressure, and operational speed of machinery. It is common to have missing values due to sensor malfunctions or transmission errors. We’ll create a Python example where we handle missing values in such a dataset using mean and median imputation:</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Example DataFrame representing sensor data in a manufacturing process</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Columns: Temperature (°C), Pressure (kPa), Speed (RPM)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Temperature'</span>: [<span class="dv">200</span>, <span class="dv">205</span>, np.nan, <span class="dv">210</span>, <span class="dv">208</span>, np.nan, <span class="dv">207</span>],</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pressure'</span>: [<span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">34</span>, np.nan, <span class="dv">36</span>, <span class="dv">37</span>, np.nan],</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Speed'</span>: [<span class="dv">1500</span>, <span class="dv">1495</span>, <span class="dv">1500</span>, <span class="dv">1502</span>, np.nan, <span class="dv">1498</span>, <span class="dv">1501</span>]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean Imputation for Temperature</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming temperature readings are relatively stable and normally distributed</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Temperature'</span>].fillna(df[<span class="st">'Temperature'</span>].mean(), inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Median Imputation for Pressure</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Pressure might have occasional spikes; median is more robust to outliers</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Pressure'</span>].fillna(df[<span class="st">'Pressure'</span>].median(), inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Speed is a crucial operational parameter, so we might decide not to impute and keep it as is</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Temperature  Pressure   Speed
+0        200.0      30.0  1500.0
+1        205.0      35.0  1495.0
+2        206.0      34.0  1500.0
+3        210.0      35.0  1502.0
+4        208.0      36.0     NaN
+5        206.0      37.0  1498.0
+6        207.0      35.0  1501.0</code></pre>
+</div>
+</div>
+<p>In this example, we have a DataFrame <code>df</code> representing sensor data. We use:</p>
+<ol type="1">
+<li><p><strong>Mean Imputation</strong> for the ‘Temperature’ column. We assume temperature readings are normally distributed and don’t vary wildly in short periods, which is often the case in controlled industrial environments with Gaussian sensor noise.</p></li>
+<li><p><strong>Median Imputation</strong> for the ‘Pressure’ column, as pressure can have occasional spikes due to sudden changes in the manufacturing process. Median imputation helps to mitigate the impact of such outliers.</p></li>
+<li><p>We choose not to impute values for the ‘Speed’ column, considering that missing values in this crucial operational parameter might need special attention or indicate critical issues that imputation might mask.</p></li>
+</ol>
+<p>This example illustrates how different imputation methods can be applied in an engineering context, considering the nature and criticality of the data being handled.</p>
+</section>
+<section id="custom-value" class="level4" data-number="10.1.1.2">
+<h4 data-number="10.1.1.2" class="anchored" data-anchor-id="custom-value"><span class="header-section-number">10.1.1.2</span> Custom Value</h4>
+<p>Custom value imputation is a technique where missing data in a dataset is filled with a predefined or custom value. This approach is particularly useful in scenarios where it is important to distinctly identify or separate the missing data from the naturally occurring data. In engineering contexts, this method can be used to maintain consistency, signal a specific condition, or ensure that the processing algorithms function correctly without introducing biases.</p>
+<p>Consider a dataset from an industrial monitoring system that tracks the operational status of various machines in a factory. The dataset contains readings such as temperature, pressure, and a status code indicating the machine’s condition (e.g., 0 for normal, 1 for maintenance required, etc.). Sometimes, the status code might be missing due to communication issues or sensor errors.</p>
+<p>In such a case, we might choose to fill the missing status codes with a custom value that does not overlap with existing status codes. For example, we could use -1 to indicate missing or unknown status. This approach makes it clear that the data was missing and not a part of the normal operational readings.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample DataFrame representing machine operational data</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Temperature'</span>: [<span class="dv">200</span>, <span class="dv">205</span>, <span class="dv">210</span>, <span class="dv">208</span>, <span class="dv">207</span>],</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pressure'</span>: [<span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">34</span>, <span class="dv">36</span>, <span class="dv">37</span>],</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'StatusCode'</span>: [<span class="dv">0</span>, <span class="dv">1</span>, np.nan, <span class="dv">0</span>, np.nan]  <span class="co"># 0: normal, 1: maintenance required</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom Value Imputation for StatusCode</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># -1 will indicate missing or unknown status</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'StatusCode'</span>].fillna(<span class="op">-</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Temperature  Pressure  StatusCode
+0          200        30         0.0
+1          205        35         1.0
+2          210        34        -1.0
+3          208        36         0.0
+4          207        37        -1.0</code></pre>
+</div>
+</div>
+<p>In this code we create a DataFrame <code>df</code> with ‘Temperature’, ‘Pressure’, and ‘StatusCode’ columns. Missing values in the ‘StatusCode’ column are replaced with -1, a custom value indicating unknown status. By using a custom value for imputation, engineers and analysts can easily distinguish between normal data and data that was missing or not recorded, which is essential for accurate monitoring and decision-making in industrial settings.</p>
+</section>
+<section id="predictive-imputation" class="level4" data-number="10.1.1.3">
+<h4 data-number="10.1.1.3" class="anchored" data-anchor-id="predictive-imputation"><span class="header-section-number">10.1.1.3</span> Predictive Imputation</h4>
+<p>Predictive imputation is a sophisticated method of handling missing data in a dataset. Unlike simpler methods like mean or median imputation, predictive imputation uses the relationships found in the non-missing parts of the data to predict and fill in the missing values. This approach often leads to more accurate and realistic data imputation, especially when the missing data is not random and depends on other variables in the dataset.</p>
+<p>The process begins with the development of a model using the portion of the dataset that does not contain any missing values. This model is tailored to predict the missing variable using other related variables in the dataset as inputs. Essentially, it learns the relationships and patterns present in the complete data to estimate the missing values.</p>
+<p>Once the model is established and trained, it is then employed to predict the missing values. For each instance in the dataset where the target variable is missing, the model uses the available, non-missing data to make a prediction. It applies the relationships it has learned to estimate the missing value as accurately as possible.</p>
+<p>The final step in predictive imputation is the substitution of these predicted values back into the dataset. The missing values are replaced with these newly predicted values, thus filling the gaps in the dataset. This method ensures a more informed and potentially accurate way of dealing with missing data, as it takes into account the underlying patterns and correlations in the data, unlike simpler methods such as mean or median imputation. However, the success of predictive imputation largely depends on the accuracy and appropriateness of the predictive model used, making it crucial to choose and tune the model carefully based on the specific characteristics of the data. If physics-based models are available, it can be also be used predict missing data.</p>
+<p>Predictive imputation stands out for its ability to yield more accurate results compared to simpler imputation methods, largely because it takes into account the correlations and relationships between different variables in the dataset. This makes it especially advantageous in situations where the missingness of data is not random but instead is influenced by other variables, allowing for a more context-aware approach to filling in missing values. However, this technique comes with its own set of challenges. The process of building and validating an appropriate predictive model can be complex and time-consuming, requiring careful consideration and expertise. There’s also a risk of overfitting, particularly if the model is too complex, which can result in imputations that are less reliable as they may overly conform to the specifics of the available data rather than general patterns. Furthermore, the effectiveness of predictive imputation hinges significantly on the assumptions underpinning the chosen model and its alignment with the data’s characteristics. Any misalignment or incorrect assumptions can adversely affect the accuracy of the imputed values.</p>
+<p>Let’s consider an engineering scenario where we have a dataset from a wind turbine farm. This dataset includes variables like wind speed, turbine rotation speed, and power output. Sometimes, due to sensor errors or data transmission issues, we might have missing values in the power output, which we want to predict based on the other variables.</p>
+<p>We’ll use a simple linear regression model for predictive imputation. This example assumes that a linear relationship exists between the wind speed, turbine rotation speed, and the power output of the turbines. Here’s the Python code demonstrating this:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample DataFrame representing wind turbine data</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Columns: WindSpeed (m/s), TurbineSpeed (RPM), PowerOutput (kW)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'WindSpeed'</span>: [<span class="fl">5.2</span>, <span class="fl">7.4</span>, <span class="fl">6.5</span>, np.nan, <span class="fl">7.0</span>, <span class="fl">5.5</span>, <span class="fl">6.8</span>],</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TurbineSpeed'</span>: [<span class="dv">1200</span>, <span class="dv">1400</span>, <span class="dv">1300</span>, <span class="dv">1250</span>, <span class="dv">1350</span>, <span class="dv">1280</span>, np.nan],</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PowerOutput'</span>: [<span class="dv">300</span>, <span class="dv">400</span>, <span class="dv">350</span>, np.nan, <span class="dv">390</span>, <span class="dv">320</span>, <span class="dv">360</span>]</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Imputing missing values in WindSpeed and TurbineSpeed with their means</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>imputer <span class="op">=</span> SimpleImputer(strategy<span class="op">=</span><span class="st">'mean'</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'WindSpeed'</span>] <span class="op">=</span> imputer.fit_transform(df[[<span class="st">'WindSpeed'</span>]])</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'TurbineSpeed'</span>] <span class="op">=</span> imputer.fit_transform(df[[<span class="st">'TurbineSpeed'</span>]])</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Separating the dataset into two - one where PowerOutput is missing and one where It is available</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>df_missing_power <span class="op">=</span> df[df[<span class="st">'PowerOutput'</span>].isna()]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>df_complete <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">'PowerOutput'</span>])</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Training a linear regression model to predict PowerOutput</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>model.fit(df_complete[[<span class="st">'WindSpeed'</span>, <span class="st">'TurbineSpeed'</span>]], df_complete[<span class="st">'PowerOutput'</span>])</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicting the missing PowerOutput values</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>predicted_power <span class="op">=</span> model.predict(df_missing_power[[<span class="st">'WindSpeed'</span>, <span class="st">'TurbineSpeed'</span>]])</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>df_missing_power.loc[:,<span class="st">'PowerOutput'</span>] <span class="op">=</span> predicted_power</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Combining the data back together</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>df_imputed <span class="op">=</span> pd.concat([df_complete, df_missing_power])</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_imputed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   WindSpeed  TurbineSpeed  PowerOutput
+0        5.2   1200.000000   300.000000
+1        7.4   1400.000000   400.000000
+2        6.5   1300.000000   350.000000
+4        7.0   1350.000000   390.000000
+5        5.5   1280.000000   320.000000
+6        6.8   1296.666667   360.000000
+3        6.4   1250.000000   341.876212</code></pre>
+</div>
+</div>
+<p>In this code, we create a DataFrame <code>df</code> with simulated data for wind speed, turbine speed, and power output. Missing values in ‘WindSpeed’ and ‘TurbineSpeed’ are imputed using the mean of their respective columns. Next, we train a linear regression model on the part of the dataset where ‘PowerOutput’ is not missing, using ‘WindSpeed’ and ‘TurbineSpeed’ as predictors. The model is then used to predict missing ‘PowerOutput’ values. Finally, we combine the imputed data back into a single DataFrame.</p>
+<p><em>Note:</em> This approach assumes a linear relationship between the variables, which might be an oversimplification in real-world scenarios. In practice, more complex models and validation methods would likely be necessary to accurately predict missing values in an engineering context.</p>
+</section>
+<section id="dropping-rows-or-columns" class="level4" data-number="10.1.1.4">
+<h4 data-number="10.1.1.4" class="anchored" data-anchor-id="dropping-rows-or-columns"><span class="header-section-number">10.1.1.4</span> Dropping Rows or Columns</h4>
+<p>In engineering and similar data-intensive fields, dropping rows and columns from a dataset is a common data cleaning practice, particularly essential when dealing with issues such as missing data, irrelevant information, or erroneous entries.</p>
+<p>The decision to drop rows is often made when they contain a high proportion of missing values or outliers that could skew analysis results. This is particularly relevant in engineering scenarios like sensor data analysis, where missing or aberrant readings can significantly distort the interpretation.</p>
+<p>Dropping columns is typically considered when the data they contain is irrelevant, highly correlated with other columns, or so predominantly missing as to render them uninformative. For instance, in an engineering dataset, a feature that remains constant across all data points (such as a specific component in a machine that doesn’t vary) may be dropped, as it doesn’t contribute to the variability or insights sought in the analysis.</p>
+<p>While dropping rows and columns can simplify and improve the quality of the data, it must be done judiciously to avoid losing valuable information or introducing bias. The process should be well-documented and justified, considering the specific goals and context of the analysis. Python’s pandas library simplifies this task with functions like <code>dropna()</code> for rows and <code>drop()</code> for columns, facilitating efficient data cleaning in engineering data processing workflows.</p>
+</section>
+</section>
+<section id="smoothing-noisy-data" class="level3" data-number="10.1.2">
+<h3 data-number="10.1.2" class="anchored" data-anchor-id="smoothing-noisy-data"><span class="header-section-number">10.1.2</span> Smoothing Noisy Data</h3>
+<p>Smoothing noisy data is an important step in data preprocessing, especially in fields like signal processing, finance, and engineering where data quality can significantly impact analysis and decision-making. Several techniques are commonly used to smooth out noise, each with its own advantages and disadvantages.</p>
+<section id="binning" class="level4" data-number="10.1.2.1">
+<h4 data-number="10.1.2.1" class="anchored" data-anchor-id="binning"><span class="header-section-number">10.1.2.1</span> Binning</h4>
+<p>Binning is a data smoothing technique commonly used to reduce the effects of minor observation errors. The main idea is to transform continuous numeric variables into discrete categories, or “bins”. Each original data value is replaced by a value representative of its bin, often the bin’s mean or median.</p>
+<p>Binning encompasses three main steps. First, the range of continuous data is segmented into a series of intervals, commonly referred to as bins. This segmentation is a crucial step as it determines the granularity of the analysis. In the next step, each individual data point from the dataset is allocated to one of these bins, based on where it falls within the range. The final step involves replacing the data points in each bin with a representative value of that bin, which is often the mean or median. This representative value stands in for all the data points in the bin, effectively smoothing out the data by reducing the impact of minor variations or outliers within each bin.</p>
+<p>Suppose we have a dataset of temperature readings that we wish to bin. We can use Python’s pandas library to accomplish this, as shown next.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data: temperature readings</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>temperature_data <span class="op">=</span> [<span class="dv">68</span>, <span class="dv">71</span>, <span class="dv">74</span>, <span class="dv">69</span>, <span class="dv">70</span>, <span class="dv">73</span>, <span class="dv">65</span>, <span class="dv">67</span>, <span class="dv">72</span>, <span class="dv">70</span>, <span class="dv">75</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to DataFrame</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(temperature_data, columns<span class="op">=</span>[<span class="st">'Temperature'</span>])</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the number of bins</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>num_bins <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create bins</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Temp_Binned'</span>] <span class="op">=</span> pd.cut(df[<span class="st">'Temperature'</span>], bins<span class="op">=</span>num_bins)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace each value by the mean of its bin</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Temp_Binned_Mean'</span>] <span class="op">=</span> df.groupby(<span class="st">'Temp_Binned'</span>,observed<span class="op">=</span><span class="va">False</span>)[<span class="st">'Temperature'</span>].transform(<span class="st">'mean'</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Temperature       Temp_Binned  Temp_Binned_Mean
+0            68   (64.99, 68.333]         66.666667
+1            71  (68.333, 71.667]         70.000000
+2            74    (71.667, 75.0]         73.500000
+3            69  (68.333, 71.667]         70.000000
+4            70  (68.333, 71.667]         70.000000
+5            73    (71.667, 75.0]         73.500000
+6            65   (64.99, 68.333]         66.666667
+7            67   (64.99, 68.333]         66.666667
+8            72    (71.667, 75.0]         73.500000
+9            70  (68.333, 71.667]         70.000000
+10           75    (71.667, 75.0]         73.500000</code></pre>
+</div>
+</div>
+<p>In the above example, a series of temperature readings is initially organized into a pandas DataFrame. To smooth these data, the readings are categorized into three distinct bins by employing the <code>pd.cut()</code> function. Following this, each temperature reading is replaced with the average value of its respective bin. This is achieved by segmenting the DataFrame based on the binned temperature categories and then computing the mean temperature for each category.</p>
+<p>Binning offers notable advantages. It is straightforward to implement and effectively smooths the data, thereby minimizing the impact of minor variances. However, there are also drawbacks to consider. The size of the bins chosen can greatly influence the outcome, potentially leading to significant alterations in the results. Additionally, this method might result in a loss of detailed information and the original data’s variability, as it essentially generalizes the data points within each bin.</p>
+<p>This method is particularly useful in situations where the data contains <em>minor</em> inaccuracies or when preparing data for certain types of categorical analysis. It helps to mitigate the impact of minor errors or variances in the measurements.</p>
+</section>
+<section id="regression" class="level4" data-number="10.1.2.2">
+<h4 data-number="10.1.2.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">10.1.2.2</span> Regression</h4>
+<p>The regression-based technique for smoothing noisy data involves constructing a statistical model that best fits the observed data. Essentially, this method fits a regression model (such as linear, polynomial, or logistic regression, depending on the data nature) to the dataset. Once this model is established, it is used to predict the expected values for each data point. These predicted values, which are based on the underlying pattern identified by the regression model, are generally smoother and less noisy compared to the original data. There are many advantages to this approach. It is capable of handling complex relationships within the data, making it particularly valuable in scenarios where the underlying data patterns are intricate and not immediately apparent. Additionally, it is most effective when the noise present in the data is random, as the regression model focuses on capturing and representing the fundamental trend or pattern in the data.</p>
+<p>However, there are some disadvantages to this technique. One significant risk is overfitting, especially if the chosen model is overly complex. Overfitting occurs when the model becomes too tailored to the specific idiosyncrasies of the training data, reducing its ability to generalize and perform well on new, unseen data. This issue is particularly pertinent when dealing with large datasets or datasets with many features, where the model may inadvertently learn noise as if it were a valid signal. Furthermore, regression models, especially complex ones, can demand substantial computational resources, making them less practical for very large datasets or scenarios where computational efficiency is a priority. These drawbacks necessitate a careful balance in model selection and complexity, ensuring that the model is sophisticated enough to capture the essential patterns in the data, but not so complex that it overfits or becomes computationally unmanageable.</p>
+</section>
+<section id="moving-average" class="level4" data-number="10.1.2.3">
+<h4 data-number="10.1.2.3" class="anchored" data-anchor-id="moving-average"><span class="header-section-number">10.1.2.3</span> Moving Average</h4>
+<p>The moving average technique is a widely used method for smoothing noisy data, particularly in time series analysis. It involves calculating the average of a specified number of data points within a moving window that progresses through the dataset. For example, in a simple moving average, each data point is replaced with the average of itself and the surrounding data points within the window. This method effectively dampens short-term fluctuations and highlights longer-term trends or cycles in the data.</p>
+<p><strong>Advantage:</strong> One of the main advantages of the moving average technique is its simplicity and ease of implementation. It requires minimal computational resources, making it suitable for large datasets and real-time data analysis. Additionally, it’s intuitive and straightforward to interpret, which is particularly beneficial for quick insights and initial data exploration.</p>
+<p>To demonstrate the advantage of moving average smoothing, let’s create a Python example where we apply this technique to a time series data set with some random noise. The goal is to see how the moving average can smooth out short-term fluctuations and reveal underlying trends in the data. We’ll start by generating a simple time series dataset with added random noise and then apply a moving average smoothing technique to it:</p>
+<div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample time series data</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> np.arange(<span class="dv">100</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.sin(time <span class="op">/</span> <span class="dv">10</span>) <span class="op">+</span> np.random.normal(scale<span class="op">=</span><span class="fl">0.5</span>, size<span class="op">=</span>time.size)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to DataFrame for convenience</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'Time'</span>: time, <span class="st">'Data'</span>: data})</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply moving average with a window of 10</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Moving_Average'</span>] <span class="op">=</span> df[<span class="st">'Data'</span>].rolling(window<span class="op">=</span>window_size).mean()</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the original data and the smoothed data</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'Time'</span>], df[<span class="st">'Data'</span>], label<span class="op">=</span><span class="st">'Original Data'</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'Time'</span>], df[<span class="st">'Moving_Average'</span>], label<span class="op">=</span><span class="st">'Moving Average'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Effect of Moving Average Smoothing'</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Value'</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="5">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-moving_average" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-moving_average-output-1.png" class="img-fluid figure-img" width="972"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.1: Demonstration of moving average as a technique for data de-noising.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In this code, we create a time series dataset (<code>data</code>) that represents some signal (in this case, a sine wave) with added Gaussian noise. The data is put into a pandas DataFrame for ease of manipulation. We then apply a moving average smoothing with a window size of 10. This means each point in the ‘Moving_Average’ column is the average of the current and the previous 9 points in the ‘Data’ column. Finally, we plot both the original and the smoothed data. <a href="#fig-moving_average">Figure&nbsp;<span>10.1</span></a> shows how the moving average smooths out the fluctuations and reveals the underlying sine wave pattern more clearly.</p>
+<p><strong>Disadvantage:</strong> However, the moving average technique also has its limitations. A significant disadvantage is its inability to handle rapid changes or non-linear trends in the data effectively. The method tends to “lag” behind the actual data, especially with larger window sizes, meaning that it might not be responsive enough to recent changes in the data. Furthermore, the choice of the window size is crucial; a window that is too small may not smooth the data sufficiently, while a window that is too large can oversmooth the data, potentially obscuring important details and patterns. Additionally, the moving average does not differentiate between older and more recent data points within the window, treating all points with equal importance, which might not always be appropriate depending on the data’s nature and the analysis’s goals.</p>
+<p>The following Python code demonstrate a disadvantage of using the moving average for data denoising, especially in the context of rapidly changing or non-linear trends. The code generates a time series dataset that includes a sudden change in trend, highlighting a key disadvantage of the moving average smoothing method. Initially, random data is generated to simulate a scenario where the data abruptly shifts from one trend to another. Specifically, for the first half of the time series, the data follows a normal distribution with a mean of 0, and then it suddenly shifts to a different normal distribution with a mean of 5, representing a distinct change in trend.</p>
+<div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample time series data with a sudden change</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> np.arange(<span class="dv">100</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.where(time <span class="op">&lt;</span> <span class="dv">50</span>, np.random.normal(<span class="dv">0</span>, <span class="fl">0.5</span>, time.size), np.random.normal(<span class="dv">5</span>, <span class="fl">0.5</span>, time.size))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to DataFrame</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'Time'</span>: time, <span class="st">'Data'</span>: data})</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply moving average with a window of 10</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Moving_Average'</span>] <span class="op">=</span> df[<span class="st">'Data'</span>].rolling(window<span class="op">=</span>window_size).mean()</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the original data and the smoothed data</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'Time'</span>], df[<span class="st">'Data'</span>], label<span class="op">=</span><span class="st">'Original Data'</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'Time'</span>], df[<span class="st">'Moving_Average'</span>], label<span class="op">=</span><span class="st">'Moving Average'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Disadvantage of Moving Average in Rapid Trend Changes'</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Value'</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="6">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-moving_average_bad" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-moving_average_bad-output-1.png" class="img-fluid figure-img" width="959"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.2: Limitations of moving average data denoising.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>This dataset is converted into a pandas DataFrame for ease of manipulation. A moving average is then applied to this data with a window size of 10. This window size means that each point in the ‘Moving_Average’ column of the DataFrame represents the average of the current and the previous nine points in the ‘Data’ column.</p>
+<p>The key point of interest is observed in <a href="#fig-moving_average_bad">Figure&nbsp;<span>10.2</span></a>, where both the original and smoothed data are plotted. The plot clearly illustrates the disadvantage of the moving average in this scenario. Due to the moving average’s inherent nature, it <em>lags</em> in responding to the sudden change in trend. This lag is particularly noticeable at the point where the data shifts from one distribution to another. This lag can lead to misinterpretation or delay in recognizing significant changes in the data, which is a critical drawback in applications where timely and accurate response to data trends is essential. ​</p>
+</section>
+<section id="exponential-smoothing" class="level4" data-number="10.1.2.4">
+<h4 data-number="10.1.2.4" class="anchored" data-anchor-id="exponential-smoothing"><span class="header-section-number">10.1.2.4</span> Exponential Smoothing</h4>
+<p>Exponential smoothing is a popular data smoothing technique, particularly effective in time series forecasting. It operates by applying decreasing weights to past observations, with the most recent observations given more significance. The fundamental principle is that more recent data is a better reflector of the future, hence the exponential decrease in weight for older data. This weighting is achieved through a smoothing factor, typically denoted as <span class="math inline">\(\alpha\)</span>, which determines how rapidly the weights decrease; a higher alpha places more emphasis on recent observations.</p>
+<p><strong>Advantages:</strong> One of the key advantages of exponential smoothing is its adaptability to changes in data trends and patterns. Unlike simple moving averages that treat all points in the window equally, exponential smoothing can quickly adjust to recent changes, making it more responsive to shifts in the underlying data pattern. This feature makes it particularly useful for forecasting in scenarios where data trends are dynamic and evolving.</p>
+<p>Here is a Python code example demonstrating the use of exponential smoothing on a time series dataset. We use the same data as shown in <a href="#fig-moving_average_bad">Figure&nbsp;<span>10.2</span></a>, where the simple moving average was lagging.</p>
+<div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample time series data with a linear trend</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> np.arange(<span class="dv">100</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.where(time <span class="op">&lt;</span> <span class="dv">50</span>, np.random.normal(<span class="dv">0</span>, <span class="fl">0.5</span>, time.size), np.random.normal(<span class="dv">5</span>, <span class="fl">0.5</span>, time.size))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to DataFrame</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'Time'</span>: time, <span class="st">'Data'</span>: data})</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply exponential smoothing</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.3</span>  <span class="co"># Smoothing factor</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Exponential_Smoothing'</span>] <span class="op">=</span> df[<span class="st">'Data'</span>].ewm(alpha<span class="op">=</span>alpha).mean()</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the original data and the smoothed data</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'Time'</span>], df[<span class="st">'Data'</span>], label<span class="op">=</span><span class="st">'Original Data'</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'Time'</span>], df[<span class="st">'Exponential_Smoothing'</span>], label<span class="op">=</span><span class="st">'Exponential Smoothing'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Exponential Smoothing Demonstration'</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Value'</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="7">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-exp_smoothing_good" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-exp_smoothing_good-output-1.png" class="img-fluid figure-img" width="959"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.3: Exponential smoothing of a noisy data with sudden jumps in trends.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><a href="#fig-exp_smoothing_good">Figure&nbsp;<span>10.3</span></a> shows both the original noisy data and the smoothed data. It illustrates how exponential smoothing effectively smooths out the noise, and is more responsive to changes in trends in comparison with simple moving average shown in <a href="#fig-moving_average_bad">Figure&nbsp;<span>10.2</span></a>.</p>
+<p><strong>Limitations:</strong> However, the method also has its drawbacks. Choosing the right smoothing factor <span class="math inline">\(\alpha\)</span> can be challenging and may require trial and error or optimization techniques. If <span class="math inline">\(\alpha\)</span> is set too high, the smoothed data might become too sensitive to recent changes, capturing random fluctuations rather than the underlying trend. Conversely, if <span class="math inline">\(\alpha\)</span> is too low, the method becomes similar to a moving average, potentially lagging behind recent trends. Another limitation is its simplicity; exponential smoothing is best suited for univariate time series without seasonality or trend components. For more complex data structures, more sophisticated methods like Holt-Winters exponential smoothing, which extends the basic idea to capture seasonality and trends, are often required. We can change <span class="math inline">\(\alpha\)</span> in the above code to <span class="math inline">\(0.1\)</span> to see increased lag in the prediction, which is worse than the simple moving average example.</p>
+<p>While exponential smoothing is a valuable tool in time series analysis, especially for its quick adaptation to recent data changes and its ease of implementation. However, its effectiveness is dependent on the appropriate setting of the smoothing factor and the complexity of the time series data. It works best for simpler, non-seasonal series and might not be suitable for more complex datasets with multiple influencing factors.</p>
+</section>
+<section id="filtering-e.g.-low-pass-filters" class="level4" data-number="10.1.2.5">
+<h4 data-number="10.1.2.5" class="anchored" data-anchor-id="filtering-e.g.-low-pass-filters"><span class="header-section-number">10.1.2.5</span> Filtering (e.g., Low-pass filters)</h4>
+<p>Low-pass filtering is a technique used in both signal processing and machine learning to reduce noise in data. It works by allowing signals with a frequency lower than a certain cutoff frequency to pass through and attenuating frequencies higher than this cutoff. The rationale and application in machine learning can be understood through the following points:</p>
+<ol type="1">
+<li><p><strong>Nature of Noise</strong>: In many real-world datasets, noise is often high-frequency. This means that the unwanted variations or fluctuations in the data occur at short intervals. These could be due to various factors like measurement errors, anomalies, or irrelevant variations.</p></li>
+<li><p><strong>Smoothing Data</strong>: Low-pass filters help in smoothing the data by removing these high-frequency fluctuations. This can be particularly useful in time-series data or any data with a temporal or spatial dimension, where smoothness often corresponds to more meaningful trends and patterns.</p></li>
+<li><p><strong>Preserving Relevant Information</strong>: By choosing an appropriate cutoff frequency, a low-pass filter can preserve the essential, low-frequency components of the data. These low-frequency components often represent the underlying trends or the ‘signal’ in the data that are of interest for analysis and model training.</p></li>
+<li><p><strong>Improving Model Performance</strong>: In machine learning, models trained on noisy data can overfit, meaning they learn the noise as part of the signal, which reduces their ability to generalize to new, unseen data. By denoising the data, low-pass filtering can improve the generalization ability of these models.</p></li>
+<li><p><strong>Implementation</strong>: Low-pass filtering can be implemented in several ways, such as using Fourier transforms, moving averages, or specific digital filter designs like Butterworth or Chebyshev filters. The choice of method depends on the nature of the data and the specific requirements of the task.</p></li>
+</ol>
+<p><strong>Advantages:</strong> Low-pass filtering is a valuable preprocessing step at reducing high-frequency noise, which is a common characteristic of many types of noise in data, especially in signal processing and time-series analysis. These filters can preserve the main signal or trend in the data if the cutoff frequency is chosen correctly. This makes them particularly useful for applications where the signal of interest is of lower frequency. Low-pass filters are generally simple to implement and computationally efficient. They don’t require extensive computational resources, making them suitable for real-time applications. By removing noise, they can improve the performance of machine learning models, reducing the chance of overfitting and enhancing the model’s ability to generalize from training to unseen data. There are various types of low-pass filters (e.g., Butterworth, Chebyshev), offering flexibility to choose one that best fits the specific characteristics of the data. Here is a Python code demonstrating advantages of using low-pass filtering.</p>
+<div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> butter, lfilter</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to create a Butterworth low-pass filter</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> butter_lowpass(cutoff, fs, order<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    nyq <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> fs</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    normal_cutoff <span class="op">=</span> cutoff <span class="op">/</span> nyq</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    b, a <span class="op">=</span> butter(order, normal_cutoff, btype<span class="op">=</span><span class="st">'low'</span>, analog<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b, a</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to apply the low-pass filter</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lowpass_filter(data, cutoff, fs, order<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    b, a <span class="op">=</span> butter_lowpass(cutoff, fs, order<span class="op">=</span>order)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> lfilter(b, a, data)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample rate and desired cutoff frequency of the filter</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>fs <span class="op">=</span> <span class="dv">1000</span>  <span class="co"># Sample rate, Hz</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>cutoff <span class="op">=</span> <span class="dv">3</span>  <span class="co"># Desired cutoff frequency of the filter, Hz</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a clean sinusoidal signal</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="fl">5.0</span>     <span class="co"># seconds</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">int</span>(T <span class="op">*</span> fs)  <span class="co"># total number of samples</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, T, n, endpoint<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>clean_signal <span class="op">=</span> np.sin(<span class="fl">1.2</span> <span class="op">*</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> t)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Add noise to the signal</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.5</span>, clean_signal.shape)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>noisy_signal <span class="op">=</span> clean_signal <span class="op">+</span> noise</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the noisy signal</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>filtered_signal <span class="op">=</span> lowpass_filter(noisy_signal, cutoff, fs)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>plt.plot(t, clean_signal)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Clean Signal'</span>)</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>plt.plot(t, noisy_signal)</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Noisy Signal'</span>)</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>plt.plot(t, filtered_signal,label<span class="op">=</span><span class="st">"Filtered Signal"</span>)</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>plt.plot(t, clean_signal,<span class="st">'--'</span>,label<span class="op">=</span><span class="st">"Clean Signal"</span>)</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Filtered Signal (and Clean Signal)'</span>)</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="8">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-low_pass_filtering" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-low_pass_filtering-output-1.png" class="img-fluid figure-img" width="1430"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.4: Low-pass filtering to denoise data.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><a href="#fig-low_pass_filtering">Figure&nbsp;<span>10.4</span></a> shows three plots: the original clean sinusoidal signal, the same signal with added noise, and the noisy signal after applying a low-pass filter. We see that the filtered signal is devoid of any noise, but has a magnitude and phase distortion when compared to the clean signal.</p>
+<p><strong>Limitations:</strong> Low-pass filtering, while effective for reducing high-frequency noise, presents several challenges and limitations. A significant concern is the potential loss of valuable high-frequency information, which can be detrimental if the signal of interest includes crucial high-frequency components. Additionally, selecting the correct cutoff frequency is a critical yet often challenging task; an inappropriate cutoff may either inadequately filter noise or inadvertently eliminate important signal elements. Low-pass filters can also introduce phase shifts or distortions, which are problematic in scenarios where signal phase is key. There’s also a risk of oversmoothing with excessive use of these filters, leading to a loss of important data variations and details. Moreover, these filters are specifically tailored for high-frequency noise and may not be suitable for low-frequency or broadly distributed noise types. Finally, in the context of time-series or spatial data, low-pass filtering can cause edge effects at data boundaries, where the performance of the filter may be compromised due to insufficient surrounding data points. These limitations highlight the need for careful consideration and application of low-pass filtering in data processing and analysis.</p>
+<p>The following Python code demonstrates the disadvantages of using low-pass filtering in denoising data. The example focuses on two primary concerns: the loss of significant high-frequency signal components and the possibility of phase shift. We first create a composite signal with both low and high-frequency elements, mimicking a real-world scenario where a signal carries multiple frequencies. Then we add a random noise to it, simulating typical real-life interference. The noisy data is then smoothened using a low-pass filter.</p>
+<p>While the filter’s primary objective is to remove noise, it is important to observe its impact on the high-frequency components of the signal. Low-pass filtering, by design, attenuates high-frequency elements, and this effect becomes evident in this example. Finally, the example involves a comparison among the original signal, the noisy version, and the filtered output. This comparison is crucial as it highlights the loss of high-frequency details due to filtering, and it also reveals phase shift introduced by the filter. Such phase shifts can misalign signal components in time, which can be a critical issue in applications where the timing of signal events is important – for example detecting faults in safety critical systems.</p>
+<div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> butter, lfilter</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to create a Butterworth low-pass filter</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> butter_lowpass(cutoff, fs, order<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    nyq <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> fs</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    normal_cutoff <span class="op">=</span> cutoff <span class="op">/</span> nyq</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    b, a <span class="op">=</span> butter(order, normal_cutoff, btype<span class="op">=</span><span class="st">'low'</span>, analog<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b, a</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to apply the low-pass filter</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lowpass_filter(data, cutoff, fs, order<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    b, a <span class="op">=</span> butter_lowpass(cutoff, fs, order<span class="op">=</span>order)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> lfilter(b, a, data)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample rate and desired cutoff frequency of the filter</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>fs <span class="op">=</span> <span class="dv">1000</span>  <span class="co"># Sample rate, Hz</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>cutoff <span class="op">=</span> <span class="dv">10</span>  <span class="co"># Desired cutoff frequency of the filter, Hz</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a composite signal (low + high frequency)</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="fl">5.0</span>     <span class="co"># seconds</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">int</span>(T <span class="op">*</span> fs)  <span class="co"># total number of samples</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, T, n, endpoint<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>low_freq_signal <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="fl">1.5</span> <span class="op">*</span> t)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>high_freq_signal <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="dv">30</span> <span class="op">*</span> t)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>composite_signal <span class="op">=</span> low_freq_signal <span class="op">+</span> high_freq_signal</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Add noise to the signal</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.3</span>, composite_signal.shape)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>noisy_signal <span class="op">=</span> composite_signal <span class="op">+</span> noise</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the noisy signal</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>filtered_signal <span class="op">=</span> lowpass_filter(noisy_signal, cutoff, fs)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">7</span>))</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>plt.plot(t, composite_signal)</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Original Composite Signal'</span>)</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>plt.plot(t, noisy_signal)</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Noisy Signal'</span>)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>plt.plot(t, filtered_signal,label<span class="op">=</span><span class="st">"Filtered signal"</span>)</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>plt.plot(t, low_freq_signal,<span class="st">'--'</span>, label<span class="op">=</span><span class="st">"Original low frequency signal"</span>)</span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Filtered Signal'</span>)</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>plt.plot(t, high_freq_signal)</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'High Frequency Component'</span>)</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="9">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-low_pass_bad" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-low_pass_bad-output-1.png" class="img-fluid figure-img" width="1430"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.5: Loss of high frequency features, and phase and magnitude distortions, in low-pass filtering.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The code generates four plots (see <a href="#fig-low_pass_bad">Figure&nbsp;<span>10.5</span></a>): the original composite signal with both low and high-frequency components, the same signal with added noise, the filtered signal, and the high-frequency component of the original signal. After applying the low-pass filter, we notice that the high-frequency component is lost in the filtered signal, illustrating the disadvantage of losing important high-frequency details. Additionally, there are magnitude and phase distortions in the predicted (or reconstructed) low frequency signal. This example underscores the need for careful consideration when applying low-pass filters, as they can potentially alter the desired characteristics of the original signal.</p>
+</section>
+<section id="wavelet-transformation" class="level4" data-number="10.1.2.6">
+<h4 data-number="10.1.2.6" class="anchored" data-anchor-id="wavelet-transformation"><span class="header-section-number">10.1.2.6</span> Wavelet Transformation</h4>
+<p>Wavelet transformation is a powerful tool in denoising data, particularly in the field of machine learning. It involves decomposing a signal into a set of wavelets, which are small waves that vary in frequency and duration. This technique is advantageous because it provides a multi-resolution analysis of the data, allowing for the observation and modification of the signal at various scales. The process typically involves transforming the noisy data into the wavelet domain, where noise and signal components can be distinctly identified and separated. Denoising is then achieved by applying a thresholding technique to remove the noise components while retaining the essential features of the original signal.</p>
+<p>Wavelet Transform (WT) is a mathematical technique used for signal processing, which involves decomposing a signal into components at various scales using wavelets. Wavelets are functions that are localized in both time and frequency, unlike the sinusoids used in Fourier Transform, which are localized only in frequency. The mathematical rigor of wavelet transform can be understood through its two main types: Continuous Wavelet Transform (CWT) and Discrete Wavelet Transform (DWT).</p>
+<p>CWT of a continuous signal <span class="math inline">\(x(t)\)</span> is defined by the integral: <span class="math display">\[ W_x(a, b) = \frac{1}{\sqrt{|a|}} \int_{-\infty}^{\infty} x(t) \psi^*\left(\frac{t-b}{a}\right) dt,\]</span> where <span class="math inline">\(W_x(a, b)\)</span> is the wavelet coefficient at scale <span class="math inline">\(a\)</span> and position <span class="math inline">\(b\)</span>, <span class="math inline">\(\psi(t)\)</span> is the mother wavelet – a function localized in time, <span class="math inline">\(\psi^*(t)\)</span> is the complex conjugate of <span class="math inline">\(\psi(t)\)</span>, <span class="math inline">\(a\)</span> is the scale parameter, and <span class="math inline">\(b\)</span> is the translation parameter.</p>
+<p>The signal is convolved with a family of wavelets, which are scaled and translated versions of the mother wavelet. The scale parameter <span class="math inline">\(a\)</span> compresses or stretches the wavelet, allowing analysis at different frequency bands, while the translation parameter <span class="math inline">\(b\)</span> moves the wavelet along the time axis, enabling time localization.</p>
+<p>DWT provides a discrete and computationally efficient version of the wavelet transform. It is defined using dyadic scales and positions: <span class="math display">\[DWT_{jk} = \sum_{n} x[n] \psi_{jk}[n],\]</span> where <span class="math inline">\(\psi_{jk}[n] = 2^{-j/2} \psi(2^{-j}n - k)\)</span> are the discrete wavelets, <span class="math inline">\(j\)</span> and <span class="math inline">\(k\)</span> are integers that control the scale and translation, respectively, and <span class="math inline">\(x[n]\)</span> is the discrete signal.</p>
+<p>DWT is typically implemented using a filter bank consisting of a high-pass and a low-pass filter, corresponding to the decomposition of the signal into approximation and detail coefficients at each level. The process is iterative, where the approximation coefficients at each level are further decomposed in subsequent levels.</p>
+<p><strong>Advantages:</strong> One of the main advantages of wavelet transformation is its ability to handle non-stationary signals, where the statistical properties of the signal change over time. This makes it particularly useful in real-world scenarios where data often exhibits such characteristics. The wavelet transform is also efficient in localizing both time and frequency features, making it superior to traditional Fourier methods for many applications. This localization allows for more precise denoising, as it can differentiate between noise and signal characteristics at different scales. The following Python code demonstrates denoising data (or signals) with wavelet transformation.</p>
+<div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a sample signal with noise</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1000</span>, endpoint<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>original_signal <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="dv">5</span> <span class="op">*</span> t)  <span class="co"># 5 Hz sine wave</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1000</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>noisy_signal <span class="op">=</span> original_signal <span class="op">+</span> noise</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Wavelet denoising</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wavelet_denoise(data, wavelet, level):</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    coeff <span class="op">=</span> pywt.wavedec(data, wavelet, mode<span class="op">=</span><span class="st">"per"</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    threshold <span class="op">=</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.log(<span class="bu">len</span>(data))) <span class="op">*</span> np.median(np.<span class="bu">abs</span>(coeff[<span class="op">-</span>level]) <span class="op">/</span> <span class="fl">0.6745</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    coeff[<span class="dv">1</span>:] <span class="op">=</span> (pywt.threshold(i, value<span class="op">=</span>threshold, mode<span class="op">=</span><span class="st">'soft'</span>) <span class="cf">for</span> i <span class="kw">in</span> coeff[<span class="dv">1</span>:])</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    reconstructed_signal <span class="op">=</span> pywt.waverec(coeff, wavelet, mode<span class="op">=</span><span class="st">"per"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> reconstructed_signal</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>denoised_signal <span class="op">=</span> wavelet_denoise(noisy_signal, <span class="st">'db10'</span>, <span class="dv">1</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the results</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">311</span>)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>plt.plot(t, original_signal)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Original Signal"</span>)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">312</span>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>plt.plot(t, noisy_signal)</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Noisy Signal"</span>)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">313</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>plt.plot(t, denoised_signal,label<span class="op">=</span><span class="st">"denoised"</span>)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>plt.plot(t, original_signal,<span class="st">'--'</span>,label<span class="op">=</span><span class="st">"original"</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Denoised Signal"</span>)</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="10">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-wavelet_denoising" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-wavelet_denoising-output-1.png" class="img-fluid figure-img" width="1142"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.6: Denoising data using wavelet transformations.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In the above Python code, we demonstrate the use of wavelet transformation for effective denoising of a signal.We frist generate a 5 Hz sine wave, with random Gaussian noise added to create a noisy signal. The key to the denoising process is the <code>wavelet_denoise</code> function, which leverages the Discrete Wavelet Transform (DWT). This function decomposes the noisy signal into wavelet coefficients, then applies a noise-reduction technique by thresholding these coefficients. The thresholding method employed is the universal threshold with soft thresholding, a common approach in denoising tasks. This method calculates the threshold value based on the median of the coefficients at the highest decomposition level, adjusted by a factor related to the length of the data. This calculation is critical in determining an optimal threshold for effectively removing noise.</p>
+<p>For simplicity and demonstration purposes, the Daubechies wavelet (‘db10’) is used, though the choice of wavelet can vary depending on the specific characteristics of the signal being processed. <a href="#fig-wavelet_denoising">Figure&nbsp;<span>10.6</span></a> shows the original signal, the noisy version, and the denoised signal. We observe that the wavelet transform is an effective techniques to denoise signals. However, it introduces distortions in the reconstructed signal, but are less prone to introducing phase distortions compared to some other signal processing techniques.</p>
+<p><strong>Limitations:</strong> However, there are also disadvantages to using wavelet transformation. The selection of an appropriate wavelet function and the determination of the correct level of decomposition are not straightforward and often require expert knowledge and experimentation. This can make the technique less accessible to non-experts. Additionally, the effectiveness of wavelet denoising can be highly dependent on the characteristics of the noise and signal in the data. In cases where noise and signal characteristics overlap significantly in the wavelet domain, denoising becomes more challenging and can lead to the loss of important signal information.</p>
+</section>
+</section>
+<section id="identifying-and-removing-outliers" class="level3" data-number="10.1.3">
+<h3 data-number="10.1.3" class="anchored" data-anchor-id="identifying-and-removing-outliers"><span class="header-section-number">10.1.3</span> Identifying and Removing Outliers</h3>
+<p>Detecting and removing outliers is an important step in preparing data for machine learning, as outliers can significantly skew the results of from models. There are several methods for detecting and dealing with outliers. We briefly explain some of the commonly used methods.</p>
+<section id="the-z-score" class="level4" data-number="10.1.3.1">
+<h4 data-number="10.1.3.1" class="anchored" data-anchor-id="the-z-score"><span class="header-section-number">10.1.3.1</span> The Z-score</h4>
+<p>The Z-score is a statistical measurement that describes a data point’s relation to the mean of a group of values, measured in terms of standard deviations from the mean. It’s used in outlier detection to identify data points that are unusually far from the mean.</p>
+<p>The formula for calculating the Z-score of a data point is: <span class="math display">\[ Z = \frac{(X - \mu)}{\sigma},\]</span> where <span class="math inline">\(X\)</span> is the data point, <span class="math inline">\(\mu\)</span> is the mean of the data <span class="math inline">\(\sigma\)</span> is the standard deviation of the data.</p>
+<p><strong>Example:</strong> Let’s say we have a dataset of test scores: <span class="math display">\[100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 150.\]</span></p>
+<p>In this dataset, most scores are around <span class="math inline">\(70-100\)</span>, but there’s a score of <span class="math inline">\(150\)</span>, which seems unusually high. We suspect it might be an outlier. We next compute the Z-score from this data, by first computing the mean and the standard deviation. The Z-score is then computed for each score using the above formula. Outliers are often determined by considering data points with Z-scores beyond +/- 2.5 or 3 as outliers, as they are significantly far from the mean.</p>
+<p>A step-by-step process to compute Z-scores is presented next:</p>
+<ol type="1">
+<li><p><strong>Find the Mean</strong>: Mean <span class="math inline">\(\mu = \frac{\sum X}{n}\)</span></p></li>
+<li><p><strong>Find the Standard Deviation</strong>: Standard Deviation <span class="math inline">\(\sigma = \sqrt{\frac{\sum (X - \mu)^2}{n}}\)</span></p></li>
+<li><p><strong>Calculate Z-Scores for Each Data Point</strong>: <span class="math inline">\(Z = \frac{(X - \mu)}{\sigma}\)</span></p></li>
+<li><p><strong>Identify Outliers</strong>: Any score with <span class="math inline">\(|Z| &gt; 3\)</span> (or another chosen threshold) is considered an outlier.</p></li>
+</ol>
+<p>Let’s perform these calculations for our example dataset. Based on our calculations, here are the test scores with their corresponding Z-scores:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Test Score</th>
+<th>Z-Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>100</td>
+<td>0.638</td>
+</tr>
+<tr class="even">
+<td>95</td>
+<td>0.437</td>
+</tr>
+<tr class="odd">
+<td>90</td>
+<td>0.237</td>
+</tr>
+<tr class="even">
+<td>85</td>
+<td>0.036</td>
+</tr>
+<tr class="odd">
+<td>80</td>
+<td>-0.164</td>
+</tr>
+<tr class="even">
+<td>75</td>
+<td>-0.365</td>
+</tr>
+<tr class="odd">
+<td>70</td>
+<td>-0.565</td>
+</tr>
+<tr class="even">
+<td>65</td>
+<td>-0.766</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>-0.966</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>-1.167</td>
+</tr>
+<tr class="odd">
+<td>150</td>
+<td>2.643</td>
+</tr>
+</tbody>
+</table>
+<p>From this table, we can see that most scores have Z-scores within the range of -1 to 1, indicating that they are close to the mean. However, the test score of 150 has a Z-score of approximately 2.643, which is significantly higher than our outlier threshold of 2.5 or 3.</p>
+<p>Therefore, according to this method, the test score of 150 can be considered an outlier. To remove it, we would simply exclude this data point from our dataset before proceeding with further analysis or machine learning modeling. This helps in ensuring that our model is not unduly influenced by this extreme value.</p>
+<p>Python implementation is provided next:</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Dataset of test scores</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.array([<span class="dv">100</span>, <span class="dv">95</span>, <span class="dv">90</span>, <span class="dv">85</span>, <span class="dv">80</span>, <span class="dv">75</span>, <span class="dv">70</span>, <span class="dv">65</span>, <span class="dv">60</span>, <span class="dv">55</span>, <span class="dv">150</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the mean and standard deviation</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> np.mean(data)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>std_dev <span class="op">=</span> np.std(data)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Z-scores</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>z_scores <span class="op">=</span> (data <span class="op">-</span> mean) <span class="op">/</span> std_dev</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine data, Z-scores for easier interpretation</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>data_with_z_scores <span class="op">=</span> np.column_stack((data, z_scores))</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the data with their corresponding Z-scores</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>data_with_z_scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>array([[ 1.00000000e+02,  6.37947290e-01],
+       [ 9.50000000e+01,  4.37449570e-01],
+       [ 9.00000000e+01,  2.36951850e-01],
+       [ 8.50000000e+01,  3.64541308e-02],
+       [ 8.00000000e+01, -1.64043589e-01],
+       [ 7.50000000e+01, -3.64541308e-01],
+       [ 7.00000000e+01, -5.65039028e-01],
+       [ 6.50000000e+01, -7.65536747e-01],
+       [ 6.00000000e+01, -9.66034467e-01],
+       [ 5.50000000e+01, -1.16653219e+00],
+       [ 1.50000000e+02,  2.64292449e+00]])</code></pre>
+</div>
+</div>
+</section>
+<section id="interquartile-range-iqr" class="level4" data-number="10.1.3.2">
+<h4 data-number="10.1.3.2" class="anchored" data-anchor-id="interquartile-range-iqr"><span class="header-section-number">10.1.3.2</span> Interquartile Range (IQR)</h4>
+<p>The Interquartile Range (IQR) is another statistical method used to detect and remove outliers. It is particularly useful because it is less affected by extremes than methods relying on the mean and standard deviation, like the Z-score. IQR is the range between the first quartile (Q1, the 25th percentile) and the third quartile (Q3, the 75th percentile) in a dataset. It represents the middle 50% of the data. The IQR is calculated as: <span class="math display">\[ \text{IQR} = Q3 - Q1.\]</span></p>
+<p>Outliers are typically defined as observations that fall below <span class="math inline">\(Q1 - 1.5 \times \text{IQR}\)</span> or above <span class="math inline">\(Q3 + 1.5 \times \text{IQR}\)</span>. This rule of thumb is widely used but can be adjusted based on specific data characteristics or domain knowledge.</p>
+<p>A step-by-step process to detect and remove outliers using IQR:</p>
+<ol type="1">
+<li><strong>Calculate Q1 and Q3</strong>: These are the 25th and 75th percentiles of the data, respectively.</li>
+<li><strong>Calculate IQR</strong>: Subtract Q1 from Q3.</li>
+<li><strong>Determine Outlier Thresholds</strong>:
+<ul>
+<li>Lower Bound = <span class="math inline">\(Q1 - 1.5 \times \text{IQR}\)</span></li>
+<li>Upper Bound = <span class="math inline">\(Q3 + 1.5 \times \text{IQR}\)</span></li>
+</ul></li>
+<li><strong>Identify Outliers</strong>: Data points that fall outside of these bounds are considered outliers.</li>
+<li><strong>Remove or Adjust Outliers</strong>: Once identified, outliers can be removed, capped, or adjusted based on the analytical requirements.</li>
+</ol>
+<p><strong>Example:</strong> Let us use the same dataset of test scores: <span class="math display">\[100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 150.\]</span></p>
+<p>We will calculate the IQR and use it to determine the outliers in this dataset. Based on the IQR method, here are the results for our test score dataset:</p>
+<ul>
+<li><strong>Lower Bound for Outliers</strong>: 30.0</li>
+<li><strong>Upper Bound for Outliers</strong>: 130.0</li>
+<li><strong>Identified Outliers</strong>: [150]</li>
+<li><strong>Data Without Outliers</strong>: [100, 95, 90, 85, 80, 75, 70, 65, 60, 55]</li>
+</ul>
+<p>In this case, the score of 150 is identified as an outlier, as it is above the upper bound of 130.0. According to the IQR method, this data point can be considered for removal or adjustment.</p>
+<p>The process of removing the outlier involves excluding the score of 150 from the dataset. This leaves us with the scores [100, 95, 90, 85, 80, 75, 70, 65, 60, 55], which are more representative of the typical range of scores in this dataset. By doing this, we reduce the potential impact of extreme values on further analysis or machine learning modeling.</p>
+<p>The following Python code shows the computations involved.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-defining the dataset of test scores</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.array([<span class="dv">100</span>, <span class="dv">95</span>, <span class="dv">90</span>, <span class="dv">85</span>, <span class="dv">80</span>, <span class="dv">75</span>, <span class="dv">70</span>, <span class="dv">65</span>, <span class="dv">60</span>, <span class="dv">55</span>, <span class="dv">150</span>])</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Q1 and Q3</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>Q1 <span class="op">=</span> np.percentile(data, <span class="dv">25</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>Q3 <span class="op">=</span> np.percentile(data, <span class="dv">75</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate IQR</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>IQR <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine outlier thresholds</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="op">=</span> Q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="op">=</span> Q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Identifying outliers</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>outliers <span class="op">=</span> data[(data <span class="op">&lt;</span> lower_bound) <span class="op">|</span> (data <span class="op">&gt;</span> upper_bound)]</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Data without outliers</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>data_without_outliers <span class="op">=</span> data[(data <span class="op">&gt;=</span> lower_bound) <span class="op">&amp;</span> (data <span class="op">&lt;=</span> upper_bound)]</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>lower_bound, upper_bound, outliers, data_without_outliers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>(30.0,
+ 130.0,
+ array([150]),
+ array([100,  95,  90,  85,  80,  75,  70,  65,  60,  55]))</code></pre>
+</div>
+</div>
+</section>
+<section id="isolation-forest-algorithm" class="level4" data-number="10.1.3.3">
+<h4 data-number="10.1.3.3" class="anchored" data-anchor-id="isolation-forest-algorithm"><span class="header-section-number">10.1.3.3</span> Isolation Forest Algorithm</h4>
+<p>The Isolation Forest algorithm is an effective method for detecting outliers, especially in large datasets. It’s particularly useful in unsupervised learning scenarios where you don’t have labeled data to train on.</p>
+<p>The key concept behind Isolation Forest is that outliers are few and different, and hence, they are ‘easier’ to isolate compared to non-outlier points. In other words, it requires fewer random partitions to isolate an outlier than to isolate a regular data point.</p>
+<p>It involves the following steps:</p>
+<ol type="1">
+<li><p><strong>Random Sampling:</strong> The algorithm randomly samples a subset of the data. This makes the method efficient for large datasets.</p></li>
+<li><p><strong>Building Isolation Trees (iTrees):</strong> For each sample, it randomly selects a feature and then randomly selects a split value between the maximum and minimum values of the selected feature. This process partitions the dataset, and it’s repeated recursively, leading to the formation of an ‘isolation tree’. Each node in the tree isolates data points from the rest of the sample.</p></li>
+<li><p><strong>Path Lengths:</strong> The number of splits required to isolate a sample is recorded as the ‘path length’. Since outliers are ‘easier’ to isolate, they tend to have shorter path lengths.</p></li>
+<li><p><strong>Ensemble of iTrees:</strong> Multiple isolation trees are created to form a random forest. The path lengths across these trees are then averaged to get a final score.</p></li>
+<li><p><strong>Scoring Anomalies:</strong> The average path length is used to calculate an anomaly score for each data point. A shorter path length results in a higher anomaly score, indicating a higher likelihood of the point being an outlier.</p></li>
+</ol>
+<p>Here is a Python code demonstrating detection of outliers using the algorithm.</p>
+<div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> IsolationForest</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating a synthetic dataset</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fl">0.3</span> <span class="op">*</span> np.random.randn(<span class="dv">100</span>, <span class="dv">2</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>X_outliers <span class="op">=</span> np.random.uniform(low<span class="op">=-</span><span class="dv">4</span>, high<span class="op">=</span><span class="dv">4</span>, size<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">2</span>))</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.r_[X <span class="op">+</span> <span class="dv">2</span>, X <span class="op">-</span> <span class="dv">2</span>, X_outliers]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting the model</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> IsolationForest(max_samples<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>clf.fit(X)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> clf.predict(X)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualization</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y_pred, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, edgecolor<span class="op">=</span><span class="st">'k'</span>, s<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Isolation Forest Outlier Detection"</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Feature 1"</span>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Feature 2"</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="13">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-ifa" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-ifa-output-1.png" class="img-fluid figure-img" width="811"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.7: Detection of outliers using the Isolation Forest algorithm.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The above Python code demonstrates the use of the Isolation Forest algorithm for outlier detection in a synthetic dataset. We first create a synthetic dataset by generating random data points using a normal distribution (<code>np.random.randn</code>) and then scaling them by a factor of 0.3. To introduce some variability, the generated points are shifted to create two clusters (<code>X + 2</code> and <code>X - 2</code>). Additionally, a set of outlier points is created using a uniform distribution over a wider range (<code>np.random.uniform</code>). These outlier points are then combined with the original data to form the complete dataset (<code>X</code>). An Isolation Forest model (<code>IsolationForest</code>) is instantiated with a specified <code>max_samples</code> parameter (100 in this case, which is the number of samples to draw from the dataset to train each base estimator in the forest). The model is then fitted to the dataset using the <code>fit</code> method. After fitting the model, it’s used to predict the nature of each data point in the dataset (<code>y_pred</code>). The prediction results in a label for each point, where <code>1</code> indicates a normal point (inlier), and <code>-1</code> indicates an outlier.</p>
+<p><a href="#fig-ifa">Figure&nbsp;<span>10.7</span></a> demonstrates how the Isolation Forest algorithm separates outliers from normal observations. The outliers, which are fewer and more scattered, are identified and marked distinctly from the denser clusters of normal data points. This demonstration provides a practical insight into the algorithm’s capability in handling unsupervised outlier detection in a dataset.</p>
+<p><strong>Advantages:</strong> The Isolation Forest algorithm offers several distinct advantages, making it a popular choice for outlier detection, especially in large and complex datasets. One of its primary strengths is efficiency: it can handle large datasets and high-dimensional data effectively due to its sampling strategy and the simplicity of isolation trees. Unlike many traditional statistical methods, the Isolation Forest does not assume a normal distribution of data, making it versatile and robust in handling various types of datasets. This characteristic is particularly beneficial in real-world scenarios where data often deviates from theoretical distributions.</p>
+<p>Another advantage of the Isolation Forest is its resilience to the swamping and masking effects. Traditional outlier detection methods can sometimes misclassify normal observations as outliers (swamping) or fail to detect actual outliers (masking). The Isolation Forest algorithm, with its unique approach of isolating anomalies, tends to be less prone to these issues, leading to more accurate detection.</p>
+<p>Furthermore, the algorithm’s random forest approach contributes to its effectiveness. By creating multiple isolation trees and averaging their results, the algorithm can achieve a more reliable and stable outlier detection, mitigating the randomness that might arise from any single tree. This ensemble technique enhances the overall accuracy of the model. Lastly, the Isolation Forest is relatively straightforward to implement and does not require extensive parameter tuning, which adds to its practicality in various applications, from fraud detection to anomaly detection in network traffic or sensor data monitoring.</p>
+<p><strong>Limitations:</strong> The Isolation Forest algorithm, though effective for outlier detection, has several disadvantages. Firstly, its reliance on random selection for creating isolation trees introduces a degree of unpredictability, potentially leading to inconsistent results across different runs. This randomness can affect the stability and reproducibility of the model, which is a significant concern in applications requiring consistent performance. Secondly, the algorithm’s performance is highly sensitive to its parameters, such as the number of trees in the forest and the sample size. Selecting these parameters appropriately requires a deep understanding of the dataset and can involve a trial-and-error approach, which may not always be feasible.</p>
+<p>Additionally, while Isolation Forest is generally efficient, its performance can degrade with extremely large datasets, particularly those with a high number of features. This can lead to increased computational demands, making the algorithm less suitable for very large-scale applications. Another limitation is the interpretability of the results; understanding why a specific data point is identified as an outlier is not straightforward with Isolation Forest, which can be a drawback in scenarios where explanation and transparency are crucial.</p>
+<p>Moreover, the algorithm’s effectiveness is predominantly in numerical data contexts and may not perform as well with categorical data or mixed data types without adequate preprocessing. Also, it operates purely on statistical properties, lacking contextual sensitivity, which means it might not align with domain-specific definitions of outliers. In summary, while the Isolation Forest algorithm is a valuable tool for detecting outliers, its application requires careful consideration of its limitations regarding randomness, parameter sensitivity, scalability, interpretability, and data type compatibility.</p>
+<p><strong>Note on Removing Outliers:</strong> It’s important to note that Isolation Forest is primarily a method for detecting outliers, not necessarily removing them. The decision to remove outliers identified by the algorithm should be made based on the context and the impact of these outliers on the subsequent analysis or machine learning models.</p>
+</section>
+<section id="dbscan-density-based-spatial-clustering-of-applications-with-noise" class="level4" data-number="10.1.3.4">
+<h4 data-number="10.1.3.4" class="anchored" data-anchor-id="dbscan-density-based-spatial-clustering-of-applications-with-noise"><span class="header-section-number">10.1.3.4</span> DBSCAN (Density-Based Spatial Clustering of Applications with Noise)</h4>
+<p>DBSCAN, which stands for Density-Based Spatial Clustering of Applications with Noise, is a widely used clustering algorithm in the realms of machine learning and data analysis. The cornerstone of DBSCAN is the concept of clustering, which involves grouping data points in such a way that points in the same cluster are more similar to each other than to those in other clusters. This method is particularly effective for discovering patterns and groupings within data.</p>
+<p>A key feature distinguishing DBSCAN from other clustering methods like K-Means is its focus on density-based clustering. Rather than grouping points based on distance from a central point, as in K-Means, DBSCAN forms clusters based on the density of data points. This approach enables the identification of clusters with arbitrary shapes and even the detection of nested clusters.</p>
+<p>At the heart of DBSCAN are three core concepts:</p>
+<ol type="1">
+<li><strong>Core Points</strong>: These are points that have a minimum number of other points (specified as MinPts) within a certain radius (<span class="math inline">\(\epsilon\)</span>, or epsilon).</li>
+<li><strong>Border Points</strong>: These are points that fall within the radius of a core point but have fewer than MinPts within their own radius.</li>
+<li><strong>Noise Points</strong>: Points that do not qualify as either core or border points are categorized as noise or outliers.</li>
+</ol>
+<p>The DBSCAN algorithm operates by starting with an arbitrary point and identifying all points that are density-reachable from this point, based on the <span class="math inline">\(\epsilon\)</span> and MinPts parameters. If the starting point is a core point, a cluster is formed. If it’s a border point, with no density-reachable points, the algorithm proceeds to the next point. This process continues until each point in the dataset is classified as either a core point, border point, or noise. This method’s ability to handle noise and identify clusters of varying shapes and densities makes it a versatile and powerful tool in data analysis.</p>
+<p><strong>Advantages</strong>: DBSCAN offers several significant advantages as a clustering algorithm. First and foremost, its ability to identify clusters of arbitrary shapes is a major strength, especially when dealing with complex spatial data. This contrasts with algorithms like K-Means, which tend to identify only spherical clusters. Secondly, DBSCAN is particularly adept at handling noise and outliers in the data set. It can effectively differentiate between core points (dense areas of the dataset), border points (edges of clusters), and noise, providing a more accurate clustering result in noisy environments. Another advantage of DBSCAN is that it does not require the number of clusters to be defined a priori, unlike K-Means. This makes it particularly useful in exploratory data analysis where the number of clusters is not known beforehand. Additionally, DBSCAN’s minimal reliance on domain knowledge for setting its two main parameters (radius and minimum number of points) simplifies its application across various domains. Lastly, DBSCAN’s capability to discover clusters within clusters allows for a deeper and more nuanced understanding of the data structure, making it a versatile tool for a wide range of data analysis tasks. These advantages make DBSCAN a popular choice for many real-world applications, including image processing, genetics, and spatial data analysis.</p>
+<p><strong>Limitations:</strong> DBSCAN, while versatile, has certain limitations that can affect its performance and applicability. One of the primary challenges lies in determining the appropriate values for its two main parameters: epsilon (<span class="math inline">\(\epsilon\)</span>), which defines the radius around a point to search for neighboring points, and MinPts, the minimum number of points required to form a dense region. The choice of these parameters can significantly influence the clustering outcome, and finding the right balance often requires domain knowledge or trial-and-error, which can be impractical in many situations. Another limitation is DBSCAN’s sensitivity to varying densities within the same dataset. It may struggle to identify clusters correctly if there are significant differences in the density of clusters, leading to either fragmented clusters or over-merging of clusters. Additionally, DBSCAN’s performance can degrade with high-dimensional data due to the curse of dimensionality, as the notion of density becomes less meaningful in high-dimensional spaces. Finally, the computational complexity of DBSCAN, particularly with large datasets, can be a drawback. It requires calculating the distance between points, which can be computationally intensive for large datasets, although optimized implementations can mitigate this to some extent. Despite these limitations, DBSCAN remains a popular and effective clustering method for datasets where its unique advantages can be fully leveraged.</p>
+<p>Below is an example of how to use the DBSCAN algorithm for clustering in Python using the <code>scikit-learn</code> library.</p>
+<div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Generate sample data</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>X, _ <span class="op">=</span> datasets.make_moons(n_samples<span class="op">=</span><span class="dv">300</span>, noise<span class="op">=</span><span class="fl">0.05</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Apply DBSCAN</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># epsilon (eps) is the maximum distance between two samples for them to be considered in the same neighborhood</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># min_samples is the number of samples in a neighborhood for a point to be considered a core point</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.3</span>, min_samples<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> dbscan.fit_predict(X)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Visualize the results</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>clusters, cmap<span class="op">=</span><span class="st">'Paired'</span>, marker<span class="op">=</span><span class="st">'o'</span>, s<span class="op">=</span><span class="dv">30</span>, edgecolor<span class="op">=</span><span class="st">'k'</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'DBSCAN Clustering'</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Feature 1'</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Feature 2'</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="14">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-dbscan" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-dbscan-output-1.png" class="img-fluid figure-img" width="609"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.8: Clustering of complicated data using DBSCAN.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In this script, we first generate a two-dimensional dataset using <code>make_moons</code> from <code>sklearn.datasets</code>. We then apply the DBSCAN algorithm to this data, where <code>eps</code> and <code>min_samples</code> are key parameters. <a href="#fig-dbscan">Figure&nbsp;<span>10.8</span></a> shows the results where each cluster is colored differently, and outliers (points not belonging to any cluster) are usually shown in a different color.</p>
+<p>The next code shows outlier detection using DBSCAN.</p>
+<div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample data</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>centers <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">1</span>], [<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>], [<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]]</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>X, labels_true <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">300</span>, centers<span class="op">=</span>centers, cluster_std<span class="op">=</span><span class="fl">0.4</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add some noise/outlier points</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>outliers <span class="op">=</span> np.random.uniform(low<span class="op">=-</span><span class="dv">3</span>, high<span class="op">=</span><span class="dv">3</span>, size<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">2</span>))</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.concatenate([X, outliers])</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply DBSCAN</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.3</span>, min_samples<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> dbscan.fit_predict(X)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify core and noise points</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>core_samples_mask <span class="op">=</span> np.zeros_like(labels, dtype<span class="op">=</span><span class="bu">bool</span>)</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>core_samples_mask[dbscan.core_sample_indices_] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>unique_labels <span class="op">=</span> <span class="bu">set</span>(labels)</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the results</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [plt.cm.Spectral(each) <span class="cf">for</span> each <span class="kw">in</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="bu">len</span>(unique_labels))]</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, col <span class="kw">in</span> <span class="bu">zip</span>(unique_labels, colors):</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> k <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Black is used for noise/outliers</span></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>        col <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    class_member_mask <span class="op">=</span> (labels <span class="op">==</span> k)</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot core points</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>    xy <span class="op">=</span> X[class_member_mask <span class="op">&amp;</span> core_samples_mask]</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    plt.plot(xy[:, <span class="dv">0</span>], xy[:, <span class="dv">1</span>], <span class="st">'o'</span>, markerfacecolor<span class="op">=</span><span class="bu">tuple</span>(col), markeredgecolor<span class="op">=</span><span class="st">'k'</span>, markersize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot outliers</span></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>    xy <span class="op">=</span> X[class_member_mask <span class="op">&amp;</span> <span class="op">~</span>core_samples_mask]</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>    plt.plot(xy[:, <span class="dv">0</span>], xy[:, <span class="dv">1</span>], <span class="st">'o'</span>, markerfacecolor<span class="op">=</span><span class="bu">tuple</span>(col), markeredgecolor<span class="op">=</span><span class="st">'k'</span>, markersize<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'DBSCAN: Outlier Detection'</span>)</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Feature 1'</span>)</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Feature 2'</span>)</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-execution_count="15">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-dbscan_outlier" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_pre_processing_files/figure-html/fig-dbscan_outlier-output-1.png" class="img-fluid figure-img" width="587"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.9: Outlier detection using DBSCAN.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In the above Python code, the process of outlier detection using the DBSCAN algorithm is illustrated through a series of steps. Initially, a sample dataset is created using the <code>make_blobs</code> function, which generates clusters of data points. To simulate a real-world scenario where data might contain anomalies, additional random points are introduced into this dataset, serving as potential outliers. Following the creation of this dataset, the DBSCAN algorithm is applied. DBSCAN operates by identifying clusters based on the density of data points, and it labels points that do not belong to any cluster as -1, effectively categorizing them as outliers. After the application of DBSCAN, the results are shown in <a href="#fig-dbscan_outlier">Figure&nbsp;<span>10.9</span></a>. This plot distinctly shows the core points (the dense central parts of clusters), border points (points on the edges of clusters), and outliers. The outliers, which are points identified as not belonging to any cluster, are typically highlighted in black. This visual representation aids in understanding how DBSCAN segregates outliers from the main clusters in the dataset, showcasing its utility in outlier detection.</p>
+</section>
+<section id="outliers-and-rare-events" class="level4" data-number="10.1.3.5">
+<h4 data-number="10.1.3.5" class="anchored" data-anchor-id="outliers-and-rare-events"><span class="header-section-number">10.1.3.5</span> Outliers and Rare Events</h4>
+<p>Outlier detection, a critical task in data analysis, faces several challenges, particularly in identifying and correctly interpreting rare events. An outlier is typically a data point that significantly deviates from the majority of data, suggesting a different underlying mechanism. Rare events are similar but are specifically those events that occur infrequently in the dataset. For instance, fraud in financial transactions or the failure of a critical component in a manufacturing process are rare events – they don’t happen often, but when they do, their impact can be substantial.</p>
+<p><strong>Challenges in Outlier Detection:</strong> Outlier detection in data analysis encounters several notable challenges, particularly in specific contexts. One such challenge is high dimensionality. In spaces with many dimensions, the task of distinguishing between mere noise and genuine outliers becomes increasingly complex. This complexity arises from the “curse of dimensionality,” a phenomenon where the conventional measure of distance between data points loses its effectiveness as the number of dimensions increases.</p>
+<p>Another challenge is the presence of varying densities within datasets. In such cases, a data point that is an outlier in a less dense cluster might be considered normal in a denser cluster. This variability complicates the establishment of a universal threshold for identifying outliers, as what qualifies as an outlier can differ significantly from one region of the dataset to another.</p>
+<p>Additionally, the phenomena of masking and swamping add to the complexity. Masking occurs when the presence of certain outliers obscures or hides other outliers, while swamping refers to the misidentification of normal points as outliers because they are in close proximity to actual outliers.</p>
+<p>Lastly, the challenge of evolving data is significant, especially in dynamic datasets where patterns and trends change over time, a concept known as concept drift. In such environments, the definition of what constitutes an outlier is not static but changes as the underlying data patterns evolve. This necessitates a continuous adaptation of the outlier detection models to remain effective in identifying true anomalies over time. These challenges underscore the need for sophisticated and adaptable methods in outlier detection to accurately discern genuine anomalies in complex datasets.</p>
+<p><strong>Missing Rare Events:</strong> The challenges in detecting rare events in data analysis and machine learning are multifaceted, primarily due to their inherent characteristics. One of the most prominent challenges is their low frequency of occurrence. By nature, rare events occur infrequently within datasets, leading to a tendency for them to be overlooked or misclassified as mere anomalies. This infrequency poses a significant challenge in accurately identifying and assessing the impact of these events.</p>
+<p>Another critical issue is the lack of representation in training data for machine learning models. In many scenarios, the training datasets do not adequately capture these rare events, leading to models that are not well-equipped to recognize them when they do occur. The scarcity of examples of rare events in the training data results in a learning process that is heavily biased towards more frequent occurrences, thereby diminishing the model’s ability to identify rare events accurately.</p>
+<p>Furthermore, the challenge of balancing sensitivity and specificity in the context of rare events is a delicate task. Sensitivity refers to the model’s ability to correctly detect most of the rare events, whereas specificity relates to its ability not to mislabel normal events as rare. Striking the right balance is crucial; overly sensitive models might flag too many normal occurrences as rare events, causing false alarms, while models with excessive specificity might miss genuine rare events. This balancing act is particularly crucial in fields where the implications of missing a rare event or falsely identifying one are significant, such as in medical diagnostics, financial fraud detection, or security systems.</p>
+<p>These challenges highlight the need for specialized approaches in data analysis and model training that can accommodate the unique nature of rare events, ensuring that these critical but infrequent occurrences are neither missed nor wrongly classified.</p>
+<p><strong>Examples of Rare Events:</strong> Rare events in various engineering fields, particularly in aerospace, mechanical, and other disciplines, often involve scenarios where the low probability of occurrence belies the potential for severe consequences. Here are some examples, along with explanations of their nature and the catastrophes that ensued from missed rare events:</p>
+<ol type="1">
+<li><strong>Civil Engineering - Tacoma Narrows Bridge Collapse (1940)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: The bridge collapsed due to aeroelastic flutter caused by wind.</li>
+<li><strong>Catastrophe</strong>: The bridge, nicknamed “Galloping Gertie,” was vulnerable to this rare phenomenon, which was not well-understood at the time. The collapse of the bridge was a significant event in engineering, leading to changes in the design and construction of suspension bridges to prevent similar incidents.</li>
+</ul></li>
+<li><strong>Chemical Engineering - Bhopal Gas Tragedy (1984)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: A leak of methyl isocyanate gas and other chemicals from a pesticide plant.</li>
+<li><strong>Catastrophe</strong>: Widely considered the world’s worst industrial disaster, it resulted in thousands of deaths and long-term health effects for many more. This tragedy underscored the catastrophic potential of rare chemical leaks and the need for stringent safety measures.</li>
+</ul></li>
+<li><strong>Electrical Engineering - Northeast Blackout (2003)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: A large-scale power outage occurred due to a software bug in an alarm system, coupled with operational errors.</li>
+<li><strong>Catastrophe</strong>: This event led to a widespread electricity blackout across parts of the Northeastern and Midwestern United States and Ontario, Canada, affecting around 55 million people. It exposed vulnerabilities in the electrical grid and the cascading effect of small failures.</li>
+</ul></li>
+<li><strong>Mechanical Engineering - Fukushima Daiichi Nuclear Disaster (2011)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: This disaster was triggered by a massive tsunami following a strong earthquake.</li>
+<li><strong>Catastrophe</strong>: The tsunami led to the failure of nuclear reactors’ cooling systems, causing meltdowns, hydrogen-air explosions, and the release of radioactive material. The rarity of such a large-scale natural disaster, coupled with the unpreparedness for such an event, resulted in one of the worst nuclear disasters in history.</li>
+</ul></li>
+</ol>
+<p>These examples from different engineering disciplines demonstrate how rare events, often overlooked due to their low probability, can lead to significant disasters. They underscore the importance of considering even unlikely scenarios in engineering design and risk management to prevent catastrophic outcomes.</p>
+<p>Aerospace engineering, with its complex systems and high stakes, has witnessed several rare events that had significant consequences. These events, often considered low-probability, underscore the critical importance of meticulous design, rigorous testing, and comprehensive risk management in the field. Here are some examples from aerospace engineering:</p>
+<ol type="1">
+<li><strong>Apollo 13 Oxygen Tank Explosion (1970)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: An oxygen tank in the service module of Apollo 13 failed due to an electrical fault, causing an explosion.</li>
+<li><strong>Catastrophe</strong>: This incident crippled the spacecraft during its mission to the Moon, leading to a critical situation for the astronauts aboard. The mission was aborted, and a safe return to Earth became the primary objective. The event highlighted the need for redundant systems and rigorous pre-flight testing in space missions.</li>
+</ul></li>
+<li><strong>Space Shuttle Challenger Disaster (1986)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: The disaster was primarily caused by the failure of an O-ring seal in its right solid rocket booster.</li>
+<li><strong>Catastrophe</strong>: The O-ring failure, exacerbated by unusually cold weather, led to the breakup of the space shuttle shortly after launch, resulting in the death of all seven crew members. This event highlighted the catastrophic consequences of underestimating the likelihood and impact of what was considered a rare component failure.</li>
+</ul></li>
+<li><strong>Soyuz 11 Crew Loss (1971)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: The Soyuz 11 spacecraft depressurized during its return to Earth.</li>
+<li><strong>Catastrophe</strong>: The three crew members aboard died due to asphyxiation, marking the only human deaths in space (above the Kármán line). The tragedy led to redesigned safety features and protocols in Soviet and later Russian crewed space missions.</li>
+</ul></li>
+<li><strong>Mars Climate Orbiter Loss (1999)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: The spacecraft was lost due to a navigation error caused by a failure to convert units from English to metric.</li>
+<li><strong>Catastrophe</strong>: The orbiter approached Mars at a lower altitude than planned and disintegrated due to atmospheric stresses. This incident underscored the critical importance of thorough cross-checks and consistent units in engineering calculations, especially in international collaborations.</li>
+</ul></li>
+<li><strong>Space Shuttle Columbia Disaster (2003)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: Damage to the thermal protection system of the Space Shuttle Columbia during launch led to its disintegration upon re-entry.</li>
+<li><strong>Catastrophe</strong>: All seven crew members were lost. The investigation following the disaster led to a 29-month suspension of the Space Shuttle program and a reevaluation of safety protocols and shuttle integrity inspections.</li>
+</ul></li>
+<li><strong>Air France Flight 447 Crash (2009)</strong>:
+<ul>
+<li><strong>Nature of Rare Event</strong>: The crash was primarily caused by the aircraft’s speed sensors being obstructed by ice crystals, leading to a series of erroneous readings and pilot errors.</li>
+<li><strong>Catastrophe</strong>: The aircraft crashed into the Atlantic Ocean, resulting in the deaths of all passengers and crew. This event brought attention to the importance of pilot training in handling high-altitude stalls and the need for more reliable airspeed sensors.</li>
+</ul></li>
+</ol>
+<p>These incidents in aerospace engineering, though rare, had profound impacts on safety protocols, design considerations, and operational procedures. Each event prompted a reevaluation of existing practices, leading to advancements in technology and an increased emphasis on safety in aerospace engineering.</p>
+<p>In the realm of autonomy, particularly in autonomous vehicles and systems, recent times have seen several rare events. These events are significant as they highlight the challenges and potential risks associated with the integration of autonomous technology in various sectors. Some of these rare events include:</p>
+<ol type="1">
+<li><strong>Autonomous Vehicle Accidents</strong>:
+<ul>
+<li><strong>Event Description</strong>: There have been instances where autonomous or semi-autonomous vehicles were involved in accidents, some of which were fatal.</li>
+<li><strong>Significance</strong>: These incidents have raised questions about the readiness of autonomous driving technology for widespread use, the reliability of sensors and algorithms in complex, real-world environments, and the need for regulatory frameworks.</li>
+</ul></li>
+<li><strong>Drone Mishaps in Controlled Airspace</strong>:
+<ul>
+<li><strong>Event Description</strong>: Drones entering controlled or restricted airspace have caused disruptions, including near-miss incidents with manned aircraft and temporary shutdowns of major airports.</li>
+<li><strong>Significance</strong>: These events underscore the challenges in integrating unmanned aerial systems into existing airspace, particularly regarding safety and coordination with manned aircraft operations.</li>
+</ul></li>
+<li><strong>Robotic System Failures in Healthcare</strong>:
+<ul>
+<li><strong>Event Description</strong>: There have been rare but notable instances where autonomous or robotic systems in healthcare settings malfunctioned, leading to incorrect diagnoses or complications in surgeries.</li>
+<li><strong>Significance</strong>: These cases highlight the importance of stringent testing, validation, and oversight in the deployment of autonomous systems in sensitive and high-stakes fields like healthcare.</li>
+</ul></li>
+<li><strong>Security Breaches in Autonomous Systems</strong>:
+<ul>
+<li><strong>Event Description</strong>: Cybersecurity incidents involving autonomous systems, including hacking or manipulation of autonomous vehicles or industrial automation systems.</li>
+<li><strong>Significance</strong>: These breaches point to the critical need for robust cybersecurity measures in autonomous systems, given their potential impact on safety and privacy.</li>
+</ul></li>
+<li><strong>AI Ethics and Bias Incidents</strong>:
+<ul>
+<li><strong>Event Description</strong>: Instances where AI systems, including autonomous decision-making algorithms, have demonstrated biases or ethical issues, such as in hiring practices or law enforcement.</li>
+<li><strong>Significance</strong>: These events raise concerns about the ethical implications of autonomous systems, the need for unbiased data, and the importance of incorporating ethical considerations into AI development.</li>
+</ul></li>
+<li><strong>Failures in Autonomous Trading Algorithms</strong>:
+<ul>
+<li><strong>Event Description</strong>: Rare cases where autonomous trading algorithms caused significant market disruptions or losses due to unexpected behaviors under unusual market conditions.</li>
+<li><strong>Significance</strong>: Such events draw attention to the risks associated with high-frequency, autonomous trading in financial markets and the need for comprehensive risk management strategies.</li>
+</ul></li>
+</ol>
+<p>These rare events in autonomy highlight the complexities and potential risks associated with advancing autonomous technologies. They emphasize the need for ongoing research, development, and regulation to ensure safety, reliability, and ethical considerations are adequately addressed as these technologies become more integrated into daily life.</p>
+<p>In summary, the primary challenges in outlier detection and the identification of rare events lie in the definition, variability of data, and limitations inherent to data analysis methods. Understanding these challenges is crucial for designing effective detection systems, especially in fields where rare events, while infrequent, can have significant consequences.</p>
+</section>
+</section>
+</section>
+<section id="survivorship-bias" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="survivorship-bias"><span class="header-section-number">10.2</span> Survivorship Bias</h2>
+<p>Survivorship bias is a logical fallacy that occurs when a person focuses on the people or things that “survived” some process and inadvertently overlooks those that did not because of their lack of visibility. This bias can lead to false conclusions because the failures, which are not seen, are not considered. Here are some real-world examples:</p>
+<ol type="1">
+<li><p><strong>World War II Aircraft Analysis</strong>: During World War II, military analysts examined returning aircraft for bullet holes to determine which areas needed additional armor. However, the analysis initially suffered from survivorship bias. They were only looking at planes that made it back and not considering the ones that were shot down. The areas where the returning planes were hit were actually the strongest parts, as evidenced by their ability to return. The planes that didn’t return were likely hit in different places, which were the areas that actually needed reinforcing.</p></li>
+<li><p><strong>Stock Market Investment Strategies</strong>: In the financial world, survivorship bias can be seen when analyzing investment funds. If one only considers funds that are currently successful or still in existence, they might conclude that investing in funds is generally a profitable venture. This ignores all the funds that failed and closed, which could show a more risky and volatile market.</p></li>
+<li><p><strong>Success Stories in Entrepreneurship</strong>: The media often highlights successful entrepreneurs, leading to a perception that entrepreneurial endeavors are more likely to succeed than they actually are. This ignores the vast majority of startups that fail, and it can lead aspiring entrepreneurs to underestimate the risks involved.</p></li>
+<li><p><strong>Self-Help and Motivational Literature</strong>: Books and articles often focus on successful individuals and their routines or habits, implying that emulating these will lead to similar success. This ignores the many people who may have had the same habits but did not achieve the same level of success, often due to factors outside their control.</p></li>
+<li><p><strong>Educational Institution Alumni Success</strong>: Universities and colleges often showcase their most successful alumni as representations of the potential outcomes of their education. However, this can create a skewed perception, as it doesn’t account for the majority of graduates who may not achieve the same level of fame or success.</p></li>
+<li><p><strong>Success Stories of College Dropouts</strong>: The media and popular culture often highlight the success stories of famous dropouts like Bill Gates, Steve Jobs, and Mark Zuckerberg, who achieved extraordinary success despite not completing their formal education. While these narratives are inspiring, they represent a very small fraction of dropouts and contribute to survivorship bias. The reality is that most people who leave school early do not achieve such high levels of success; instead, they are more likely to face economic and social challenges, including lower incomes and higher unemployment rates. This skewed portrayal can lead to a misconception that formal education is not essential for success, potentially influencing young people to undervalue education and overlook the risks associated with dropping out. It’s important to balance these exceptional stories with the more common and less visible outcomes of leaving school early.</p></li>
+</ol>
+<p>Survivorship bias leads to a distorted view of reality by emphasizing the winners and ignoring the losers. It’s important in decision-making and analysis to consider the full picture, including those who didn’t “survive” the process being examined.</p>
+<p>Survivorship bias can significantly impact data-driven machine learning in several ways, primarily by skewing the training data and leading to models that are not representative of the real world. Here’s how this bias can affect machine learning:</p>
+<ol type="1">
+<li><p><strong>Incomplete Training Data</strong>: Survivorship bias in machine learning occurs when the training data includes only successful cases or ‘survivors’, while failing to account for failures or ‘non-survivors’. For instance, if a model is trained only on successful retail companies, it might not learn the patterns that lead to the failure of retail businesses.</p></li>
+<li><p><strong>Misleading Model Performance</strong>: Models trained on data affected by survivorship bias might show deceptively high performance during training and testing but fail in real-world applications. This happens because the model has not learned from the complete range of scenarios, especially those that led to failures or negative outcomes.</p></li>
+<li><p><strong>Biased Predictions and Decisions</strong>: The bias can lead to models that are biased towards the characteristics of the ‘survivors’. For example, in credit scoring, if the model is trained only on data from borrowers who haven’t defaulted, it might underestimate the risk of default.</p></li>
+<li><p><strong>Overlooking Crucial Factors</strong>: Survivorship bias can cause important variables and factors leading to failure to be overlooked. In healthcare, for instance, if a model is trained only on patients who have survived a certain disease, it might miss critical symptoms or factors that are common among those who did not survive.</p></li>
+<li><p><strong>Difficulty in Generalization</strong>: The models become less generalizable to wider, more diverse scenarios. They become overfitted to the successful cases, which could be a small, non-representative sample of the overall population.</p></li>
+<li><p><strong>Ethical and Fairness Concerns</strong>: This bias can also raise ethical concerns, particularly in applications where it’s important to represent and serve a diverse range of individuals fairly, such as in hiring or loan approval processes.</p></li>
+</ol>
+<p>To mitigate the impact of survivorship bias in machine learning, it’s crucial to use comprehensive and representative datasets that include both successes and failures. Additionally, continuous monitoring and validation of the model’s performance in real-world scenarios are essential to ensure that it remains accurate and fair over time.</p>
+</section>
+<section id="data-transformation" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="data-transformation"><span class="header-section-number">10.3</span> Data Transformation</h2>
+<pre><code>- **Normalization and Standardization**: Rescaling the data to a specific range (like 0 to 1 for normalization) or changing the distribution to have a mean of 0 and a standard deviation of 1 (standardization).
+- **Scaling to Unit Length**: Rescaling data so that the length of each data point (considered as a vector) is 1.
+- **Power Transforms**: Applying transformations like logarithmic, square root, or exponential to stabilize variance and make the data more 'normal' (Gaussian).</code></pre>
+</section>
+<section id="data-reduction" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="data-reduction"><span class="header-section-number">10.4</span> Data Reduction</h2>
+<pre><code>- **Dimensionality Reduction**: Techniques like Principal Component Analysis (PCA), Linear Discriminant Analysis (LDA), or t-SNE are used to reduce the number of features while retaining most of the information.
+- **Feature Selection**: Selecting the most significant features based on various statistical criteria. Methods include filter, wrapper, and embedded methods.
+- **Binning**: Grouping a set of numerical values into a smaller number of bins (or intervals).</code></pre>
+</section>
+<section id="data-encoding" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="data-encoding"><span class="header-section-number">10.5</span> Data Encoding</h2>
+<pre><code>- **Encoding Categorical Data**: Converting categorical data into numerical format using methods like one-hot encoding, label encoding, or binary encoding.
+- **Text Encoding**: Transforming text data into numerical format using techniques like Bag of Words, TF-IDF, or word embeddings (like Word2Vec).</code></pre>
+</section>
+<section id="handling-imbalanced-data" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="handling-imbalanced-data"><span class="header-section-number">10.6</span> Handling Imbalanced Data</h2>
+<pre><code>- Applying techniques like oversampling the minority class, undersampling the majority class, or using synthetic data generation methods like SMOTE (Synthetic Minority Over-sampling Technique) to balance the dataset.</code></pre>
+</section>
+<section id="feature-engineering" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="feature-engineering"><span class="header-section-number">10.7</span> Feature Engineering</h2>
+<pre><code>- Creating new features or modifying existing ones to improve model performance. This can involve extracting information from dates, creating interaction features, or aggregating data to create summary statistics.</code></pre>
+</section>
+<section id="time-series-specific-techniques" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="time-series-specific-techniques"><span class="header-section-number">10.8</span> Time Series Specific Techniques</h2>
+<pre><code>- If dealing with time series data, techniques like windowing, lag features, and handling seasonality might be necessary.</code></pre>
+</section>
+<section id="data-integration" class="level2" data-number="10.9">
+<h2 data-number="10.9" class="anchored" data-anchor-id="data-integration"><span class="header-section-number">10.9</span> Data Integration</h2>
+<pre><code>- Combining data from multiple sources, which might involve format alignment, resolving data conflicts, and schema integration.</code></pre>
+<p>Each of these techniques must be chosen and applied based on the specific requirements of the dataset and the problem at hand. The goal is always to produce a clean, reliable dataset that can be effectively used for machine learning modeling.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./algorithms.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Machine Learning Algorithms</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./supervised_learning.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

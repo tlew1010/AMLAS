@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Applied Machine Learning for Aerospace Systems - 2&nbsp; Linear Algebra</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./functions.html" rel="next">
+<link href="./math.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+    MathJax = {
+      tex: {
+        tags: 'ams'  // should be 'ams', 'none', or 'all'
+      }
+    };
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./linear_algebra.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Algebra</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Applied Machine Learning for Aerospace Systems</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foundational Mathematics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_algebra.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Algebra</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions &amp; Function Spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_processes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Monte Carlo Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./function_approximation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./algorithms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Machine Learning Algorithms</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_pre_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./supervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unsupervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dimensionality_reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./aerospace_applications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aerospace Applications</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Aerospace Application 1</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Aerospace Application 2</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#vectors" id="toc-vectors" class="nav-link active" data-scroll-target="#vectors"><span class="header-section-number">2.1</span> Vectors</a>
+  <ul class="collapse">
+  <li><a href="#dimension" id="toc-dimension" class="nav-link" data-scroll-target="#dimension"><span class="header-section-number">2.1.1</span> Dimension</a></li>
+  <li><a href="#transpose" id="toc-transpose" class="nav-link" data-scroll-target="#transpose"><span class="header-section-number">2.1.2</span> Transpose</a></li>
+  <li><a href="#operations" id="toc-operations" class="nav-link" data-scroll-target="#operations"><span class="header-section-number">2.1.3</span> Operations</a></li>
+  <li><a href="#length-of-a-vector" id="toc-length-of-a-vector" class="nav-link" data-scroll-target="#length-of-a-vector"><span class="header-section-number">2.1.4</span> Length of a Vector</a></li>
+  <li><a href="#vector-norms" id="toc-vector-norms" class="nav-link" data-scroll-target="#vector-norms"><span class="header-section-number">2.1.5</span> Vector Norms</a></li>
+  </ul></li>
+  <li><a href="#matrices" id="toc-matrices" class="nav-link" data-scroll-target="#matrices"><span class="header-section-number">2.2</span> Matrices</a>
+  <ul class="collapse">
+  <li><a href="#dimension-1" id="toc-dimension-1" class="nav-link" data-scroll-target="#dimension-1"><span class="header-section-number">2.2.1</span> Dimension</a></li>
+  <li><a href="#transpose-1" id="toc-transpose-1" class="nav-link" data-scroll-target="#transpose-1"><span class="header-section-number">2.2.2</span> Transpose</a></li>
+  <li><a href="#matrix-construction-from-vectors" id="toc-matrix-construction-from-vectors" class="nav-link" data-scroll-target="#matrix-construction-from-vectors"><span class="header-section-number">2.2.3</span> Matrix Construction from Vectors</a></li>
+  <li><a href="#rank-of-a-matrix" id="toc-rank-of-a-matrix" class="nav-link" data-scroll-target="#rank-of-a-matrix"><span class="header-section-number">2.2.4</span> Rank of a Matrix</a></li>
+  <li><a href="#eigen-values-and-eigen-vectors-of-a-matrix" id="toc-eigen-values-and-eigen-vectors-of-a-matrix" class="nav-link" data-scroll-target="#eigen-values-and-eigen-vectors-of-a-matrix"><span class="header-section-number">2.2.5</span> Eigen-Values and Eigen-Vectors of a Matrix</a></li>
+  <li><a href="#operations-1" id="toc-operations-1" class="nav-link" data-scroll-target="#operations-1"><span class="header-section-number">2.2.6</span> Operations</a></li>
+  <li><a href="#symmetric-matrices" id="toc-symmetric-matrices" class="nav-link" data-scroll-target="#symmetric-matrices"><span class="header-section-number">2.2.7</span> Symmetric Matrices</a></li>
+  <li><a href="#skew-symmetric-matrices" id="toc-skew-symmetric-matrices" class="nav-link" data-scroll-target="#skew-symmetric-matrices"><span class="header-section-number">2.2.8</span> Skew Symmetric Matrices</a></li>
+  <li><a href="#positive-semi-definite-matrices" id="toc-positive-semi-definite-matrices" class="nav-link" data-scroll-target="#positive-semi-definite-matrices"><span class="header-section-number">2.2.9</span> Positive (Semi) Definite Matrices</a></li>
+  <li><a href="#identity-matrix" id="toc-identity-matrix" class="nav-link" data-scroll-target="#identity-matrix"><span class="header-section-number">2.2.10</span> Identity Matrix</a></li>
+  <li><a href="#determininant-of-a-matrix" id="toc-determininant-of-a-matrix" class="nav-link" data-scroll-target="#determininant-of-a-matrix"><span class="header-section-number">2.2.11</span> Determininant of a Matrix</a></li>
+  <li><a href="#matrix-inverse" id="toc-matrix-inverse" class="nav-link" data-scroll-target="#matrix-inverse"><span class="header-section-number">2.2.12</span> Matrix Inverse</a></li>
+  <li><a href="#moore-penrose-inverse" id="toc-moore-penrose-inverse" class="nav-link" data-scroll-target="#moore-penrose-inverse"><span class="header-section-number">2.2.13</span> Moore-Penrose Inverse</a></li>
+  <li><a href="#orthonormal-matrices" id="toc-orthonormal-matrices" class="nav-link" data-scroll-target="#orthonormal-matrices"><span class="header-section-number">2.2.14</span> Orthonormal Matrices</a></li>
+  <li><a href="#kronecker-product" id="toc-kronecker-product" class="nav-link" data-scroll-target="#kronecker-product"><span class="header-section-number">2.2.15</span> Kronecker Product</a></li>
+  <li><a href="#trace-of-a-square-matrix" id="toc-trace-of-a-square-matrix" class="nav-link" data-scroll-target="#trace-of-a-square-matrix"><span class="header-section-number">2.2.16</span> Trace of a Square Matrix</a></li>
+  <li><a href="#matrix-inner-product" id="toc-matrix-inner-product" class="nav-link" data-scroll-target="#matrix-inner-product"><span class="header-section-number">2.2.17</span> Matrix Inner Product</a></li>
+  <li><a href="#matrix-norms" id="toc-matrix-norms" class="nav-link" data-scroll-target="#matrix-norms"><span class="header-section-number">2.2.18</span> Matrix Norms</a></li>
+  <li><a href="#singular-values-of-matrix" id="toc-singular-values-of-matrix" class="nav-link" data-scroll-target="#singular-values-of-matrix"><span class="header-section-number">2.2.19</span> Singular Values of Matrix</a></li>
+  <li><a href="#matrix-decompositions" id="toc-matrix-decompositions" class="nav-link" data-scroll-target="#matrix-decompositions"><span class="header-section-number">2.2.20</span> Matrix Decompositions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Algebra</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="vectors" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="vectors"><span class="header-section-number">2.1</span> Vectors</h2>
+<p>A vector of numbers is a one-dimensional arrangement of numbers (integers, real, complex, etc.).</p>
+<p>A column-vector is a column arrangement of mathematical objects, e.g., <span class="math display">\[\begin{bmatrix} v_1 \\ v_2 \\v_3\\ \vdots \\ v_n\end{bmatrix}.\]</span></p>
+<p>Examples include vector of integers: <span class="math inline">\(\begin{bmatrix} 1 \\ 2 \\3\\ \vdots \\ 20\end{bmatrix}\)</span>, vector of real-numbers: <span class="math inline">\(\begin{bmatrix} 1.234 \\ 2.345 \\3.456\\ \vdots \\ 20.212\end{bmatrix}\)</span>, and vector of complex numbers: <span class="math inline">\(\begin{bmatrix} 1+2j \\ 2+3j \\4+5j\\ \vdots \\ 20+21j\end{bmatrix}\)</span>.</p>
+<p>Sometimes we represent the entire vector using a symbol with boldface font, e.g., <span class="math display">\[\boldsymbol{x}=  \begin{bmatrix} 1 \\ 2 \\3\\ \vdots \\5 \end{bmatrix},\]</span> and refer to the entire vector as <span class="math inline">\(\boldsymbol{x}\)</span>.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])  <span class="co"># This is an array with 5 elements.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1 2 3 4 5]</code></pre>
+</div>
+</div>
+<section id="dimension" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="dimension"><span class="header-section-number">2.1.1</span> Dimension</h3>
+<p>The number of elements in a vector is the dimension of the vector. For example, <span class="math display">\[\boldsymbol{x}=  \begin{bmatrix} 1 \\ 2 \\3\\ \vdots \\10 \end{bmatrix},\]</span> is ten dimensional. If all the entries are real numbers, then we compactly represent <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^{10}\)</span>, where <span class="math inline">\(\mathcal{R}^n\)</span> is the space of n-dimensional vectors with real entries. A vector can have elements that are complex numbers as well. In that case, we will denote <span class="math inline">\(\boldsymbol{x}\in\mathcal{C}^{n}\)</span>, where <span class="math inline">\(\mathcal{C}^n\)</span> is the space of n-dimensional vectors with complex entries.</p>
+<p>Here is a Python code computing the dimension of a vector.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>])  <span class="co"># This is an array with 10 elements.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Dimension of X is: "</span>, X.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dimension of X is:  (10,)</code></pre>
+</div>
+</div>
+</section>
+<section id="transpose" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="transpose"><span class="header-section-number">2.1.2</span> Transpose</h3>
+<p>If a vector <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^n := \begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix}\)</span> then the transpose of <span class="math inline">\(\boldsymbol{x}\)</span> is denoted by <span class="math inline">\(\boldsymbol{x}^T\)</span> and defined by <span class="math display">\[
+\boldsymbol{x}^T = \begin{bmatrix} x_1 &amp; \cdots &amp; x_n \end{bmatrix}.\]</span> <em>Note:</em> <span class="math inline">\((\boldsymbol{x}^T)^T = \boldsymbol{x}\)</span>, i.e.&nbsp;the transpose of a transposed vector is the same vector.</p>
+<p><em>Note:</em> If <span class="math inline">\(\boldsymbol{x}\)</span> is a column vector, <span class="math inline">\(\boldsymbol{x}^T\)</span> is a row vector and vice versa.</p>
+<p>Here is a Python code computing transpose of a vector.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a vector as a 1D NumPy array</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>vector <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the transpose of the vector (which is still the same vector)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>transpose_vector <span class="op">=</span> vector.T</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original vector and its transpose</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Vector:"</span>, vector)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Transpose:"</span>, transpose_vector)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(transpose_vector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Vector: [1 2 3 4]
+Transpose: [1 2 3 4]
+[1 2 3 4]</code></pre>
+</div>
+</div>
+<p>Python doesn’t print the transpose of a column vector as a row vector. If they are treated as matrices then there will be a difference in how they are printed.</p>
+</section>
+<section id="operations" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="operations"><span class="header-section-number">2.1.3</span> Operations</h3>
+<section id="negative-of-vector" class="level4" data-number="2.1.3.1">
+<h4 data-number="2.1.3.1" class="anchored" data-anchor-id="negative-of-vector"><span class="header-section-number">2.1.3.1</span> Negative of Vector</h4>
+<p>Given a vector <span class="math inline">\(\boldsymbol{x}= \begin{bmatrix}x_1 \\ \vdots \\ x_n \end{bmatrix}\)</span>, the negative of <span class="math inline">\(\boldsymbol{x}\)</span> is <span class="math display">\[-\boldsymbol{x}:= \begin{bmatrix}-x_1\\ \vdots \\ -x_n\end{bmatrix}.\]</span></p>
+</section>
+<section id="multiplication-by-a-scalar" class="level4" data-number="2.1.3.2">
+<h4 data-number="2.1.3.2" class="anchored" data-anchor-id="multiplication-by-a-scalar"><span class="header-section-number">2.1.3.2</span> Multiplication by a Scalar</h4>
+<p>Multiplication of a scalar with a vector is defined as <span class="math display">\[
+\alpha\boldsymbol{x}=  \begin{bmatrix}\alpha x_1 \\ \alpha x_2 \\ \vdots \end{bmatrix},
+\]</span> i.e., the scalar <span class="math inline">\(\alpha\)</span> multiplies all the elements of <span class="math inline">\(\boldsymbol{x}\)</span>. Also, <span class="math display">\[\alpha\boldsymbol{x}= \boldsymbol{x}\alpha.\]</span></p>
+</section>
+<section id="vector-equality" class="level4" data-number="2.1.3.3">
+<h4 data-number="2.1.3.3" class="anchored" data-anchor-id="vector-equality"><span class="header-section-number">2.1.3.3</span> Vector Equality</h4>
+<p>Vector equality between two vectors is defined elementwise, i.e., the condition <span class="math inline">\(\boldsymbol{x}= \boldsymbol{y}\)</span> is equivalent to <span class="math inline">\(n\)</span> conditions <span class="math inline">\(x_i = y_i\)</span>, for <span class="math inline">\(i=1,\cdots,n\)</span>. Clearly, <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span> would have to have the same dimension.</p>
+</section>
+<section id="vector-addition" class="level4" data-number="2.1.3.4">
+<h4 data-number="2.1.3.4" class="anchored" data-anchor-id="vector-addition"><span class="header-section-number">2.1.3.4</span> Vector Addition</h4>
+<p>Given two vectors <span class="math inline">\(\boldsymbol{x}\in \mathcal{R}^n\)</span> and <span class="math inline">\(\boldsymbol{y}\in\mathcal{R}^n\)</span> with respective components <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span>, then <span class="math inline">\(\boldsymbol{z}:= \boldsymbol{x}+\boldsymbol{y}\)</span> has components <span class="math inline">\(z_i := x_i + y_i\)</span>. That is <span class="math display">\[\boldsymbol{z}:= \boldsymbol{x}+ \boldsymbol{y}= \begin{bmatrix}x_1\\ \vdots \\ x_n\end{bmatrix} + \begin{bmatrix}y_1\\ \vdots \\ y_n\end{bmatrix} = \begin{bmatrix}x_1 + y_1\\ \vdots \\ x_n + y_n\end{bmatrix} = \begin{bmatrix}z_1\\ \vdots \\ z_n\end{bmatrix} .\]</span> <em>Note:</em> <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span> must of the same dimension.</p>
+<p>Vector addition satisfies the following properties: <span class="math display">\[\begin{align*}
+\boldsymbol{x}+ (\boldsymbol{y}+ \boldsymbol{z}) &amp;= (\boldsymbol{x}+ \boldsymbol{y}) + \boldsymbol{z},\\
+\alpha(\boldsymbol{x}+ \boldsymbol{y})  &amp;= \alpha\boldsymbol{x}+ \alpha\boldsymbol{y}.
+\end{align*}\]</span></p>
+</section>
+<section id="vector-subtraction" class="level4" data-number="2.1.3.5">
+<h4 data-number="2.1.3.5" class="anchored" data-anchor-id="vector-subtraction"><span class="header-section-number">2.1.3.5</span> Vector Subtraction</h4>
+<p>Given two vectors <span class="math inline">\(\boldsymbol{x}\in \mathcal{R}^n\)</span> and <span class="math inline">\(\boldsymbol{y}\in\mathcal{R}^n\)</span> with respective components <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span>, then <span class="math inline">\(\boldsymbol{z}:= \boldsymbol{x}-\boldsymbol{y}= \boldsymbol{x}+ (-\boldsymbol{y})\)</span>.<br> <em>Note:</em> <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span> must of the same dimension.</p>
+</section>
+<section id="inner-product" class="level4" data-number="2.1.3.6">
+<h4 data-number="2.1.3.6" class="anchored" data-anchor-id="inner-product"><span class="header-section-number">2.1.3.6</span> Inner Product</h4>
+<p>Inner product between vectors <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^n\)</span> and <span class="math inline">\(\boldsymbol{y}\in\mathcal{R}^n\)</span> is defined as <span class="math display">\[\langle\boldsymbol{x},\boldsymbol{y}\rangle := \boldsymbol{x}^T\boldsymbol{y}= \boldsymbol{y}^T\boldsymbol{x}= \Sigma_{i=1}^n x_iy_i.\]</span><br> <em>Note:</em> Inner product results in a scalar.</p>
+<p>Here is a Python code computing inner product of vectors.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> np.array([<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Inner product between X and Y: "</span>, X.dot(Y))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Inner product between Y and X: "</span>, Y.dot(X)) <span class="co"># Should get the same result.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Inner product between X and Y:  130
+Inner product between Y and X:  130</code></pre>
+</div>
+</div>
+</section>
+<section id="outer-product" class="level4" data-number="2.1.3.7">
+<h4 data-number="2.1.3.7" class="anchored" data-anchor-id="outer-product"><span class="header-section-number">2.1.3.7</span> Outer Product</h4>
+<p>Outer product between two vectors <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^n\)</span> and <span class="math inline">\(\boldsymbol{y}\in\mathcal{R}^m\)</span> is defined as <span class="math display">\[
+\boldsymbol{x}\boldsymbol{y}^T = \begin{bmatrix}x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \begin{bmatrix}y_1 &amp; y_2 &amp; \cdots &amp; y_n\end{bmatrix} = \begin{bmatrix} x_1y_1 &amp; x_1y_2 &amp; \cdots &amp; x_1y_m\\
+x_2y_1 &amp; x_2y_2 &amp; \cdots &amp; x_2 y_m \\
+\vdots &amp; \vdots &amp; &amp; \vdots \\
+x_n y_1 &amp; x_n y_2 &amp; \cdots &amp; x_n y_m
+\end{bmatrix}
+\]</span> <em>Note:</em> Clearly <span class="math inline">\(\boldsymbol{x}\boldsymbol{y}^T \neq \boldsymbol{y}\boldsymbol{x}^T\)</span>. <br> <em>Note:</em> Outer product result in a matrix.</p>
+<p>Here is a Python code computing outer product of vectors.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> np.array([<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>])</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Outer product between X and Y: </span><span class="ch">\n</span><span class="st">"</span>, np.multiply.outer(X, Y))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Outer product between Y and X: </span><span class="ch">\n</span><span class="st">"</span>, np.multiply.outer(Y, X))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outer product between X and Y: 
+ [[ 6  7  8  9 10]
+ [12 14 16 18 20]
+ [18 21 24 27 30]
+ [24 28 32 36 40]
+ [30 35 40 45 50]]
+
+Outer product between Y and X: 
+ [[ 6 12 18 24 30]
+ [ 7 14 21 28 35]
+ [ 8 16 24 32 40]
+ [ 9 18 27 36 45]
+ [10 20 30 40 50]]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="length-of-a-vector" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="length-of-a-vector"><span class="header-section-number">2.1.4</span> Length of a Vector</h3>
+<p>The length of a vector <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^n\)</span> is denoted by <span class="math display">\[\|\boldsymbol{x}\|_2 := \sqrt{x_1^2 + \cdots + x_n^2} = \sqrt{\boldsymbol{x}^T\boldsymbol{x}}.\]</span> Therefore, the length of a vector is the square-root of the inner product with itself. Often we will drop the subscript <span class="math inline">\(2\)</span> in <span class="math inline">\(\|\boldsymbol{x}\|_2\)</span>, when it is clear from context.</p>
+<p>Here is a Python code computing length of a vector.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Length of vector X is: </span><span class="ch">\n</span><span class="st">"</span>, np.sqrt(X.dot(X)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Length of vector X is: 
+ 7.416198487095663</code></pre>
+</div>
+</div>
+</section>
+<section id="vector-norms" class="level3" data-number="2.1.5">
+<h3 data-number="2.1.5" class="anchored" data-anchor-id="vector-norms"><span class="header-section-number">2.1.5</span> Vector Norms</h3>
+<p>A norm is a function <span class="math inline">\(\|\cdot\|: \mathcal{V} \rightarrow \mathcal{R}\)</span> from a vector space <span class="math inline">\(\mathcal{V}\)</span> over a field (typically <span class="math inline">\(\mathcal{R}^n\)</span> or <span class="math inline">\(\mathcal{C}^n\)</span>) to the non-negative real numbers. It satisfies the following properties:</p>
+<ol type="1">
+<li><p>Non-negativity: <span class="math display">\[\forall \boldsymbol{x}\in \mathcal{V}, \|\boldsymbol{x}\| \geq 0 \text{ and } \|\boldsymbol{x}\| = 0 \iff \boldsymbol{x}\text{ is the zero vector}.\]</span></p></li>
+<li><p>Scalar Multiplication: <span class="math display">\[\forall \alpha \text{ (a scalar) and } \forall \boldsymbol{x}\in \mathcal{V}, \|\alpha \boldsymbol{x}\| = |\alpha| \|\boldsymbol{x}\|.\]</span></p></li>
+<li><p>Triangle Inequality: <span class="math display">\[\forall \boldsymbol{x}, \boldsymbol{y}\in \mathcal{V}, \|\boldsymbol{x}+ \boldsymbol{y}\| \leq \|\boldsymbol{x}\| + \|\boldsymbol{y}\|.\]</span></p></li>
+<li><p>Definiteness: <span class="math display">\[\|\boldsymbol{x}\| = 0 \iff \boldsymbol{x}\text{ is the zero vector}.\]</span></p></li>
+</ol>
+<p>In general, we can define <span class="math display">\[\|\boldsymbol{x}\|_p := \left(x_1^p + \cdots + x_n^p\right)^{\frac{1}{p}},\]</span> which is the <span class="math inline">\(p^\text{th}\)</span> norm of <span class="math inline">\(\boldsymbol{x}\)</span>.</p>
+<p>We have for <span class="math inline">\(p=1,2,\infty\)</span>:</p>
+<ul>
+<li><p>Manhattan Norm (<span class="math inline">\(l_1\)</span> Norm): <span class="math display">\[\|\boldsymbol{x}\|_1 = |x_1| + |x_2| + \cdots + |x_n|.\]</span></p></li>
+<li><p>Euclidean Norm (<span class="math inline">\(l_2\)</span> Norm): <span class="math display">\[\|\boldsymbol{x}\|_2 = \sqrt{x_1^2 + x_2^2 + \cdots + x_n^2}.\]</span></p></li>
+<li><p>Maximum Norm (<span class="math inline">\(l_\infty\)</span> Norm): <span class="math display">\[\|\boldsymbol{x}\|_{\infty} = \max(|x_1|, |x_2|, \cdots, |x_n|).\]</span></p></li>
+</ul>
+<p>Here is a Python code computing various vector norms.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a vector as a NumPy array</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>vector <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute different vector norms</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>L1_norm <span class="op">=</span> np.linalg.norm(vector, <span class="bu">ord</span><span class="op">=</span><span class="dv">1</span>)  <span class="co"># L1 norm (Manhattan norm)</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>L2_norm <span class="op">=</span> np.linalg.norm(vector, <span class="bu">ord</span><span class="op">=</span><span class="dv">2</span>)  <span class="co"># L2 norm (Euclidean norm)</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>inf_norm <span class="op">=</span> np.linalg.norm(vector, <span class="bu">ord</span><span class="op">=</span>np.inf)  <span class="co"># Infinity norm (Maximum norm)</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original vector and its norms</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Vector:"</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vector)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"L1 Norm: </span><span class="sc">{</span>L1_norm<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"L2 Norm: </span><span class="sc">{</span>L2_norm<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Infinity Norm: </span><span class="sc">{</span>inf_norm<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Vector:
+[1 2 3]
+L1 Norm: 6.0
+L2 Norm: 3.7416573867739413
+Infinity Norm: 3.0</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="matrices" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="matrices"><span class="header-section-number">2.2</span> Matrices</h2>
+<p>Matrices are two-dimensional arrangement of mathematical objects, such as real-numbers, complex numbers, functions, etc.</p>
+<p>An <span class="math inline">\(m\times n\)</span> matrix is defined as <span class="math display">\[
+\boldsymbol{A}= \begin{bmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n}\\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n}\\
+\vdots &amp; \vdots &amp; &amp; \vdots,\\
+a_{m1} &amp; a_{m2} &amp; \cdots &amp; a_{mn}
+\end{bmatrix},
+\]</span> where <span class="math inline">\(a_{ij}\)</span> is the matrix element in the <span class="math inline">\(i^\text{th}\)</span> row and the <span class="math inline">\(j^\text{th}\)</span> column. The bold-faced symbol <span class="math inline">\(\boldsymbol{A}\)</span> is used to refer to the entire matrix.</p>
+<section id="dimension-1" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="dimension-1"><span class="header-section-number">2.2.1</span> Dimension</h3>
+<p>The dimension of a matrix is defined by the number of rows and the number of columns. A matrix with dimension <span class="math inline">\(m\times n\)</span> has <span class="math inline">\(m\)</span> rows and <span class="math inline">\(n\)</span> columns. We will use the notation <span class="math inline">\(\boldsymbol{A}\in \mathcal{R}^{m\times n}\)</span> to represent <span class="math inline">\(m\times n\)</span> vectors of real numbers.</p>
+<p>A matrix of dimension <span class="math inline">\(m\times n\)</span> is called <em>square</em> if <span class="math inline">\(m=n\)</span>.</p>
+</section>
+<section id="transpose-1" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="transpose-1"><span class="header-section-number">2.2.2</span> Transpose</h3>
+<p>Matrix transpose is denote by <span class="math inline">\(\boldsymbol{A}^T\)</span>, which is defined by interchanging the rows and columns. For example,</p>
+<p><span class="math display">\[
+\boldsymbol{A}= \begin{bmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n}\\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n}\\
+\vdots &amp; \vdots &amp; &amp; \vdots,\\
+a_{m1} &amp; a_{m2} &amp; \cdots &amp; a_{mn}
+\end{bmatrix}, \text{ then }
+\boldsymbol{A}^T = \begin{bmatrix}
+a_{11} &amp; a_{21} &amp; \cdots &amp; a_{m1}\\
+a_{12} &amp; a_{22} &amp; \cdots &amp; a_{m2}\\
+\vdots &amp; \vdots &amp; &amp; \vdots,\\
+a_{1n} &amp; a_{2n} &amp; \cdots &amp; a_{mn}
+\end{bmatrix}.
+\]</span></p>
+<p>That is, if <span class="math inline">\(\boldsymbol{B}=\boldsymbol{A}^T\)</span>, then <span class="math inline">\(b_{ij} = a_{ji}\)</span>.</p>
+<p>Therefore, if <span class="math inline">\(\boldsymbol{A}\)</span> is an <span class="math inline">\(m\times n\)</span> matrix, then <span class="math inline">\(\boldsymbol{A}^T\)</span> is an <span class="math inline">\(n\times m\)</span> matrix.</p>
+<p>Here is a Python code computing matrix transpose.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]])</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the transpose</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>transpose_matrix <span class="op">=</span> np.transpose(matrix)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively, you can use the T attribute to compute the transpose</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># transpose_matrix = matrix.T</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original matrix and its transpose</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix:"</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Transpose:"</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(transpose_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix:
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+Transpose:
+[[1 4 7]
+ [2 5 8]
+ [3 6 9]]</code></pre>
+</div>
+</div>
+</section>
+<section id="matrix-construction-from-vectors" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="matrix-construction-from-vectors"><span class="header-section-number">2.2.3</span> Matrix Construction from Vectors</h3>
+<p>Given <span class="math inline">\(n\)</span> vectors <span class="math inline">\(\boldsymbol{x}_i\)</span>, for <span class="math inline">\(i=1,\cdots,n\)</span>, each of dimension <span class="math inline">\(m\)</span>; we can construct an <span class="math inline">\(m\times n\)</span> matrix as <span class="math display">\[\boldsymbol{A}= \begin{bmatrix}\boldsymbol{x}_1 &amp; \boldsymbol{x}_2 &amp; \cdots &amp; \boldsymbol{x}_n\end{bmatrix},\]</span> and <span class="math display">\[\boldsymbol{A}^T = \begin{bmatrix}\boldsymbol{x}^T_1 \\ \boldsymbol{x}^T_2 \\ \vdots \\ \boldsymbol{x}^T_n\end{bmatrix}.\]</span></p>
+<p>Here is a Python code to construct matrices from vectors.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define two vectors as NumPy arrays</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>vector1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>vector2 <span class="op">=</span> np.array([<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>])</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct a matrix by stacking vectors horizontally (as rows)</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>matrix_horizontal <span class="op">=</span> np.hstack((vector1.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), vector2.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)))</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct a matrix by stacking vectors vertically (as columns)</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>matrix_vertical <span class="op">=</span> np.vstack((vector1, vector2))</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original vectors and the constructed matrices</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Vector 1:"</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vector1)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Vector 2:"</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vector2)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix Constructed Horizontally (as rows):"</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix_horizontal)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix Constructed Vertically (as columns):"</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix_vertical)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Vector 1:
+[1 2 3]
+Vector 2:
+[4 5 6]
+Matrix Constructed Horizontally (as rows):
+[[1 4]
+ [2 5]
+ [3 6]]
+Matrix Constructed Vertically (as columns):
+[[1 2 3]
+ [4 5 6]]</code></pre>
+</div>
+</div>
+</section>
+<section id="rank-of-a-matrix" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="rank-of-a-matrix"><span class="header-section-number">2.2.4</span> Rank of a Matrix</h3>
+<p>The rank of a matrix is a fundamental concept in linear algebra and represents the maximum number of linearly independent rows or columns in the matrix. In other words, it quantifies the dimensionality of the vector space spanned by the rows or columns of the matrix. A matrix’s rank can provide important information about its properties and relationships between its rows and columns.</p>
+<p>A matrix is said to have <em>full rank</em> if its rank equals the largest possible for a matrix of the same dimensions, which is the lesser of the number of rows and columns. A matrix is said to be <em>rank-deficient</em> if it does not have full rank. The rank deficiency of a matrix is the difference between the lesser of the number of rows and columns, and the rank.</p>
+<p>The rank of a matrix can be determined by various methods, including row reduction (Gaussian elimination) and by counting the number of non-zero rows or columns in its reduced row echelon form (RREF).</p>
+<p>Here is a Python code computing rank of a matrix</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix </span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]])</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the rank of the matrix</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>rank <span class="op">=</span> np.linalg.matrix_rank(matrix)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the matrix and its rank</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix:"</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rank: </span><span class="sc">{</span>rank<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix:
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+Rank: 2</code></pre>
+</div>
+</div>
+</section>
+<section id="eigen-values-and-eigen-vectors-of-a-matrix" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="eigen-values-and-eigen-vectors-of-a-matrix"><span class="header-section-number">2.2.5</span> Eigen-Values and Eigen-Vectors of a Matrix</h3>
+<p>Eigenvalues, also known as characteristic values or latent roots, are a fundamental concept in linear algebra and matrix theory. They are associated with square matrices and play a crucial role in various applications, including physics, engineering, data analysis, and more.</p>
+<p>An eigenvalue of a square matrix <span class="math inline">\(\boldsymbol{A}\)</span> is a scalar (a single number) <span class="math inline">\(\lambda\)</span> such that when <span class="math inline">\(\boldsymbol{A}\)</span> is multiplied by a certain nonzero vector <span class="math inline">\(\boldsymbol{v}\)</span>, the result is a scaled version of <span class="math inline">\(\boldsymbol{v}\)</span>:</p>
+<p><span class="math display">\[ \boldsymbol{A}\boldsymbol{v} = \lambda\boldsymbol{v}.\]</span></p>
+<p>In this equation:</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{A}\)</span> is the square matrix.</li>
+<li><span class="math inline">\(\boldsymbol{v}\)</span> is a nonzero vector called the eigenvector associated with the eigenvalue <span class="math inline">\(\lambda\)</span>.</li>
+<li><span class="math inline">\(\lambda\)</span> is the eigenvalue.</li>
+</ul>
+<p>In simpler terms, when you multiply a matrix by its eigenvector, the result is a vector that points in the same direction as the original eigenvector, but possibly with a different magnitude (scaled by <span class="math inline">\(\lambda\)</span>).</p>
+<p>To find the eigenvalues of a matrix in practice, we typically use numerical methods or specialized libraries like NumPy in Python. The eigenvalues can be computed using functions like <code>numpy.linalg.eigvals</code> in Python, which returns an array of eigenvalues for a given matrix.</p>
+<p>Here is a Python code computing the eigenvalues of a matrix.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a square matrix</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>],</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the eigenvalues</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>eigenvalues <span class="op">=</span> np.linalg.eigvals(matrix)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the eigenvalues</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvalues:"</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(eigenvalues)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eigenvalues:
+[-0.37228132  5.37228132]</code></pre>
+</div>
+</div>
+</section>
+<section id="operations-1" class="level3" data-number="2.2.6">
+<h3 data-number="2.2.6" class="anchored" data-anchor-id="operations-1"><span class="header-section-number">2.2.6</span> Operations</h3>
+<section id="negative-matrix" class="level4" data-number="2.2.6.1">
+<h4 data-number="2.2.6.1" class="anchored" data-anchor-id="negative-matrix"><span class="header-section-number">2.2.6.1</span> Negative Matrix</h4>
+<p>If <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{m\times n}\)</span> is a matrix with elements <span class="math inline">\(a_{ij}\)</span>, then <span class="math inline">\(-\boldsymbol{A}\)</span> is defined by elements <span class="math inline">\(-a_{ij}\)</span>.</p>
+</section>
+<section id="multiplication-by-a-scalar-1" class="level4" data-number="2.2.6.2">
+<h4 data-number="2.2.6.2" class="anchored" data-anchor-id="multiplication-by-a-scalar-1"><span class="header-section-number">2.2.6.2</span> Multiplication by a Scalar</h4>
+<p>If <span class="math inline">\(\boldsymbol{A}\)</span> is a matrix defined by elements <span class="math inline">\(a_{ij}\)</span>, then <span class="math inline">\(\alpha\boldsymbol{A}\)</span> is defined by the elements <span class="math inline">\(\alpha a_{ij}\)</span>.</p>
+</section>
+<section id="matrix-equality" class="level4" data-number="2.2.6.3">
+<h4 data-number="2.2.6.3" class="anchored" data-anchor-id="matrix-equality"><span class="header-section-number">2.2.6.3</span> Matrix Equality</h4>
+<p>Matrix equality is defined only for two matrices with the same dimension, and is defined elementwise. For two matrics <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{m\times n}\)</span> and <span class="math inline">\(\boldsymbol{B}\in\mathcal{R}^{m\times n}\)</span>, the condition <span class="math inline">\(\boldsymbol{A}=\boldsymbol{B}\)</span> is equivalent to <span class="math inline">\(mn\)</span> conditions <span class="math inline">\(a_{ij} = b_{ij}\)</span>, for <span class="math inline">\(i=1,\cdots,m\)</span> and <span class="math inline">\(j=1,\cdots,n\)</span>.</p>
+</section>
+<section id="matrix-addition" class="level4" data-number="2.2.6.4">
+<h4 data-number="2.2.6.4" class="anchored" data-anchor-id="matrix-addition"><span class="header-section-number">2.2.6.4</span> Matrix Addition</h4>
+<p>Addition of two matrices <span class="math inline">\(\boldsymbol{A}\)</span> and <span class="math inline">\(\boldsymbol{B}\)</span> is elementwise, and is only defined if <span class="math inline">\(\boldsymbol{A}\)</span> and <span class="math inline">\(\boldsymbol{B}\)</span> have the same dimension. If <span class="math inline">\(\boldsymbol{C}=\boldsymbol{A}+\boldsymbol{B}\)</span>, then <span class="math inline">\(c_{ij} = a_{ij} + b_{ij}\)</span>, for <span class="math inline">\(i=1,\cdots,m\)</span> and <span class="math inline">\(j=1,\cdots,n\)</span>.</p>
+</section>
+<section id="matrix-product" class="level4" data-number="2.2.6.5">
+<h4 data-number="2.2.6.5" class="anchored" data-anchor-id="matrix-product"><span class="header-section-number">2.2.6.5</span> Matrix Product</h4>
+<p>Product between two matrices <span class="math inline">\(\boldsymbol{A}\)</span> and <span class="math inline">\(\boldsymbol{B}\)</span> is denoted by <span class="math inline">\(\boldsymbol{A}\boldsymbol{B}\)</span>. If <span class="math inline">\(\boldsymbol{C}= \boldsymbol{A}\boldsymbol{B}\)</span>, then the elements of <span class="math inline">\(\boldsymbol{C}\)</span> are defined by <span class="math display">\[c_{ij} = \sum_{k=1}^p a_{ik}b_{kj},\]</span> where the dimensions <span class="math inline">\(\boldsymbol{A}\)</span> and <span class="math inline">\(\boldsymbol{B}\)</span> must be compatible. The matrix product <span class="math inline">\(\boldsymbol{A}\boldsymbol{B}\)</span> is defined only if the dimension of <span class="math inline">\(\boldsymbol{A}\)</span> is <span class="math inline">\(m\times p\)</span> and the dimension of <span class="math inline">\(\boldsymbol{B}\)</span> is <span class="math inline">\(p\times n\)</span>, i.e.&nbsp;<span class="math inline">\(\boldsymbol{A}\)</span> must have the same number of columns as the number of rows of <span class="math inline">\(\boldsymbol{B}\)</span>. In that case, the matrix <span class="math inline">\(\boldsymbol{C}=\boldsymbol{A}\boldsymbol{B}\)</span> has dimension <span class="math inline">\(m \times n\)</span>.</p>
+<p>Matrix product satisfies the following conditions: <span class="math display">\[\begin{align*}
+    &amp;\alpha\boldsymbol{A}= \boldsymbol{A}\alpha, \text{ where $\alpha$ is a scalar};\\
+    &amp;\boldsymbol{A}\boldsymbol{B}\neq \boldsymbol{B}\boldsymbol{A}, \\
+    &amp;\alpha(\boldsymbol{A}\boldsymbol{B}) = (\alpha\boldsymbol{A})\boldsymbol{B}= \boldsymbol{A}(\alpha\boldsymbol{B}) = (\boldsymbol{A}\boldsymbol{B})\alpha,\\
+    &amp;\boldsymbol{A}(\boldsymbol{B}+\boldsymbol{C}) = \boldsymbol{A}\boldsymbol{B}+ \boldsymbol{A}\boldsymbol{C},\\
+    &amp;(\boldsymbol{A}\boldsymbol{B})^T = \boldsymbol{B}^T\boldsymbol{A}^T.
+    \end{align*}\]</span></p>
+<p>Here is Python code showing matrix multiplication.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define two matrices</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>matrix_A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>],</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                     [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>matrix_B <span class="op">=</span> np.array([[<span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                     [<span class="dv">7</span>, <span class="dv">8</span>]])</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 1: Using numpy.dot</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>result_dot <span class="op">=</span> np.dot(matrix_A, matrix_B)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 2: Using the @ operator</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>result_operator <span class="op">=</span> matrix_A <span class="op">@</span> matrix_B</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original matrices and their multiplication results</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix A:"</span>)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix_A)</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix B:"</span>)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix_B)</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix Multiplication using numpy.dot:"</span>)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result_dot)</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix Multiplication using @ operator:"</span>)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result_operator)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix A:
+[[1 2]
+ [3 4]]
+Matrix B:
+[[5 6]
+ [7 8]]
+Matrix Multiplication using numpy.dot:
+[[19 22]
+ [43 50]]
+Matrix Multiplication using @ operator:
+[[19 22]
+ [43 50]]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="symmetric-matrices" class="level3" data-number="2.2.7">
+<h3 data-number="2.2.7" class="anchored" data-anchor-id="symmetric-matrices"><span class="header-section-number">2.2.7</span> Symmetric Matrices</h3>
+<p>A symmetric matrix is a <em>square</em> matrix that satisfies the condition <span class="math inline">\(\boldsymbol{A}= \boldsymbol{A}^T\)</span>, i.e.&nbsp;<span class="math inline">\(a_{ij} = a_{ji}\)</span>. We often denote the space of symmetric matrices as <span class="math inline">\(\mathcal{S}^n\)</span>, representing <span class="math inline">\(n\times n\)</span> symmetric matrices.</p>
+<p><em>Note</em>: Eigen values of a symmetric matrix are all real.</p>
+<p>Here is a Python code to generate a symmetric matrix.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the size of the symmetric matrix (e.g., 3x3)</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>matrix_size <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random square matrix</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>random_matrix <span class="op">=</span> np.random.rand(matrix_size, matrix_size)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Make it symmetric by copying the lower triangular part to the upper triangular part</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>symmetric_matrix <span class="op">=</span> (random_matrix <span class="op">+</span> random_matrix.T) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the symmetric matrix</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Symmetric Matrix:"</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(symmetric_matrix)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the eigenvalues</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>eigenvalues <span class="op">=</span> np.linalg.eigvals(symmetric_matrix)</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co"># All eigen values should be real</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigen values:"</span>, eigenvalues)</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if all elements are real</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>are_all_real <span class="op">=</span> np.isreal(eigenvalues).<span class="bu">all</span>()</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Assert that all elements are real</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> are_all_real, <span class="st">"All eigen values are not real."</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="co"># If the assertion passes, it means all elements are real</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All eigen values are real."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Symmetric Matrix:
+[[0.38813146 0.61651741 0.72064304]
+ [0.61651741 0.07085289 0.33985745]
+ [0.72064304 0.33985745 0.30298993]]
+Eigen values: [ 1.4171432  -0.49250478 -0.16266415]
+All eigen values are real.</code></pre>
+</div>
+</div>
+</section>
+<section id="skew-symmetric-matrices" class="level3" data-number="2.2.8">
+<h3 data-number="2.2.8" class="anchored" data-anchor-id="skew-symmetric-matrices"><span class="header-section-number">2.2.8</span> Skew Symmetric Matrices</h3>
+<p>A skew-symmetric matrix is a <em>square</em> matrix and satisfies the condition <span class="math inline">\(\boldsymbol{A}= -\boldsymbol{A}^T\)</span>, i.e.&nbsp;<span class="math inline">\(a_{ij} = -a_{ji}\)</span>. The diagonal elements of skew-symmetric matrices are always zero, because <span class="math inline">\(a_{ii} = -a_{ii}\)</span> only when <span class="math inline">\(a_{ii} = 0\)</span>.</p>
+<p>Here is a Python code to generate a skew-symmetric matrix</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the size of the skew-symmetric matrix (e.g., 3x3)</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>matrix_size <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random square matrix</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>random_matrix <span class="op">=</span> np.random.rand(matrix_size, matrix_size)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Make it skew-symmetric by subtracting its transpose</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>skew_symmetric_matrix <span class="op">=</span> random_matrix <span class="op">-</span> random_matrix.T</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the skew-symmetric matrix</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Skew-Symmetric Matrix:"</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(skew_symmetric_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Skew-Symmetric Matrix:
+[[ 0.          0.7426866   0.05874133]
+ [-0.7426866   0.          0.08401395]
+ [-0.05874133 -0.08401395  0.        ]]</code></pre>
+</div>
+</div>
+</section>
+<section id="positive-semi-definite-matrices" class="level3" data-number="2.2.9">
+<h3 data-number="2.2.9" class="anchored" data-anchor-id="positive-semi-definite-matrices"><span class="header-section-number">2.2.9</span> Positive (Semi) Definite Matrices</h3>
+<ul>
+<li><p>A symmetric matrix <span class="math inline">\(\boldsymbol{A}\)</span> is positive semi-definite if the eigen values are <em>greate than or equal to</em> zero, i.e.&nbsp;<span class="math inline">\(\lambda_i(\boldsymbol{A}) \geq 0\)</span>, where <span class="math inline">\(\lambda_i(\boldsymbol{A})\)</span> is the <span class="math inline">\(i^\text{th}\)</span> eigen value of <span class="math inline">\(\boldsymbol{A}\)</span>. We denote positive semi-definite matrices as <span class="math inline">\(\boldsymbol{A}\ge 0\)</span>. This doesn’t mean element-wise positiveness of the matrix. The space of <span class="math inline">\(n\times n\)</span> positive semi-definite matrices are denoted by <span class="math inline">\(\mathcal{S}^n_+\)</span>.</p></li>
+<li><p>Positive definite matrices are symmetric matrices whose eigen values are <em>strictly greater</em> than zero. i.e.&nbsp;<span class="math inline">\(\lambda_i(\boldsymbol{A}) &gt; 0\)</span>. We denote positive definite matrices as <span class="math inline">\(\boldsymbol{A}&gt; 0\)</span>. This doesn’t mean element-wise positiveness of the matrix. The space of <span class="math inline">\(n\times n\)</span> positive definite matrices are denoted by <span class="math inline">\(\mathcal{S}^n_{++}\)</span>.</p></li>
+<li><p>For two matrices <span class="math inline">\(\boldsymbol{X}\in\mathcal{S}^n\)</span> and <span class="math inline">\(\boldsymbol{Y}\in\mathcal{S}^n\)</span>, the matrix inequality <span class="math inline">\(\boldsymbol{X}\geq \boldsymbol{Y}\)</span> means <span class="math inline">\(\boldsymbol{Z}:=\boldsymbol{X}-\boldsymbol{Y}\)</span> is postive semi-definite, i.e.&nbsp;<span class="math inline">\(\boldsymbol{Z}\geq 0\)</span> or <span class="math inline">\(\lambda_i(\boldsymbol{Z}) \geq 0\)</span>.</p></li>
+</ul>
+<p>Here is a Python code generating a positive definite matrix.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the size of the positive definite matrix (e.g., 3x3)</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>matrix_size <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random symmetric matrix</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>random_matrix <span class="op">=</span> np.random.rand(matrix_size, matrix_size)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>symmetric_matrix <span class="op">=</span> (random_matrix <span class="op">+</span> random_matrix.T) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure the matrix has positive eigenvalues</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>eigenvalues <span class="op">=</span> np.linalg.eigvals(symmetric_matrix)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="kw">not</span> <span class="bu">all</span>(eigenvalues <span class="op">&gt;</span> <span class="dv">0</span>):</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    random_matrix <span class="op">=</span> np.random.rand(matrix_size, matrix_size)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    symmetric_matrix <span class="op">=</span> (random_matrix <span class="op">+</span> random_matrix.T) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    eigenvalues <span class="op">=</span> np.linalg.eigvals(symmetric_matrix)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the positive definite matrix</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Positive Definite Matrix:"</span>)</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(symmetric_matrix)</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the eigenvalues</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>eigenvalues <span class="op">=</span> np.linalg.eigvals(symmetric_matrix)</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="co"># All eigen values should be real and positive</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigen values:"</span>, eigenvalues)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Positive Definite Matrix:
+[[0.94313008 0.77885996 0.06264793]
+ [0.77885996 0.8980718  0.46914673]
+ [0.06264793 0.46914673 0.70829851]]
+Eigen values: [1.82901826 0.00376417 0.71671795]</code></pre>
+</div>
+</div>
+</section>
+<section id="identity-matrix" class="level3" data-number="2.2.10">
+<h3 data-number="2.2.10" class="anchored" data-anchor-id="identity-matrix"><span class="header-section-number">2.2.10</span> Identity Matrix</h3>
+<p>An <span class="math inline">\(n\times n\)</span> identity matrix is denoted by <span class="math inline">\(\boldsymbol{I}_n\)</span>, and is a matrix with all off-diagonal elements equal to zero, and all diagonal elements equal to one. For example, a <span class="math inline">\(3\times 3\)</span> identity matrix is defined as <span class="math display">\[
+\boldsymbol{I}_3 = \begin{bmatrix}1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix}.
+\]</span> For an <span class="math inline">\(m\times n\)</span> matrix <span class="math inline">\(\boldsymbol{M}\)</span>, the following are true: <span class="math display">\[
+\boldsymbol{M}\boldsymbol{I}_n = \boldsymbol{I}_{m}\boldsymbol{M} = \boldsymbol{M}.
+\]</span></p>
+<p>Here is a Python code computing the identity matrix.</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the size of the identity matrix (e.g., a 3x3 identity matrix)</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>matrix_size <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the identity matrix of the specified size</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>identity_matrix <span class="op">=</span> np.eye(matrix_size)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the identity matrix</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Identity Matrix:"</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(identity_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Identity Matrix:
+[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]</code></pre>
+</div>
+</div>
+</section>
+<section id="determininant-of-a-matrix" class="level3" data-number="2.2.11">
+<h3 data-number="2.2.11" class="anchored" data-anchor-id="determininant-of-a-matrix"><span class="header-section-number">2.2.11</span> Determininant of a Matrix</h3>
+<p>The determinant of a square matrix <span class="math inline">\(\boldsymbol{A}\)</span> is denoted by <span class="math inline">\(|\boldsymbol{A}|\)</span>.</p>
+<p>For a <span class="math inline">\(2\times 2\)</span> matrix <span class="math display">\[
+\boldsymbol{A}= \begin{bmatrix}a&amp;b\\c&amp;d\end{bmatrix},
+\]</span> the determinant is defined by <span class="math display">\[|\boldsymbol{A}| = ad-bc.\]</span></p>
+<p>For a <span class="math inline">\(3\times 3\)</span> matrix, <span class="math display">\[\boldsymbol{B}= \begin{bmatrix}a &amp; b &amp; c \\ d&amp; e&amp; f\\ g &amp; h &amp; i \end{bmatrix},\]</span> the determinant is defined by <span class="math display">\[
+|\boldsymbol{B}| = a\left|\begin{matrix}e&amp;f\\h&amp;i\end{matrix}\right| - b\left|\begin{matrix}d&amp;f\\g&amp;i\end{matrix}\right| + c\left|\begin{matrix}d&amp;e\\g&amp;h\end{matrix}\right| = a(ei-hf) -b(di-gf) + c(dh-ge).
+\]</span></p>
+<p>Here is a Python code computing matrix determinant.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a square matrix</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]])</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the determinant</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>determinant <span class="op">=</span> np.linalg.det(matrix)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original matrix and its determinant</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix:"</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Determinant: </span><span class="sc">{</span>determinant<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix:
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+Determinant: -9.51619735392994e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="matrix-inverse" class="level3" data-number="2.2.12">
+<h3 data-number="2.2.12" class="anchored" data-anchor-id="matrix-inverse"><span class="header-section-number">2.2.12</span> Matrix Inverse</h3>
+<p>Matrix inverse is defined only for <em>square</em> matrices and is denoted by <span class="math inline">\(\boldsymbol{M}^{-1}\)</span>. For an <span class="math inline">\(n\times n\)</span> matrix <span class="math inline">\(\boldsymbol{M}\)</span>, <span class="math inline">\(\boldsymbol{M}^{-1}\)</span> satisfies the following condition <span class="math display">\[
+\boldsymbol{M}\boldsymbol{M}^{-1} = \boldsymbol{M}^{-1}\boldsymbol{M} = \boldsymbol{I}_n.
+\]</span></p>
+<p><em>Note:</em> Matrix inverse exists only when the determinant is non zero.</p>
+<p>For a <span class="math inline">\(2\times 2\)</span> matrix <span class="math display">\[
+\boldsymbol{A}= \begin{bmatrix}a&amp;b\\c&amp;d\end{bmatrix},
+\]</span> the inverse is given by <span class="math display">\[\boldsymbol{A}^{-1} = \frac{1}{|\boldsymbol{A}|}\begin{bmatrix}a&amp;-c\\-b&amp;d\end{bmatrix},\]</span> assuming <span class="math inline">\(|\boldsymbol{A}|\neq 0\)</span>.</p>
+<p><span class="math display">\[\begin{align*}
+&amp; (\boldsymbol{A}^{-1})^{-1} = \boldsymbol{A},\\
+&amp;(\alpha\boldsymbol{A})^{-1} = \frac{1}{\alpha}\boldsymbol{A}^{-1}, \text{ for $\alpha \neq 0$},\\
+&amp;(\boldsymbol{A}^T)^{-1} = (\boldsymbol{A}^{-1})^{T},\\
+&amp;(\boldsymbol{A}\boldsymbol{B})^{-1} = \boldsymbol{B}^{-1}\boldsymbol{A}^{-1}, \text{ assuming $\boldsymbol{A}$ and $\boldsymbol{B}$ are invertible};\\
+&amp;|\boldsymbol{A}^{-1}| = \frac{1}{|\boldsymbol{A}|}.
+\end{align*}\]</span></p>
+<p>Here is a Python code computing matrix inverse.</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>],</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the inverse</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>matrix_inverse <span class="op">=</span> np.linalg.inv(matrix)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original matrix and its inverse</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix:"</span>)</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Inverse:"</span>)</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix_inverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix:
+[[1 2]
+ [3 4]]
+Inverse:
+[[-2.   1. ]
+ [ 1.5 -0.5]]</code></pre>
+</div>
+</div>
+</section>
+<section id="moore-penrose-inverse" class="level3" data-number="2.2.13">
+<h3 data-number="2.2.13" class="anchored" data-anchor-id="moore-penrose-inverse"><span class="header-section-number">2.2.13</span> Moore-Penrose Inverse</h3>
+<p>For a matrix <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{m\times n}\)</span>, the Moore-Penrose inverse (or pseudo-inverse) is denoted by <span class="math inline">\(\boldsymbol{A}^+\)</span> and defined as <span class="math display">\[
+    \boldsymbol{A}^+ := (\boldsymbol{A}^T\boldsymbol{A})^{-1}A^T
+\]</span></p>
+<p>Some properties of <span class="math inline">\(\boldsymbol{A}^+\)</span> include:</p>
+<ol type="1">
+<li>For any matrix <span class="math inline">\(\boldsymbol{A}\)</span> there is one and only one pseudoinverse <span class="math inline">\(\boldsymbol{A}^+\)</span>.</li>
+<li>If <span class="math inline">\(\boldsymbol{A}\)</span> is invertible, then <span class="math inline">\(\boldsymbol{A}^{-1} = \boldsymbol{A}^+\)</span></li>
+<li>For <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{m\times n}\)</span>, <em>left inverse</em> is defined as <span class="math inline">\(\boldsymbol{A}^+ = (\boldsymbol{A}^T\boldsymbol{A})^{-1}\boldsymbol{A}^T\)</span>, and <span class="math inline">\(\boldsymbol{A}^+\boldsymbol{A}= \boldsymbol{I}_n\)</span>.</li>
+<li>For <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{m\times n}\)</span>, <em>right inverse</em> is defined as <span class="math inline">\(\boldsymbol{A}^+ = \boldsymbol{A}^T(\boldsymbol{A}^T\boldsymbol{A})^{-1}\)</span>, and <span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^+= \boldsymbol{I}_m\)</span>.</li>
+</ol>
+<p>Here is a Python code computing Moore-Penrose (or pseudo) inverse</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>],</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the pseudo-inverse</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>pseudo_inverse <span class="op">=</span> np.linalg.pinv(matrix)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original matrix and its pseudo-inverse</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix:"</span>)</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix)</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Pseudo-Inverse:"</span>)</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pseudo_inverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix:
+[[1 2]
+ [3 4]]
+Pseudo-Inverse:
+[[-2.   1. ]
+ [ 1.5 -0.5]]</code></pre>
+</div>
+</div>
+</section>
+<section id="orthonormal-matrices" class="level3" data-number="2.2.14">
+<h3 data-number="2.2.14" class="anchored" data-anchor-id="orthonormal-matrices"><span class="header-section-number">2.2.14</span> Orthonormal Matrices</h3>
+<p>An <span class="math inline">\(n\times n\)</span> square matrix satisfying the condition <span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^T = \boldsymbol{I}_n\)</span> is <em>orthogonal</em> or <em>orthonormal</em>. Also, if <span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^T = \boldsymbol{I}_n\)</span>, then <span class="math inline">\(\boldsymbol{A}^T\boldsymbol{A}= \boldsymbol{I}_n\)</span>.</p>
+<p>Here is a Python code checking if a matrix is orthogonal.</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a square matrix </span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">0</span>],</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>]])</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the matrix is square</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> matrix.shape[<span class="dv">0</span>] <span class="op">==</span> matrix.shape[<span class="dv">1</span>]:</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the product of the matrix and its transpose</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    product_matrix_transpose <span class="op">=</span> np.dot(matrix, matrix.T)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the product is close to the identity matrix within a tolerance</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    is_orthonormal <span class="op">=</span> np.allclose(product_matrix_transpose, np.eye(matrix.shape[<span class="dv">0</span>]))</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> is_orthonormal:</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"The matrix is orthonormal."</span>)</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"The matrix is not orthonormal."</span>)</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"The matrix is not square. Orthonormality is not defined."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The matrix is orthonormal.</code></pre>
+</div>
+</div>
+</section>
+<section id="kronecker-product" class="level3" data-number="2.2.15">
+<h3 data-number="2.2.15" class="anchored" data-anchor-id="kronecker-product"><span class="header-section-number">2.2.15</span> Kronecker Product</h3>
+<p>Kronecker product between two matrices <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{p\times q}\)</span> and <span class="math inline">\(\boldsymbol{B}\in\mathcal{R}^{m\times n}\)</span> results in a new matrix <span class="math inline">\(\boldsymbol{C}\in\mathcal{R}^{pm\times qn}\)</span> defined by <span class="math display">\[
+\boldsymbol{C}:= \boldsymbol{A}\otimes\boldsymbol{B}= \begin{bmatrix}a_{11}\boldsymbol{B}&amp; a_{12}\boldsymbol{B}&amp; \cdots &amp; a_{1n}\boldsymbol{B}\\
+a_{21}\boldsymbol{B}&amp; a_{22}\boldsymbol{B}&amp; \cdots &amp; a_{2n}\boldsymbol{B}\\
+\vdots   &amp; \vdots&amp; &amp; \vdots \\
+a_{m1}\boldsymbol{B}&amp; a_{m2}\boldsymbol{B}&amp; \cdots &amp; a_{mn}\boldsymbol{B}
+\end{bmatrix}.
+\]</span></p>
+<p>Kronecker products have the following properties</p>
+<ol type="1">
+<li><span class="math inline">\(\boldsymbol{A}\otimes(\boldsymbol{B}+\boldsymbol{C}) = \boldsymbol{A}\otimes\boldsymbol{B}+ \boldsymbol{A}\otimes\boldsymbol{C}\)</span></li>
+<li><span class="math inline">\((\boldsymbol{B}+\boldsymbol{C})\otimes\boldsymbol{A}= \boldsymbol{B}\otimes\boldsymbol{A}+ \boldsymbol{C}\otimes\boldsymbol{A}\)</span></li>
+<li><span class="math inline">\((\alpha\boldsymbol{A})\otimes\boldsymbol{B}= \boldsymbol{A}\otimes(\alpha\boldsymbol{B}) = \alpha(\boldsymbol{A}\otimes\boldsymbol{B})\)</span></li>
+<li><span class="math inline">\((\boldsymbol{A}\otimes\boldsymbol{B})\otimes\boldsymbol{C}= \boldsymbol{A}\otimes(\boldsymbol{B}\otimes\boldsymbol{C})\)</span></li>
+<li><span class="math inline">\(\boldsymbol{A}\otimes\boldsymbol{0} = \boldsymbol{0}\otimes\boldsymbol{A}= \boldsymbol{0}\)</span></li>
+<li><span class="math inline">\((\boldsymbol{A}\otimes\boldsymbol{B})(\boldsymbol{C}\otimes\boldsymbol{D}) = (\boldsymbol{A}\boldsymbol{C})\otimes(\boldsymbol{B}\boldsymbol{D})\)</span></li>
+<li><span class="math inline">\((\boldsymbol{A}\otimes\boldsymbol{B})^{-1} = \boldsymbol{A}^{-1}\otimes\boldsymbol{B}^{-1}\)</span></li>
+<li><span class="math inline">\((\boldsymbol{A}\otimes\boldsymbol{B})^{+} = \boldsymbol{A}^{+}\otimes\boldsymbol{B}^{+}\)</span></li>
+<li><span class="math inline">\((\boldsymbol{A}\otimes\boldsymbol{B})^T = \boldsymbol{A}^T\otimes\boldsymbol{B}^T\)</span></li>
+<li><span class="math inline">\(\textbf{det}\left(\boldsymbol{A}\otimes\boldsymbol{B}\right) = \textbf{det}\left(\boldsymbol{A}\right)^m\textbf{det}\left(\boldsymbol{B}\right)^n\)</span>, for <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{n\times n}\)</span> and <span class="math inline">\(\boldsymbol{B}\in\mathcal{R}^{m\times m}\)</span>.</li>
+<li>For <span class="math inline">\(\boldsymbol{A}\boldsymbol{X}\boldsymbol{B}= \boldsymbol{C}\)</span>, <span class="math display">\[\textbf{vec}\left(\boldsymbol{C}\right) = \textbf{vec}\left(\boldsymbol{A}\boldsymbol{X}\boldsymbol{B}\right) = (\boldsymbol{B}^T\otimes\boldsymbol{A})\textbf{vec}\left(\boldsymbol{X}\right),\]</span> where <span class="math inline">\(\textbf{vec}\left(\cdot\right)\)</span> is the vectorization operator that vertically stacks the columns of a matrix.</li>
+<li><span class="math inline">\(\textbf{rank}\left(\boldsymbol{A}\otimes\boldsymbol{B}\right) = \textbf{rank}\left(\boldsymbol{A}\right)\textbf{rank}\left(\boldsymbol{B}\right)\)</span></li>
+</ol>
+<p>Here is a Python code computing Kronecker product.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define two matrices</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>matrix_A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>],</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>                     [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>matrix_B <span class="op">=</span> np.array([[<span class="dv">0</span>, <span class="dv">5</span>],</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>                     [<span class="dv">6</span>, <span class="dv">7</span>]])</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the Kronecker product</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>kron_product <span class="op">=</span> np.kron(matrix_A, matrix_B)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original matrices and the Kronecker product</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix A:"</span>)</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix_A)</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix B:"</span>)</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix_B)</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Kronecker Product:"</span>)</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(kron_product)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix A:
+[[1 2]
+ [3 4]]
+Matrix B:
+[[0 5]
+ [6 7]]
+Kronecker Product:
+[[ 0  5  0 10]
+ [ 6  7 12 14]
+ [ 0 15  0 20]
+ [18 21 24 28]]</code></pre>
+</div>
+</div>
+</section>
+<section id="trace-of-a-square-matrix" class="level3" data-number="2.2.16">
+<h3 data-number="2.2.16" class="anchored" data-anchor-id="trace-of-a-square-matrix"><span class="header-section-number">2.2.16</span> Trace of a Square Matrix</h3>
+<p>For <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{n\times n}\)</span>, the trace of the matrix is denoted by <span class="math inline">\(\textbf{tr}\left[\boldsymbol{A}\right]\)</span> and is defined as the sum of the diagonal terms, i.e. <span class="math display">\[
+\textbf{tr}\left[\boldsymbol{A}\right] = \sum_i^n a_{ii}.
+\]</span></p>
+<p>The trace operator has the following properties:</p>
+<ol type="1">
+<li>It is a linear operator, i.e. <span class="math display">\[\textbf{tr}\left[\boldsymbol{A}+\boldsymbol{B}\right] = \textbf{tr}\left[\boldsymbol{A}\right] + \textbf{tr}\left[\boldsymbol{B}\right].\]</span></li>
+<li>Trace of a scalar-matrix product <span class="math display">\[\textbf{tr}\left[\alpha \boldsymbol{A}\right] = \alpha\textbf{tr}\left[\boldsymbol{A}\right].\]</span></li>
+<li>Trace of a matrix-matrix product between compatible matrices <span class="math display">\[\textbf{tr}\left[\boldsymbol{A}^T\boldsymbol{B}\right] = \textbf{tr}\left[A\boldsymbol{B}^T\right] = \textbf{tr}\left[\boldsymbol{B}^T\boldsymbol{A}\right] = \textbf{tr}\left[\boldsymbol{B}\boldsymbol{A}^T\right] = \sum_{i=1}^m\sum_{j=1}^n a_{ij}b_{ij}.\]</span></li>
+<li>If <span class="math inline">\(\boldsymbol{A}\)</span> and <span class="math inline">\(\boldsymbol{B}\)</span> are positive semi-definite matrices of the same size, then the following inequality holds <span class="math display">\[
+0 \leq \textbf{tr}\left[\boldsymbol{A}\boldsymbol{B}\right]^2 \leq \textbf{tr}\left[\boldsymbol{A}^2\right]\textbf{tr}\left[\boldsymbol{B}^2\right]\leq \textbf{tr}\left[\boldsymbol{A}\right]^2\textbf{tr}\left[\boldsymbol{B}\right]^2.
+\]</span></li>
+<li>Trace of Kronecker Product <span class="math display">\[\textbf{tr}\left[\boldsymbol{A}\otimes\boldsymbol{B}\right] = \textbf{tr}\left[\boldsymbol{A}\right]\textbf{tr}\left[\boldsymbol{B}\right].\]</span></li>
+<li>Trace and Eigen Values <span class="math display">\[\textbf{tr}\left[A\right] = \sum_{i=1}^n\lambda_i(\boldsymbol{A}).\]</span></li>
+</ol>
+<p>Here is a Python code computing trace of a matrix.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix as a 2D NumPy array</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>                   [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]])</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the trace of the matrix</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>trace <span class="op">=</span> np.trace(matrix)</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the matrix and its trace</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix:"</span>)</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(matrix)</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Trace: </span><span class="sc">{</span>trace<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix:
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+Trace: 15</code></pre>
+</div>
+</div>
+</section>
+<section id="matrix-inner-product" class="level3" data-number="2.2.17">
+<h3 data-number="2.2.17" class="anchored" data-anchor-id="matrix-inner-product"><span class="header-section-number">2.2.17</span> Matrix Inner Product</h3>
+<p>The Frobenius inner product between two matrices is defined as <span class="math display">\[
+\langle \boldsymbol{A},\boldsymbol{B}\rangle := \textbf{tr}\left[\boldsymbol{A}^T\boldsymbol{B}\right].
+\]</span></p>
+<p>Here is a Python code checking if two matrices are orthogonal.</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define two square matrices </span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>matrix_A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">0</span>],</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                     [<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>]])</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>matrix_B <span class="op">=</span> np.array([[<span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>                     [<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>]])</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>product_AB_transpose <span class="op">=</span> np.dot(matrix_A, matrix_B.T)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="co"># If trace(A'*B) = 0 , A and B are orthogonal. </span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"trace(A'*B) ="</span>,np.trace(np.dot(matrix_A.T, matrix_B)))</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> np.allclose(np.trace(np.dot(matrix_A.T, matrix_B)),<span class="dv">0</span>):</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="st">"Matrix A and Matrix B are orthogonal"</span>)</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="st">"Matrix A and Matrix B are not orthogonal"</span>)   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>trace(A'*B) = 0
+Matrix A and Matrix B are orthogonal</code></pre>
+</div>
+</div>
+</section>
+<section id="matrix-norms" class="level3" data-number="2.2.18">
+<h3 data-number="2.2.18" class="anchored" data-anchor-id="matrix-norms"><span class="header-section-number">2.2.18</span> Matrix Norms</h3>
+<p>For a matrix <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{m\times n}\)</span> defined by elements <span class="math inline">\(a_{ij}\)</span>,</p>
+<ul>
+<li><span class="math inline">\(\|\boldsymbol{A}\|_1 := \max_{1\leq j \leq n} \sum_{i=1}^m |a_{ij}|\)</span>, which is the maximum absolution <em>column sum</em> of the matrix.</li>
+<li><span class="math inline">\(\|\boldsymbol{A}\|_2 := \sqrt{\lambda_\text{max}(\boldsymbol{A}^T\boldsymbol{A})} = \sigma_\text{max}(\boldsymbol{A})\)</span>, where <span class="math inline">\(\sigma_\text{max}(\boldsymbol{A})\)</span> is the largest singular value of <span class="math inline">\(\boldsymbol{A}\)</span>.</li>
+<li><span class="math inline">\(\|\boldsymbol{A}\|_\infty := \max_{1\leq i \leq m} \sum_{j=1}^n |a_{ij}|\)</span>, which is the maximum absolution <em>row sum</em> of the matrix.</li>
+</ul>
+<p>Here is a Python code computing matrix norms.</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> norm</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]])</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute different norms</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>frobenius_norm <span class="op">=</span> norm(A, <span class="st">'fro'</span>) <span class="co"># Frobenius norm</span></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>l1_norm <span class="op">=</span> norm(A, <span class="dv">1</span>)           <span class="co"># L1 norm (maximum column sum)</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>l2_norm <span class="op">=</span> norm(A, <span class="dv">2</span>)           <span class="co"># L2 norm (largest singular value)</span></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>max_norm <span class="op">=</span> norm(A, np.inf)     <span class="co"># Max (or infinity) norm (maximum row sum)</span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the results</span></span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix A:</span><span class="ch">\n</span><span class="st">"</span>, A)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Frobenius Norm of A:"</span>, frobenius_norm)</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"L1 Norm of A:"</span>, l1_norm)</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"L2 Norm of A:"</span>, l2_norm)</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Max Norm of A:"</span>, max_norm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix A:
+ [[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+Frobenius Norm of A: 16.881943016134134
+L1 Norm of A: 18.0
+L2 Norm of A: 16.84810335261421
+Max Norm of A: 24.0</code></pre>
+</div>
+</div>
+</section>
+<section id="singular-values-of-matrix" class="level3" data-number="2.2.19">
+<h3 data-number="2.2.19" class="anchored" data-anchor-id="singular-values-of-matrix"><span class="header-section-number">2.2.19</span> Singular Values of Matrix</h3>
+<p>Given a matrix <span class="math inline">\(\boldsymbol{A}\)</span> of size <span class="math inline">\(m \times n\)</span>, its singular values are defined as the square roots of the eigenvalues of the matrix <span class="math inline">\(\boldsymbol{A}^T\boldsymbol{A}\)</span> (or <span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^T\)</span>), i.e. <span class="math display">\[
+\sigma_i(\boldsymbol{A}) := \sqrt{\lambda_i(\boldsymbol{A}^T\boldsymbol{A})}.
+\]</span></p>
+<p>Singular values provide insight into the geometric properties of the matrix, such as its rank, range, and null space. They are always non-negative real numbers and are usually presented in descending order.</p>
+<p>The singular values tell us about the ‘stretching’ effect of the matrix transformation in various directions. In the context of SVD, a matrix <span class="math inline">\(\boldsymbol{A}\)</span> can be decomposed as <span class="math inline">\(\boldsymbol{A}= \boldsymbol{U}\boldsymbol{\Sigma} \boldsymbol{V}^T\)</span>, where <span class="math inline">\(\boldsymbol{U}\)</span> and <span class="math inline">\(\boldsymbol{V}\)</span> are orthogonal matrices, and <span class="math inline">\(\boldsymbol{\Sigma}\)</span> is a diagonal matrix whose diagonal entries are the singular values of <span class="math inline">\(\boldsymbol{A}\)</span>.</p>
+<p>Here’s a Python script using NumPy to compute the singular values of a given matrix:</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">5</span>, <span class="dv">6</span>]])</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the singular values</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>U, singular_values, Vt <span class="op">=</span> np.linalg.svd(A)</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the singular values</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Singular Values of A:</span><span class="ch">\n</span><span class="st">"</span>, singular_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Singular Values of A:
+ [9.52551809 0.51430058]</code></pre>
+</div>
+</div>
+<p>Since <span class="math inline">\(\boldsymbol{A}^T\boldsymbol{A}\)</span> (or <span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^T\)</span>) is positive semi-definite, its eigen values will be real and non zero. The largest and smallest singular values of a matrix hold significant information about the properties and behavior of the matrix in various mathematical and practical contexts. Understanding their importance is crucial in linear algebra, data analysis, and machine learning.</p>
+<p>The largest singular value has several important implications, such as:</p>
+<ol type="1">
+<li><p><strong>Indicates Maximum Stretch</strong>: The largest singular value of a matrix represents the maximum “stretching” factor of the matrix. It gives the largest factor by which the matrix can stretch a vector during the transformation.</p></li>
+<li><p><strong>Norm of the Matrix</strong>: The largest singular value is equal to the 2-norm (or spectral norm) of the matrix. This norm represents the maximum length to which the matrix can stretch a unit vector.</p></li>
+<li><p><strong>Stability and Conditioning</strong>: In numerical linear algebra, the largest singular value is used to assess the conditioning of the matrix. A very large singular value, especially when compared to the smallest singular value, can indicate that the matrix is ill-conditioned, leading to numerical instability in solutions of linear systems involving the matrix.</p></li>
+</ol>
+<p>The smallest singular value also has several important implications, such as:</p>
+<ol type="1">
+<li><p><strong>Indicates Minimum Stretch and Rank</strong>: The smallest singular value provides insight into how much the matrix compresses vectors in the least stretchable direction. If the smallest singular value is zero, it indicates that the matrix is rank-deficient (not full rank), meaning there are linearly dependent columns or rows.</p></li>
+<li><p><strong>Measure of Invertibility</strong>: For a square matrix, if the smallest singular value is significantly greater than zero, the matrix is well-conditioned and invertible. A very small (especially zero) singular value in a square matrix implies that the matrix is near singular or singular, and thus not invertible.</p></li>
+<li><p><strong>Pseudo-Inverse and Regularization</strong>: In machine learning and statistics, the smallest singular value plays a critical role in regularization and the computation of the Moore-Penrose pseudo-inverse. When dealing with ill-posed problems or in the presence of collinearity, small singular values are regularized to stabilize the solution.</p></li>
+<li><p><strong>Data Analysis and Principal Component Analysis (PCA)</strong>: In PCA, small singular values (and their corresponding singular vectors) often correspond to noise or less significant components of the data. Eliminating these components (dimensionality reduction) can help in focusing on the more significant patterns represented by larger singular values.</p></li>
+</ol>
+<p>In summary, the largest singular value reflects the maximum stretching ability and overall norm of a matrix, while the smallest singular value indicates its invertibility, conditioning, and the presence of redundant or less significant components. In practical applications, these singular values are crucial for understanding the stability, efficiency, and effectiveness of numerical methods and data analysis techniques.</p>
+</section>
+<section id="matrix-decompositions" class="level3" data-number="2.2.20">
+<h3 data-number="2.2.20" class="anchored" data-anchor-id="matrix-decompositions"><span class="header-section-number">2.2.20</span> Matrix Decompositions</h3>
+<section id="lu-decomposition" class="level4" data-number="2.2.20.1">
+<h4 data-number="2.2.20.1" class="anchored" data-anchor-id="lu-decomposition"><span class="header-section-number">2.2.20.1</span> LU Decomposition</h4>
+<p>LU decomposition is a method of decomposing a square matrix <span class="math inline">\(\boldsymbol{A}\)</span> into the product of a lower triangular matrix <span class="math inline">\(\boldsymbol{L}\)</span> and an upper triangular matrix <span class="math inline">\(\boldsymbol{U}\)</span>. In mathematical terms, if <span class="math inline">\(\boldsymbol{A}\)</span> is a square matrix, then the LU decomposition is given by <span class="math inline">\(\boldsymbol{A}= \boldsymbol{LU}\)</span>, where</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{L}\)</span> is a lower triangular matrix (all entries above the main diagonal are zero),</li>
+<li><span class="math inline">\(\boldsymbol{U}\)</span> is an upper triangular matrix (all entries below the main diagonal are zero).</li>
+</ul>
+<p>LU decomposition is used in various applications such as:</p>
+<ol type="a">
+<li><p><strong>Solving Linear Systems</strong>: It is used to solve systems of linear equations. Once a matrix is decomposed into <span class="math inline">\(\boldsymbol{L}\)</span> and <span class="math inline">\(\boldsymbol{U}\)</span>, it is easier to solve the equation <span class="math inline">\(\boldsymbol{Ax = b}\)</span> by first solving <span class="math inline">\(\boldsymbol{Ly = b}\)</span> for <span class="math inline">\(\boldsymbol{y}\)</span> and then solving <span class="math inline">\(\boldsymbol{Ux = y}\)</span> for <span class="math inline">\(\boldsymbol{x}\)</span>.</p></li>
+<li><p><strong>Matrix Inversion</strong>: LU decomposition can be used to find the inverse of a matrix, which is significantly faster than direct computation, especially for large matrices.</p></li>
+<li><p><strong>Determinant Calculation</strong>: The determinant of <span class="math inline">\(\boldsymbol{A}\)</span> can be easily calculated as the product of the diagonals of <span class="math inline">\(\boldsymbol{L}\)</span> and <span class="math inline">\(\boldsymbol{U}\)</span>, as the determinant of a triangular matrix is the product of its diagonal entries.</p></li>
+</ol>
+<p>Here is a Python code computing LU Decomposition of a matrix.</p>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> lu</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a square matrix</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">3</span>], [<span class="dv">6</span>, <span class="dv">3</span>]])</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform LU Decomposition</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>P, L, U <span class="op">=</span> lu(A)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the results</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original Matrix:</span><span class="ch">\n</span><span class="st">"</span>, A)</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Permutation Matrix (P):</span><span class="ch">\n</span><span class="st">"</span>, P)</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Lower Triangular Matrix (L):</span><span class="ch">\n</span><span class="st">"</span>, L)</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Upper Triangular Matrix (U):</span><span class="ch">\n</span><span class="st">"</span>, U)</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the decomposition</span></span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Verification (P * L * U):</span><span class="ch">\n</span><span class="st">"</span>, np.dot(P, np.dot(L, U)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Original Matrix:
+ [[4 3]
+ [6 3]]
+Permutation Matrix (P):
+ [[0. 1.]
+ [1. 0.]]
+Lower Triangular Matrix (L):
+ [[1.         0.        ]
+ [0.66666667 1.        ]]
+Upper Triangular Matrix (U):
+ [[6. 3.]
+ [0. 1.]]
+Verification (P * L * U):
+ [[4. 3.]
+ [6. 3.]]</code></pre>
+</div>
+</div>
+</section>
+<section id="qr-factorization-of-a-matrix" class="level4" data-number="2.2.20.2">
+<h4 data-number="2.2.20.2" class="anchored" data-anchor-id="qr-factorization-of-a-matrix"><span class="header-section-number">2.2.20.2</span> QR Factorization of a Matrix</h4>
+<p>QR factorization is a method for decomposing a matrix into two components: an orthogonal matrix <span class="math inline">\(\boldsymbol{Q}\)</span> and an upper triangular matrix <span class="math inline">\(\boldsymbol{R}\)</span>. For a given matrix <span class="math inline">\(\boldsymbol{A}\)</span>, the QR factorization is expressed as <span class="math inline">\(\boldsymbol{A}= \boldsymbol{Q}\boldsymbol{R}\)</span>, where:</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{Q}\)</span> is an orthogonal matrix, i.e., <span class="math inline">\(\boldsymbol{Q}^T \boldsymbol{Q} = \boldsymbol{Q} \boldsymbol{Q}^T = \boldsymbol{I}\)</span>, where <span class="math inline">\(\boldsymbol{I}\)</span> is the identity matrix</li>
+<li><span class="math inline">\(\boldsymbol{R}\)</span> is an upper triangular matrix.</li>
+</ul>
+<p>QR factorization is utilized in various mathematical and computational applications, such as:</p>
+<ol type="1">
+<li><strong>Solving Linear Systems</strong>: Similar to LU decomposition, QR factorization can be used to solve linear systems <span class="math inline">\(\boldsymbol{A}\boldsymbol{x} = \boldsymbol{b}\)</span>. The system is solved by first computing <span class="math inline">\(\boldsymbol{Q}^T \boldsymbol{b}\)</span> and then solving the upper triangular system <span class="math inline">\(\boldsymbol{R}\boldsymbol{x} = \boldsymbol{Q}^T \boldsymbol{b}\)</span>.</li>
+<li><strong>Eigenvalue Computation</strong>: QR factorization is a key component in algorithms for computing eigenvalues of a matrix, particularly in the QR algorithm for eigenvalue computation.</li>
+<li><strong>Least Squares Fitting</strong>: In statistical analysis and data fitting, QR factorization is often used to solve least squares problems efficiently, especially when <span class="math inline">\(\boldsymbol{A}\)</span> is not square or is ill-conditioned.</li>
+</ol>
+<p>Here is a Python code computing QR Decomposition of a matrix.</p>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> qr</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">12</span>, <span class="op">-</span><span class="dv">51</span>, <span class="dv">4</span>], [<span class="dv">6</span>, <span class="dv">167</span>, <span class="op">-</span><span class="dv">68</span>], [<span class="op">-</span><span class="dv">4</span>, <span class="dv">24</span>, <span class="op">-</span><span class="dv">41</span>]])</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform QR Decomposition</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>Q, R <span class="op">=</span> qr(A)</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the results</span></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original Matrix:</span><span class="ch">\n</span><span class="st">"</span>, A)</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Orthogonal Matrix (Q):</span><span class="ch">\n</span><span class="st">"</span>, Q)</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Upper Triangular Matrix (R):</span><span class="ch">\n</span><span class="st">"</span>, R)</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the decomposition</span></span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Verification (Q * R):</span><span class="ch">\n</span><span class="st">"</span>, np.dot(Q, R))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Original Matrix:
+ [[ 12 -51   4]
+ [  6 167 -68]
+ [ -4  24 -41]]
+Orthogonal Matrix (Q):
+ [[-0.85714286  0.39428571  0.33142857]
+ [-0.42857143 -0.90285714 -0.03428571]
+ [ 0.28571429 -0.17142857  0.94285714]]
+Upper Triangular Matrix (R):
+ [[ -14.  -21.   14.]
+ [   0. -175.   70.]
+ [   0.    0.  -35.]]
+Verification (Q * R):
+ [[ 12. -51.   4.]
+ [  6. 167. -68.]
+ [ -4.  24. -41.]]</code></pre>
+</div>
+</div>
+</section>
+<section id="cholesky-factorization-of-a-matrix" class="level4" data-number="2.2.20.3">
+<h4 data-number="2.2.20.3" class="anchored" data-anchor-id="cholesky-factorization-of-a-matrix"><span class="header-section-number">2.2.20.3</span> Cholesky Factorization of a Matrix</h4>
+<p>Cholesky factorization is a method for decomposing a Hermitian, positive-definite matrix into the product of a lower triangular matrix and its conjugate transpose. For a given matrix <span class="math inline">\(\boldsymbol{A}\)</span>, the Cholesky factorization is expressed as: <span class="math inline">\(\boldsymbol{A}= \boldsymbol{L}\boldsymbol{L}^T\)</span>, where <span class="math inline">\(\boldsymbol{L}\)</span> is a lower triangular matrix.</p>
+<p>Cholesky factorization is used in various applications, including:</p>
+<ol type="1">
+<li><p><strong>Solving Linear Systems</strong>: Cholesky factorization is particularly efficient for solving linear systems of the form <span class="math inline">\(\boldsymbol{A}\boldsymbol{x} = \boldsymbol{b}\)</span> when <span class="math inline">\(\boldsymbol{A}\)</span> is Hermitian and positive-definite. The system can be solved by first solving <span class="math inline">\(\boldsymbol{L}\boldsymbol{y} = \boldsymbol{b}\)</span> for <span class="math inline">\(\boldsymbol{y}\)</span>, and then solving <span class="math inline">\(\boldsymbol{L}^T \boldsymbol{x} = \boldsymbol{y}\)</span>.</p></li>
+<li><p><strong>Computing Matrix Inverses</strong>: For Hermitian, positive-definite matrices, Cholesky factorization can be used to compute the inverse of <span class="math inline">\(\boldsymbol{A}\)</span> efficiently.</p></li>
+<li><p><strong>Monte Carlo Simulations</strong>: In financial and engineering simulations, Cholesky factorization is used to generate random samples from multivariate normal distributions.</p></li>
+<li><p><strong>Optimization Problems</strong>: In optimization, especially quadratic programming, Cholesky factorization is used to solve linear equations and invert matrices efficiently, which is often a computational bottleneck.</p></li>
+</ol>
+<p>Here is a Python code computing Cholesky Decomposition of a matrix.</p>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> cholesky</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a positive definite matrix</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">12</span>, <span class="op">-</span><span class="dv">16</span>], [<span class="dv">12</span>, <span class="dv">37</span>, <span class="op">-</span><span class="dv">43</span>], [<span class="op">-</span><span class="dv">16</span>, <span class="op">-</span><span class="dv">43</span>, <span class="dv">98</span>]])</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Cholesky Decomposition</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> cholesky(A, lower<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the results</span></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original Matrix:</span><span class="ch">\n</span><span class="st">"</span>, A)</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Lower Triangular Matrix (L):</span><span class="ch">\n</span><span class="st">"</span>, L)</span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the decomposition</span></span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Verification (L * \set</span><span class="sc">{L}</span><span class="st">_T):</span><span class="ch">\n</span><span class="st">"</span>, np.dot(L, L.T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Original Matrix:
+ [[  4  12 -16]
+ [ 12  37 -43]
+ [-16 -43  98]]
+Lower Triangular Matrix (L):
+ [[ 2.  0.  0.]
+ [ 6.  1.  0.]
+ [-8.  5.  3.]]
+Verification (L * \set{L}_T):
+ [[  4.  12. -16.]
+ [ 12.  37. -43.]
+ [-16. -43.  98.]]</code></pre>
+</div>
+</div>
+</section>
+<section id="matrix-square-root" class="level4" data-number="2.2.20.4">
+<h4 data-number="2.2.20.4" class="anchored" data-anchor-id="matrix-square-root"><span class="header-section-number">2.2.20.4</span> Matrix Square Root</h4>
+<p>The matrix square root of a matrix <span class="math inline">\(\boldsymbol{A}\)</span> is a matrix <span class="math inline">\(\boldsymbol{B}\)</span> such that <span class="math inline">\(\boldsymbol{B}\boldsymbol{B} = \boldsymbol{A}\)</span>. This means that when <span class="math inline">\(\boldsymbol{B}\)</span> is multiplied by itself, the result is the original matrix <span class="math inline">\(\boldsymbol{A}\)</span>. The matrix square root is particularly relevant for positive <em>definite</em> matrices.</p>
+<p>Matrix square roots are used in various applications, including:</p>
+<ol type="1">
+<li><p><strong>Control Theory</strong>: In control theory, the matrix square root is used in the analysis and design of control systems, particularly in the context of state transition matrices and system stability.</p></li>
+<li><p><strong>Quantum Mechanics</strong>: In quantum mechanics, the square root of a density matrix (a matrix representing a quantum state) is often calculated as part of quantum state tomography and other analyses.</p></li>
+<li><p><strong>Computer Graphics</strong>: In computer graphics, matrix square roots are used in algorithms for transformations and in the manipulation of geometric shapes.</p></li>
+<li><p><strong>Statistics and Data Analysis</strong>: In statistics, the matrix square root (particularly the square root of a covariance matrix) is used in multivariate analysis, including principal component analysis (PCA) and other forms of data reduction.</p></li>
+</ol>
+<p>These applications leverage the matrix square root for its ability to simplify and solve complex mathematical problems, particularly in systems analysis and probabilistic modeling.</p>
+<p>To compute the square root of a matrix in Python, you can use the <code>scipy.linalg</code> library, which provides a function for this purpose. Below is a Python code using SciPy to compute the square root of a given matrix.</p>
+<p>Here is a Python code computng matrix square root.</p>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> sqrtm</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define your matrix A (it should be a positive definite matrix)</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">2</span>], [<span class="dv">2</span>, <span class="dv">3</span>]])</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the square root of the matrix</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>sqrt_A <span class="op">=</span> sqrtm(A)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the result</span></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Square Root of A:</span><span class="ch">\n</span><span class="st">"</span>, sqrt_A)</span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Verification (Square Root of A multiplied by itself):</span><span class="ch">\n</span><span class="st">"</span>, np.dot(sqrt_A, sqrt_A))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Square Root of A:
+ [[1.91936596 0.56216928]
+ [0.56216928 1.63828133]]
+Verification (Square Root of A multiplied by itself):
+ [[4. 2.]
+ [2. 3.]]</code></pre>
+</div>
+</div>
+</section>
+<section id="singular-value-decomposition" class="level4" data-number="2.2.20.5">
+<h4 data-number="2.2.20.5" class="anchored" data-anchor-id="singular-value-decomposition"><span class="header-section-number">2.2.20.5</span> Singular Value Decomposition</h4>
+<p>Singular Value Decomposition (SVD) is a key matrix decomposition technique in linear algebra, used in many scientific and engineering fields. It decomposes any <span class="math inline">\(m\times n\)</span> matrix <span class="math inline">\(\boldsymbol{A}\)</span> into three matrices <span class="math inline">\(\boldsymbol{A} = \boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^T\)</span>, where</p>
+<ol type="1">
+<li><p><span class="math inline">\(\boldsymbol{U}\)</span>: An <span class="math inline">\(m\times m\)</span> unitary matrix. The columns of <span class="math inline">\(\boldsymbol{U}\)</span>, known as the left singular vectors, form an orthonormal basis for the range of <span class="math inline">\(\boldsymbol{A}\)</span>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\Sigma}\)</span>: An <span class="math inline">\(m \times n\)</span> rectangular diagonal matrix with non-negative real numbers on the diagonal. The diagonal entries, the singular values of <span class="math inline">\(\boldsymbol{A}\)</span>, are typically arranged in descending order. They represent the lengths of the semi-axes of the ellipsoid described by <span class="math inline">\(\boldsymbol{A}\)</span>. The number of non-zero singular values equals the rank of <span class="math inline">\(\boldsymbol{A}\)</span>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{V}^T\)</span>: An <span class="math inline">\(n\times n\)</span> unitary matrix. The columns of <span class="math inline">\(\boldsymbol{V}\)</span>, the right singular vectors, form an orthonormal basis for the domain of <span class="math inline">\(\boldsymbol{A}\)</span>.</p></li>
+</ol>
+<p>Key Properties and Uses of SVD are the following:</p>
+<ul>
+<li><p>SVD simplifies the analysis of a matrix by breaking it down into simpler constituent parts.</p></li>
+<li><p>It is instrumental in solving overdetermined or underdetermined linear systems, via computing the pseudo-inverse of a matrix.</p></li>
+<li><p>In data science and machine learning, SVD is crucial for algorithms like Principal Component Analysis (PCA), used in dimensionality reduction, data compression, and noise reduction.</p></li>
+<li><p>It plays a significant role in signal processing and statistics for pattern identification and compact representations.</p></li>
+<li><p>SVD is also used in solving linear least squares problems, common in mathematical modeling and scientific computing.</p></li>
+</ul>
+<p>SVD’s versatility and robustness make it an essential tool in computational and applied mathematics.</p>
+<p>Here is a Python code computing SVD of a matrix.</p>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a matrix</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">5</span>, <span class="dv">6</span>]])</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Singular Value Decomposition</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>U, S, Vt <span class="op">=</span> np.linalg.svd(A)</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the results</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original Matrix:</span><span class="ch">\n</span><span class="st">"</span>, A)</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Left Singular Vectors (U):</span><span class="ch">\n</span><span class="st">"</span>, U)</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Singular Values (S):</span><span class="ch">\n</span><span class="st">"</span>, S)</span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Right Singular Vectors Transposed (Vt):</span><span class="ch">\n</span><span class="st">"</span>, Vt)</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Reconstruct the original matrix</span></span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>Sigma <span class="op">=</span> np.zeros((A.shape[<span class="dv">0</span>], A.shape[<span class="dv">1</span>]))</span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>Sigma[:A.shape[<span class="dv">1</span>], :A.shape[<span class="dv">1</span>]] <span class="op">=</span> np.diag(S)</span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>A_reconstructed <span class="op">=</span> U <span class="op">@</span> Sigma <span class="op">@</span> Vt</span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Reconstructed Matrix (U * Sigma * Vt):</span><span class="ch">\n</span><span class="st">"</span>, A_reconstructed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Original Matrix:
+ [[1 2]
+ [3 4]
+ [5 6]]
+Left Singular Vectors (U):
+ [[-0.2298477   0.88346102  0.40824829]
+ [-0.52474482  0.24078249 -0.81649658]
+ [-0.81964194 -0.40189603  0.40824829]]
+Singular Values (S):
+ [9.52551809 0.51430058]
+Right Singular Vectors Transposed (Vt):
+ [[-0.61962948 -0.78489445]
+ [-0.78489445  0.61962948]]
+Reconstructed Matrix (U * Sigma * Vt):
+ [[1. 2.]
+ [3. 4.]
+ [5. 6.]]</code></pre>
+</div>
+</div>
+</section>
+<section id="schur-complement" class="level4" data-number="2.2.20.6">
+<h4 data-number="2.2.20.6" class="anchored" data-anchor-id="schur-complement"><span class="header-section-number">2.2.20.6</span> Schur Complement</h4>
+<p>The Schur complement is a useful concept in linear algebra for analyzing and simplifying block matrices. Given a block matrix: <span class="math display">\[ \boldsymbol{M} = \begin{bmatrix} \boldsymbol{A} &amp; \boldsymbol{B} \\ \boldsymbol{C} &amp; \boldsymbol{D} \end{bmatrix}, \]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{A}\)</span>, <span class="math inline">\(\boldsymbol{B}\)</span>, <span class="math inline">\(\boldsymbol{C}\)</span>, and <span class="math inline">\(\boldsymbol{D}\)</span> are submatrices with <span class="math inline">\(\boldsymbol{A}\)</span> and <span class="math inline">\(\boldsymbol{D}\)</span> being square, and <span class="math inline">\(\boldsymbol{A}\)</span> is invertible, the Schur complement of <span class="math inline">\(\boldsymbol{A}\)</span> in <span class="math inline">\(\boldsymbol{M}\)</span> is defined as: <span class="math display">\[ \boldsymbol{S} = \boldsymbol{D} - \boldsymbol{C} \boldsymbol{A}^{-1} \boldsymbol{B}.\]</span></p>
+<p>Applications of the Schur Complement include</p>
+<ul>
+<li><strong>Matrix Inversion</strong>: Simplifies the inversion of block matrices.</li>
+<li><strong>Determinant Calculation</strong>: Allows expressing the determinant of <span class="math inline">\(\boldsymbol{M}\)</span> in terms of the determinant of <span class="math inline">\(\boldsymbol{A}\)</span> and its Schur complement.</li>
+<li><strong>Solving Linear Systems</strong>: Used in solving partitioned systems of linear equations.</li>
+<li><strong>Control Theory</strong>: Applied in stability analysis and controller design.</li>
+</ul>
+<p>Here is a Python code computing Schur Complement.</p>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the block matrix components</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> np.array([[<span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>]])</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> np.array([[<span class="dv">9</span>, <span class="dv">10</span>], [<span class="dv">11</span>, <span class="dv">12</span>]])</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> np.array([[<span class="dv">13</span>, <span class="dv">14</span>], [<span class="dv">15</span>, <span class="dv">16</span>]])</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure A is invertible</span></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> np.linalg.det(A) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Matrix A is not invertible."</span>)</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the Schur complement of A in M</span></span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Schur complement S = D - C * A^-1 * B</span></span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>A_inv <span class="op">=</span> np.linalg.inv(A)</span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> D <span class="op">-</span> np.dot(C, np.dot(A_inv, B))</span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Schur Complement of A in M:</span><span class="ch">\n</span><span class="st">"</span>, S)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Schur Complement of A in M:
+ [[ 0.00000000e+00 -5.32907052e-15]
+ [ 0.00000000e+00 -1.06581410e-14]]</code></pre>
+</div>
+</div>
+</section>
+<section id="schur-decomposition" class="level4" data-number="2.2.20.7">
+<h4 data-number="2.2.20.7" class="anchored" data-anchor-id="schur-decomposition"><span class="header-section-number">2.2.20.7</span> Schur Decomposition</h4>
+<p>Schur Decomposition is a key technique in linear algebra for decomposing square matrices. It represents any square matrix <span class="math inline">\(\boldsymbol{A}\)</span> as a product of three matrices <span class="math display">\[ \boldsymbol{A} = \boldsymbol{Q}\boldsymbol{U}\boldsymbol{Q}^T\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{Q}\)</span> is a unitary matrix, satisfying <span class="math inline">\(\boldsymbol{Q}^T\boldsymbol{Q} = \boldsymbol{I}\)</span>.</li>
+<li><span class="math inline">\(\boldsymbol{U}\)</span> is an upper triangular matrix.</li>
+<li><span class="math inline">\(\boldsymbol{Q}^T\)</span> is the transpose of <span class="math inline">\(\boldsymbol{Q}\)</span>.</li>
+</ul>
+<p>Schur Decomposition is used in various applications in numerical linear algebra, including eigenvalue computations and matrix exponentials.</p>
+<p>Here is a Python code computing Schur Decomposition of a matrix.</p>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> schur</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a square matrix A</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>],</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">7</span>,  <span class="dv">0</span>, <span class="dv">5</span>],</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">6</span>,  <span class="dv">3</span>, <span class="dv">2</span>]])</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Schur decomposition</span></span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>T, U <span class="op">=</span> schur(A)</span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the original matrix and the Schur decomposition matrices</span></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix A:"</span>)</span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A)</span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Schur Decomposition - T:"</span>)</span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(T)</span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-19"><a href="#cb63-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Schur Decomposition - U:"</span>)</span>
+<span id="cb63-20"><a href="#cb63-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(U)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix A:
+[[ 4 -2  1]
+ [ 7  0  5]
+ [ 6  3  2]]
+Schur Decomposition - T:
+[[ 4.39316337  9.00965681 -2.70594944]
+ [-0.68611856  4.39316337 -2.9444486 ]
+ [ 0.          0.         -2.78632674]]
+Schur Decomposition - U:
+[[ 0.07068893 -0.99321124  0.09238243]
+ [-0.70664211 -0.11522857 -0.69812557]
+ [-0.70403125  0.01593157  0.70999027]]</code></pre>
+</div>
+</div>
+</section>
+<section id="matrix-exponential" class="level4" data-number="2.2.20.8">
+<h4 data-number="2.2.20.8" class="anchored" data-anchor-id="matrix-exponential"><span class="header-section-number">2.2.20.8</span> Matrix Exponential</h4>
+<p>The matrix exponential is a significant concept in linear algebra, extending the exponential function to square matrices. For any square matrix <span class="math inline">\(\boldsymbol{A}\)</span>, the matrix exponential is defined by the series: <span class="math display">\[ e^{\mathbf{A}} = \sum_{k=0}^{\infty} \frac{1}{k!} \mathbf{A}^k.\]</span></p>
+<p><em>Note</em>: This is <strong>not</strong> element-wise exponential.</p>
+<p>Matrix exponentials are crucial in solving linear differential equations, control theory, and quantum mechanics, among other applications.</p>
+<p>Here is a Python code showing the computation of a matrix exponential.</p>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> expm</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a square matrix</span></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">0</span>]])</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the matrix exponential of A</span></span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>exp_A <span class="op">=</span> expm(A)</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix A:</span><span class="ch">\n</span><span class="st">"</span>, A)</span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix Exponential of A (exp(A)):</span><span class="ch">\n</span><span class="st">"</span>, exp_A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix A:
+ [[ 0 -1]
+ [ 1  0]]
+Matrix Exponential of A (exp(A)):
+ [[ 0.54030231 -0.84147098]
+ [ 0.84147098  0.54030231]]</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./math.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Foundational Mathematics</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./functions.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions &amp; Function Spaces</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Applied Machine Learning for Aerospace Systems - 9&nbsp; Function Approximation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./algorithms.html" rel="next">
+<link href="./optimization.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+    MathJax = {
+      tex: {
+        tags: 'ams'  // should be 'ams', 'none', or 'all'
+      }
+    };
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./function_approximation.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Applied Machine Learning for Aerospace Systems</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foundational Mathematics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Algebra</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions &amp; Function Spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_processes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Monte Carlo Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./function_approximation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./algorithms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Machine Learning Algorithms</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_pre_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./supervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unsupervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dimensionality_reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./aerospace_applications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aerospace Applications</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Aerospace Application 1</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Aerospace Application 2</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#linear-spaces-with-basis-elements" id="toc-linear-spaces-with-basis-elements" class="nav-link active" data-scroll-target="#linear-spaces-with-basis-elements"><span class="header-section-number">9.1</span> Linear Spaces with Basis Elements</a></li>
+  <li><a href="#eulidean-space" id="toc-eulidean-space" class="nav-link" data-scroll-target="#eulidean-space"><span class="header-section-number">9.2</span> Eulidean Space</a>
+  <ul class="collapse">
+  <li><a href="#minimal-basis" id="toc-minimal-basis" class="nav-link" data-scroll-target="#minimal-basis"><span class="header-section-number">9.2.1</span> Minimal Basis</a></li>
+  <li><a href="#nonminimal-basis" id="toc-nonminimal-basis" class="nav-link" data-scroll-target="#nonminimal-basis"><span class="header-section-number">9.2.2</span> Nonminimal Basis</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">9.2.3</span> Examples</a></li>
+  <li><a href="#matrix-spaces" id="toc-matrix-spaces" class="nav-link" data-scroll-target="#matrix-spaces"><span class="header-section-number">9.2.4</span> Matrix Spaces</a></li>
+  </ul></li>
+  <li><a href="#function-space" id="toc-function-space" class="nav-link" data-scroll-target="#function-space"><span class="header-section-number">9.3</span> Function Space</a>
+  <ul class="collapse">
+  <li><a href="#basis-functions" id="toc-basis-functions" class="nav-link" data-scroll-target="#basis-functions"><span class="header-section-number">9.3.1</span> Basis Functions</a></li>
+  <li><a href="#a-projection-perspective-1" id="toc-a-projection-perspective-1" class="nav-link" data-scroll-target="#a-projection-perspective-1"><span class="header-section-number">9.3.2</span> A Projection Perspective</a></li>
+  <li><a href="#function-approximation-over-discrete-data" id="toc-function-approximation-over-discrete-data" class="nav-link" data-scroll-target="#function-approximation-over-discrete-data"><span class="header-section-number">9.3.3</span> Function Approximation Over Discrete Data</a></li>
+  <li><a href="#local-vs-global-basis-functions" id="toc-local-vs-global-basis-functions" class="nav-link" data-scroll-target="#local-vs-global-basis-functions"><span class="header-section-number">9.3.4</span> Local vs Global Basis Functions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Function approximation is a core concept in mathematics, statistics, and machine learning, involving the estimation of a function using a simpler or more tractable form. This process is essential when the exact form of a function is unknown, too complex, or when an analytical expression is not available.</p>
+<p>Key aspects of function approximation include:</p>
+<ol type="1">
+<li><p><strong>Simplifying Complex Functions</strong>: Function approximation involves representing a complicated function with a simpler one, which is easier to analyze, compute, or understand. The approximating function typically belongs to a well-defined class of functions, like polynomials, trigonometric functions, or piecewise linear functions.</p></li>
+<li><p><strong>Polynomial Approximation</strong>: One common approach is using polynomial functions, such as in Taylor series or Fourier series approximations. For example, a complex function can be approximated by a polynomial of a certain degree, capturing the essential behavior of the function within a specific range.</p></li>
+<li><p><strong>Piecewise Approximation</strong>: Another method is to approximate a function using a series of simple functions over different intervals. For instance, a complex curve could be approximated by a series of straight lines (linear functions) in different segments.</p></li>
+<li><p><strong>Least Squares and Regression</strong>: In statistics and machine learning, regression techniques, such as linear regression or polynomial regression, are used to approximate the relationship between variables. The least squares method is often used to find the best-fit line or curve that minimizes the differences (residuals) between the observed values and the values predicted by the model.</p></li>
+<li><p><strong>Neural Networks</strong>: In modern machine learning, neural networks, particularly deep learning models, are powerful tools for function approximation. They can model complex, non-linear relationships in data, effectively approximating functions with many variables. We will learn about neural networks later in the book.</p></li>
+</ol>
+<p>Function approximation is an effective strategy for addressing real-world challenges where direct calculation or analysis is difficult. It facilitates the extraction of vital insights from intricate phenomena and plays a pivotal role in various domains, including engineering, economics, physics, and artificial intelligence. The selection of the approximation technique and the level of approximation rely on the specific needs for accuracy and computational efficiency.</p>
+<section id="linear-spaces-with-basis-elements" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="linear-spaces-with-basis-elements"><span class="header-section-number">9.1</span> Linear Spaces with Basis Elements</h2>
+<p>This chapter emphasizes function approximation through a linear combination of known functions, creating a linear approximation space. In this realm, the notions of “basis” and “basis functions” are essential. A basis in a linear approximation space consists of a set of basis elements (vectors or functions) that are linearly independent and encompass the entire space. This implies that any vector or function in this space can be represented as a linear combination of these basis elements.</p>
+<p>These basis vectors or functions need to be linearly independent, ensuring that none of them can be expressed as a linear combination of the others. This guarantees the minimality of the basis, meaning that there are no superfluous elements. Additionally, this implies that the basis elements are orthogonal.</p>
+<p>The collection of basis vectors or functions must cover the entire space, signifying that any element within the space can be precisely depicted using a linear combination of the basis components.</p>
+<p>Some important linear approximation spaces are discussed next.</p>
+</section>
+<section id="eulidean-space" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="eulidean-space"><span class="header-section-number">9.2</span> Eulidean Space</h2>
+<p>A Euclidean space, often denoted as <span class="math inline">\(\mathcal{R}^n\)</span>, is a mathematical space where each point is represented by a vector <span class="math inline">\(\boldsymbol{x}:=\begin{bmatrix} x_1 &amp; \cdots &amp; x_n \end{bmatrix}^T\)</span>. Each element <span class="math inline">\(x_i\)</span> represents the coordinate of the point along a specific axis or dimension.</p>
+<p>A <strong>basis</strong> in a Euclidean space consists of a set of linearly independent vectors that <em>span</em> the entire space. In other words, any vector in the Euclidean space can be uniquely expressed as a linear combination of the basis vectors.</p>
+<section id="minimal-basis" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="minimal-basis"><span class="header-section-number">9.2.1</span> Minimal Basis</h3>
+<p>In Euclidean spaces, the most commonly used basis is the <strong>standard</strong> or <strong>canonical basis</strong>. In <span class="math inline">\(\mathcal{R}^n\)</span>, the standard basis consists of n unit vectors, each having a single component equal to 1 and all other components equal to 0. For example, in 3D (<span class="math inline">\(\mathcal{R}^3\)</span>), the standard basis vectors are <span class="math display">\[
+\boldsymbol{e}_1 = \begin{bmatrix}1\\ 0\\ 0\end{bmatrix}, \boldsymbol{e}_2 = \begin{bmatrix}0\\ 1\\ 0\end{bmatrix}, \boldsymbol{e}_3 = \begin{bmatrix}0\\ 0\\ 1\end{bmatrix}.
+\]</span></p>
+<p>Euclidean space can be represented as a linear combination of these basis vectors. For example, in <span class="math inline">\(\mathcal{R}^3\)</span>, we can express any vector <span class="math inline">\(\boldsymbol{x}:=\begin{bmatrix} x_1 &amp; x_2 &amp; x_3 \end{bmatrix}^T\)</span> as <span class="math display">\[
+\boldsymbol{x}=  x_1\begin{bmatrix}1\\ 0\\ 0\end{bmatrix} + x_2 \begin{bmatrix}0\\ 1\\ 0\end{bmatrix} + x_3 \begin{bmatrix}0\\ 0\\ 1\end{bmatrix},
+\]</span> or more compactly as <span class="math inline">\(\boldsymbol{x}= x_1\boldsymbol{e}_1 + x_2\boldsymbol{e}_2 + x_3\boldsymbol{e}_3.\)</span></p>
+<p>Euclidean spaces are equipped with an inner product, denoted as <span class="math inline">\(\langle \cdot, \cdot \rangle\)</span>, which defines the dot product or scalar product between two vectors. Mathematically, it is defined as <span class="math display">\[\langle \boldsymbol{x}, \boldsymbol{y}\rangle = \sum_{i=1}^n x_i y_i.\]</span></p>
+<p>The basis <span class="math inline">\(\boldsymbol{e}_1, \boldsymbol{e}_2\)</span>, and <span class="math inline">\(\boldsymbol{e}_3\)</span> are orthogonal, i.e.&nbsp;<span class="math display">\[\begin{align*}
+\left\langle \boldsymbol{e}_i,\boldsymbol{e}_j \right\rangle &amp;= 0, \text{ for } i \neq j; \; i,j = {1,2,3},\\
+\left\langle \boldsymbol{e}_i,\boldsymbol{e}_i \right\rangle &amp;= 1, \text{ for } i = {1,2,3}.
+\end{align*}\]</span> This orthogonality condition generalizes to <span class="math inline">\(\mathcal{R}^n\)</span>.</p>
+<p>In general, the basis need not be canonical, but a set of any <span class="math inline">\(n\)</span> orthogonal vectors will also <em>span</em> <span class="math inline">\(\mathcal{R}^n\)</span>. Think of them as different <em>coordinate system</em> in <span class="math inline">\(\mathcal{R}^n\)</span>. That is, we can express <span class="math inline">\(\boldsymbol{x}\)</span> a linear combination of two sets of basis: <span class="math display">\[
+\boldsymbol{x}= \sum_{i=1}^n a_i \boldsymbol{a}_i = \sum_{i=1}^n b_i \boldsymbol{b}_i,
+\]</span> where <span class="math inline">\(\boldsymbol{a}_i\)</span> and <span class="math inline">\(\boldsymbol{a}_j\)</span> are orthogonal, and <span class="math inline">\(\boldsymbol{b}_i\)</span> and <span class="math inline">\(\boldsymbol{b}_j\)</span> are orthogonal. The corresponding components are <span class="math inline">\(a_i\)</span> and <span class="math inline">\(b_i\)</span> respectively. This is illustrated in the figure below:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="300"></p>
+<figcaption class="figure-caption">Different sets of orthogonal basis to represent the same 2D Euclidean space.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Note:</em> Therefore, a Euclidean space can be represented by a non-unique set of orthogonal basis.</p>
+<p><em>Note:</em> In <span class="math inline">\(\mathcal{R}^n\)</span>, we need a minimum <span class="math inline">\(n\)</span> orthogonal basis to span it.</p>
+<p>We can recover the <em>components</em> of the vector <span class="math inline">\(\boldsymbol{x}\)</span> by <em>projecting</em> <span class="math inline">\(\boldsymbol{x}\)</span> on each of the basis <span class="math inline">\(\boldsymbol{e}_i\)</span>. The projection is defined as the inner-product between <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{e}_i\)</span>. Therefore, the component <span class="math inline">\(x_i\)</span> is the projection of <span class="math inline">\(\boldsymbol{x}\)</span> on <span class="math inline">\(\boldsymbol{e}_i\)</span>, i.e., <span class="math display">\[
+x_i = \left\langle \boldsymbol{x},\boldsymbol{e}_i \right\rangle.
+\]</span></p>
+</section>
+<section id="nonminimal-basis" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="nonminimal-basis"><span class="header-section-number">9.2.2</span> Nonminimal Basis</h3>
+<p>The basis in <span class="math inline">\(\mathcal{R}^n\)</span> need not be orthogonal. If they are then we have a <em>minimal set</em>.</p>
+<p>In general it is possible to <em>exactly</em> represent a vector <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^n\)</span> with basis <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span> where <span class="math inline">\(\boldsymbol{e}_i \in \mathcal{R}^n\)</span> and <span class="math inline">\(m &gt; n\)</span>. However, the basis must have <span class="math inline">\(n\)</span> linear independent components, otherwise <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span> doesn’t span <span class="math inline">\(\mathcal{R}^n\)</span> and we will not be able to represent <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^n\)</span> exactly using linear combinations of <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span>.</p>
+<p>If we define a matrix <span class="math inline">\(\boldsymbol{E} \in \mathcal{R}^{n\times m}\)</span> with <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span>, i.e., <span class="math display">\[
+\boldsymbol{E} = \begin{bmatrix}\boldsymbol{e}_1 &amp; \boldsymbol{e}_2 &amp; \cdots &amp; \boldsymbol{e}_m \end{bmatrix},
+\]</span> then the vector <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^n\)</span> can be expressed as <span class="math display">\[
+\boldsymbol{x}\approx  \sum_{i=1}^m {y_i\boldsymbol{e}_i} = \boldsymbol{E}\boldsymbol{y},\]</span> where <span class="math inline">\(\boldsymbol{y}= \begin{bmatrix}y_1 &amp; y_2 &amp; \cdots &amp; y_m\end{bmatrix}^T\)</span> are the components of <span class="math inline">\(\boldsymbol{x}\)</span> in <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span>. We can think of <span class="math inline">\(\boldsymbol{E}\)</span> as a matrix that linearly maps vectors from <span class="math inline">\(\mathcal{R}^m\)</span> to <span class="math inline">\(\mathcal{R}^n\)</span>.</p>
+<p>We use <span class="math inline">\(\approx\)</span> in the above equation because <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span> may not span <span class="math inline">\(\mathcal{R}^n\)</span>. In that, case our approximation space will be a lower dimensional space, even when we have <span class="math inline">\(m&gt;n\)</span>.</p>
+<p>The dimension of the space spanned by <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span> is given by the rank of the matrix <span class="math inline">\(\boldsymbol{E}\)</span>. Recall that a matrix is said to have <em>full rank</em> if its rank equals the largest possible for a matrix of the same dimensions, which is the lesser of the number of rows and columns. A matrix is said to be <em>rank-deficient</em> if it does not have full rank. The rank deficiency of a matrix is the difference between the lesser of the number of rows and columns, and the rank. Therefore, in this case the rank of <span class="math inline">\(\boldsymbol{E}\)</span> is always less than or equal to <span class="math inline">\(n\)</span>.</p>
+<p>We solve for <span class="math inline">\(\boldsymbol{y}\)</span> in an optimization framework. We first define the <em>residual</em> or error <span class="math display">\[\boldsymbol{r} = \boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}\]</span> and the objective is to minimize <span class="math inline">\(\boldsymbol{r}\)</span> in some sense. For this problem, <span class="math inline">\(\boldsymbol{r}\)</span> is a vector and we want to minimize the length of <span class="math inline">\(\boldsymbol{r}\)</span>. For simplicity, we minimize the square of the length of <span class="math inline">\(\boldsymbol{r}\)</span>, which is simply <span class="math inline">\(\boldsymbol{r}^T\boldsymbol{r}\)</span>. Therefore, the best representation of <span class="math inline">\(\boldsymbol{x}\)</span> in the space spanned by <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span> is the one that minimizes the residual.</p>
+<p>Mathematically, it can be written as <span class="math display">\[
+\min_{\boldsymbol{y}} \boldsymbol{r}^T\boldsymbol{r},
+\]</span> which defines the <em>least-squares</em> problem in Euclidean space.</p>
+<p>The cost function <span class="math inline">\(\boldsymbol{r}^T\boldsymbol{r}\)</span> can be written as <span class="math display">\[\begin{align*}
+\boldsymbol{r}^T\boldsymbol{r} &amp;= (\boldsymbol{x}- \boldsymbol{E}\boldsymbol{y})^T(\boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}),\\
+&amp;= \boldsymbol{y}^T\boldsymbol{E}^T\boldsymbol{E}\boldsymbol{y}- \boldsymbol{y}^T\boldsymbol{E}^T\boldsymbol{x}- \boldsymbol{x}^T\boldsymbol{E}\boldsymbol{y}+ \boldsymbol{x}^T\boldsymbol{x},\\
+&amp;= \boldsymbol{y}^T\boldsymbol{E}^T\boldsymbol{E}\boldsymbol{y}-2\boldsymbol{y}^T\boldsymbol{E}^T\boldsymbol{x}+ \boldsymbol{x}^T\boldsymbol{x}.
+\end{align*}\]</span></p>
+<p>This is a quadratic equation in the unknown <span class="math inline">\(\boldsymbol{y}\)</span>. To solve for <span class="math inline">\(\boldsymbol{y}\)</span> we first apply the first order condition of optimality <span class="math display">\[\begin{align*}
+&amp; \frac{\partial \left(\boldsymbol{y}^T(\boldsymbol{E}^T\boldsymbol{E})\boldsymbol{y}-2\boldsymbol{y}^T\boldsymbol{E}^T\boldsymbol{x}+ \boldsymbol{x}^T\boldsymbol{x}\right)}{\partial \boldsymbol{y}} = 0 \\
+\implies &amp; \boldsymbol{y}^T(\boldsymbol{E}^T\boldsymbol{E}) - 2\boldsymbol{E}^T\boldsymbol{x}= 0,\\
+\implies &amp; 2(\boldsymbol{E}^T\boldsymbol{E})\boldsymbol{y}= 2\boldsymbol{E}^T\boldsymbol{x},\\
+\implies &amp; (\boldsymbol{E}^T\boldsymbol{E})\boldsymbol{y}= \boldsymbol{E}^T\boldsymbol{x},\\
+\text{or } &amp; \boldsymbol{y}=  (\boldsymbol{E}^T\boldsymbol{E})^\dagger\boldsymbol{E}^T\boldsymbol{x}.
+\end{align*}\]</span></p>
+<p>Therefore, the optimal representation of <span class="math inline">\(\boldsymbol{x}\)</span> in the space spanned by <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span> is given by the components <span id="eq-optmal-ls-euclidean"><span class="math display">\[
+\boldsymbol{y}^\ast = (\boldsymbol{E}^T\boldsymbol{E})^\dagger\boldsymbol{E}^T\boldsymbol{x}.
+  \tag{9.1}\]</span></span></p>
+<p>We put <span class="math inline">\(\ast\)</span> to indicate optimality.</p>
+<p>Note that:</p>
+<ul>
+<li>If <span class="math inline">\(\boldsymbol{E}\)</span> is full rank, i.e.&nbsp;<span class="math inline">\(\textbf{rank}\left(\boldsymbol{E}\right) = n\)</span>, then the optimal residual <span class="math inline">\(\boldsymbol{r}^\ast := \boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}^\ast = \boldsymbol{0}\)</span>, i.e., we are able to exactly represent <span class="math inline">\(\boldsymbol{x}\)</span> with linear combinations <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span>.</li>
+<li>If <span class="math inline">\(\boldsymbol{E}\)</span> is rank-deficient rank, i.e.&nbsp;<span class="math inline">\(\textbf{rank}\left(\boldsymbol{E}\right) &lt; n\)</span>, then the optimal residual <span class="math inline">\(\boldsymbol{r}^\ast := \boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}^\ast \neq \boldsymbol{0}\)</span>, i.e., we are <em>not</em> able to exactly represent <span class="math inline">\(\boldsymbol{x}\)</span> with linear combinations <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span>. We can only obtain the <em>best</em> approximation of <span class="math inline">\(\boldsymbol{x}\)</span>.</li>
+</ul>
+</section>
+<section id="examples" class="level3" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">9.2.3</span> Examples</h3>
+<p>Here are some examples demonstrating approximation in Euclidean space.</p>
+<section id="boldsymbole-has-full-rank" class="level4" data-number="9.2.3.1">
+<h4 data-number="9.2.3.1" class="anchored" data-anchor-id="boldsymbole-has-full-rank"><span class="header-section-number">9.2.3.1</span> <span class="math inline">\(\boldsymbol{E}\)</span> Has Full Rank</h4>
+<p>Consider <span class="math inline">\(\mathcal{R}^3\)</span> with basis <span class="math inline">\(\boldsymbol{e}_i := \begin{bmatrix}\cos(\theta_i) &amp; \sin(\theta_i) &amp; 1\end{bmatrix}^T\)</span>, for <span class="math inline">\(\theta_i \in \{0^\circ, 30^\circ, 45^\circ, 60^\circ, 90^\circ\}\)</span>.</p>
+<div class="cell" data-jupyter="python3">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>d2r <span class="op">=</span> np.pi<span class="op">/</span><span class="dv">180</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>TH <span class="op">=</span> np.array([<span class="dv">0</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">90</span>])</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>e <span class="op">=</span> <span class="kw">lambda</span> th: np.array([np.cos(th<span class="op">*</span>d2r), np.sin(th<span class="op">*</span>d2r), <span class="dv">1</span>])</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> np.array([e(th) <span class="cf">for</span> th <span class="kw">in</span> TH]).T</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(E)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1.00000000e+00 8.66025404e-01 7.07106781e-01 5.00000000e-01
+  6.12323400e-17]
+ [0.00000000e+00 5.00000000e-01 7.07106781e-01 8.66025404e-01
+  1.00000000e+00]
+ [1.00000000e+00 1.00000000e+00 1.00000000e+00 1.00000000e+00
+  1.00000000e+00]]</code></pre>
+</div>
+</div>
+<p>This results in <span class="math display">\[
+  \boldsymbol{E} = \begin{bmatrix}
+  1.0 &amp; 0.866 &amp; 0.707  &amp;0.5&amp;       0.0\\
+0.0  &amp;0.5       &amp;0.707  &amp;0.866 &amp; 1.0\\
+1.0  &amp;1.0       &amp;1.0       &amp;1.0      &amp; 1.0\\
+  \end{bmatrix}.
+\]</span> We can verify that <span class="math inline">\(\textbf{rank}\left(\boldsymbol{E}\right) = 3\)</span>, therefore <span class="math inline">\(\boldsymbol{E}\)</span> has full-rank.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.linalg.matrix_rank(E))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3</code></pre>
+</div>
+</div>
+<p>Let us now represent a vector <span class="math inline">\(\boldsymbol{x}:=\begin{bmatrix} 1 &amp; 1 &amp; 1\end{bmatrix}^T\)</span> with the basis provided. Using (<a href="#eq-optmal-ls-euclidean">Equation&nbsp;<span>9.1</span></a>), the optimal components of <span class="math inline">\(\boldsymbol{x}\)</span> in <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^5\)</span> is given by:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>yopt <span class="op">=</span> np.linalg.pinv(E.T<span class="op">@</span>E)<span class="op">@</span>E.T<span class="op">@</span>x</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Optimal components:"</span>, yopt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimal components: [-0.79976421  0.79646048  1.00660745  0.79646048 -0.79976421]</code></pre>
+</div>
+</div>
+<p>Since <span class="math inline">\(\boldsymbol{E}\)</span> is full rank, the optimal residual <span class="math inline">\(\boldsymbol{r}^\ast\)</span> should be (numerically) zero.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Optimal residual:"</span>, x <span class="op">-</span> E<span class="op">@</span>yopt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimal residual: [ 9.32587341e-15 -1.11022302e-14  2.22044605e-15]</code></pre>
+</div>
+</div>
+</section>
+<section id="obtain-minimal-spanning-set-from-a-given-basis" class="level4" data-number="9.2.3.2">
+<h4 data-number="9.2.3.2" class="anchored" data-anchor-id="obtain-minimal-spanning-set-from-a-given-basis"><span class="header-section-number">9.2.3.2</span> Obtain Minimal Spanning Set From a Given Basis</h4>
+<p>Given <span class="math inline">\(\boldsymbol{E}\)</span> for the previous example, we are interested in determining the minimal basis from it. Since we are representing vectors in <span class="math inline">\(\mathcal{R}^3\)</span>, the minimal set should include three orthogonal basis. We can obtain them using singular value decomposition of <span class="math inline">\(\boldsymbol{E}\)</span>. This is shown in the following Python code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>U, singular_values, Vt <span class="op">=</span> np.linalg.svd(E) <span class="co"># Get svd of E</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The reduced basis are given by the columns of U:</span><span class="ch">\n</span><span class="st">"</span>, U)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The reduced basis are given by the columns of U:
+ [[-4.66539471e-01  7.07106781e-01 -5.31357622e-01]
+ [-4.66539471e-01 -7.07106781e-01 -5.31357622e-01]
+ [-7.51453155e-01  1.14761992e-16  6.59786447e-01]]</code></pre>
+</div>
+</div>
+<p>These columns are orthogonal.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dot(U[:,0],U[:,1]):"</span>, np.dot(U[:,<span class="dv">0</span>],U[:,<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>dot(U[:,0],U[:,1]): -2.7460636708693843e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dot(U[:,0],U[:,2]):"</span>, np.dot(U[:,<span class="dv">0</span>],U[:,<span class="dv">2</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>dot(U[:,0],U[:,2]): 1.1337185675573172e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dot(U[:,1],U[:,2]):"</span>, np.dot(U[:,<span class="dv">1</span>],U[:,<span class="dv">2</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>dot(U[:,1],U[:,2]): -1.4394465687159935e-16</code></pre>
+</div>
+</div>
+<p>The components of <span class="math inline">\(\boldsymbol{x}\)</span> in the new basis are given by:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>yred <span class="op">=</span> np.linalg.pinv(U.T<span class="op">@</span>U)<span class="op">@</span>(U.T)<span class="op">@</span>x</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The components in reduced basis:</span><span class="ch">\n</span><span class="st">"</span>, yred)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The components in reduced basis:
+ [-1.68453210e+00 -5.81373296e-17 -4.02928796e-01]</code></pre>
+</div>
+</div>
+<p>The residual should also be zero, since <span class="math inline">\(\textbf{rank}\left(\boldsymbol{U}\right) = 3\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Rank(U):"</span>, np.linalg.matrix_rank(U))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rank(U): 3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Optimal residue with reduced basis:</span><span class="ch">\n</span><span class="st">"</span>, x<span class="op">-</span>U<span class="op">@</span>yred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimal residue with reduced basis:
+ [-2.22044605e-16  0.00000000e+00  0.00000000e+00]</code></pre>
+</div>
+</div>
+</section>
+<section id="boldsymbole-spans-lower-dimensional-space" class="level4" data-number="9.2.3.3">
+<h4 data-number="9.2.3.3" class="anchored" data-anchor-id="boldsymbole-spans-lower-dimensional-space"><span class="header-section-number">9.2.3.3</span> <span class="math inline">\(\boldsymbol{E}\)</span> Spans Lower Dimensional Space</h4>
+<p>Now consider basis <span class="math inline">\(\boldsymbol{e}_i := \begin{bmatrix}\cos(\theta_i) &amp; \sin(\theta_i) &amp; 0 \end{bmatrix}^T\)</span>, for <span class="math inline">\(\theta_i \in \{0^\circ, 30^\circ, 45^\circ, 60^\circ, 90^\circ\}\)</span>. The corresponding <span class="math inline">\(\boldsymbol{E}\)</span> matrix is given by <span class="math display">\[
+  \boldsymbol{E} = \begin{bmatrix}
+  1.0  &amp; 0.866     &amp; 0.707  &amp; 0.5   &amp;  0.0\\
+  0.0  &amp; 0.5       &amp; 0.707  &amp; 0.866 &amp; 1.0\\
+  0.0  &amp; 0.0       &amp; 0.0    &amp; 0.0   &amp; 0.0\\
+  \end{bmatrix}.
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>d2r <span class="op">=</span> np.pi<span class="op">/</span><span class="dv">180</span><span class="op">;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>TH <span class="op">=</span> np.array([<span class="dv">0</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">90</span>])</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>e <span class="op">=</span> <span class="kw">lambda</span> th: np.array([np.cos(th<span class="op">*</span>d2r), np.sin(th<span class="op">*</span>d2r), <span class="dv">0</span>])</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> np.array([e(th) <span class="cf">for</span> th <span class="kw">in</span> TH]).T</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(E)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1.00000000e+00 8.66025404e-01 7.07106781e-01 5.00000000e-01
+  6.12323400e-17]
+ [0.00000000e+00 5.00000000e-01 7.07106781e-01 8.66025404e-01
+  1.00000000e+00]
+ [0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+  0.00000000e+00]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix rank: "</span>, np.linalg.matrix_rank(E))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix rank:  2</code></pre>
+</div>
+</div>
+<p>Since the rank of this matrix is 2, the associated basis doesn’t span <span class="math inline">\(\mathcal{R}^3\)</span>. Therefore, we will not be able to exactly represent vectors in <span class="math inline">\(\mathcal{R}^3\)</span>. We can get the <em>best</em> approximation in <span class="math inline">\(\mathcal{R}^2\)</span>.</p>
+<p>For example, <span class="math inline">\(\boldsymbol{x}:=\begin{bmatrix} 1 &amp; 1 &amp; 1\end{bmatrix}^T\)</span> cannot be exactly represented, i.e., we will have a non-zero residual. This is demonstrated in the following Python code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.linalg.pinv(E.T<span class="op">@</span>E)<span class="op">@</span>(E.T)<span class="op">@</span>x</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Optimal residue with given basis:</span><span class="ch">\n</span><span class="st">"</span>, x<span class="op">-</span>E<span class="op">@</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimal residue with given basis:
+ [ 4.4408921e-16 -4.4408921e-16  1.0000000e+00]</code></pre>
+</div>
+</div>
+<p>We see that there is zero residual in the first two coordinates, which is in the space spanned by the given basis. The residual vector is thus in the space orthogonal to the space spanned by the given basis.</p>
+<p>In general, the residual will be orthogonal to the space spanned by the basis. This will always be the case whenever we try to approximate <em>objects</em> in higher dimensional space in lower dimensional space.</p>
+</section>
+<section id="a-projection-perspective" class="level4" data-number="9.2.3.4">
+<h4 data-number="9.2.3.4" class="anchored" data-anchor-id="a-projection-perspective"><span class="header-section-number">9.2.3.4</span> A Projection Perspective</h4>
+<p>We next show that the best approximation in a lower dimensional space can be eqiuvalently achieved by projecting the residual on each of the basis function. We assume we have <span class="math inline">\(m\)</span> basis in <span class="math inline">\(\mathcal{R}^n\)</span>, i.e.&nbsp;<span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^m\)</span> for <span class="math inline">\(\boldsymbol{e}_i\in\mathcal{R}^n\)</span>.</p>
+<p>The optimal representation of <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}\)</span> in that case satisfies <span id="eq-projection-theorem"><span class="math display">\[
+\left\langle \boldsymbol{r},\boldsymbol{e}_i \right\rangle = 0, \text{ for } i = 1,\cdots,m.
+\tag{9.2}\]</span></span></p>
+<p>Recalling that <span class="math inline">\(\boldsymbol{r}:=\boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}\)</span> and <span class="math inline">\(\left\langle \boldsymbol{r},\boldsymbol{e}_i \right\rangle\)</span> for vectors is simply <span class="math inline">\(\boldsymbol{r}^T \boldsymbol{e}_i = \boldsymbol{e}_i^T\boldsymbol{r}\)</span>, <a href="#eq-projection-theorem">Equation&nbsp;<span>9.2</span></a> can be written as <span class="math display">\[\begin{align*}
+&amp; \boldsymbol{e}_i^T\boldsymbol{x}- \boldsymbol{e}_i^T\boldsymbol{E}\boldsymbol{y}= 0,\\
+\text{ or }&amp; \boldsymbol{e}_i^T\boldsymbol{E}\boldsymbol{y}= \boldsymbol{e}_i^T\boldsymbol{x}, \text{ for } i = 1,\cdots,m,
+\end{align*}\]</span> or more compactly as <span class="math display">\[
+\boldsymbol{E}^T\boldsymbol{E}\boldsymbol{y}= \boldsymbol{E}^T\boldsymbol{x}.
+\]</span></p>
+<p>Therefore, the coefficients <span class="math inline">\(\boldsymbol{y}\)</span> can be solved as <span class="math display">\[
+\boldsymbol{y}= (\boldsymbol{E}^T\boldsymbol{E})^\dagger\boldsymbol{E}^T\boldsymbol{x},
+\]</span> which is the same as <a href="#eq-optmal-ls-euclidean">Equation&nbsp;<span>9.1</span></a>. Therefore, projecting the residual on each basis results in the optimal approximation.</p>
+</section>
+</section>
+<section id="matrix-spaces" class="level3" data-number="9.2.4">
+<h3 data-number="9.2.4" class="anchored" data-anchor-id="matrix-spaces"><span class="header-section-number">9.2.4</span> Matrix Spaces</h3>
+<p>We next look at linear matrix spaces. Let us consider a matrix in <span class="math inline">\(\mathcal{R}^{2\times 2}\)</span> given by <span class="math display">\[
+\boldsymbol{A}= \begin{bmatrix}a_{11} &amp; a_{12} \\ a_{21} &amp; a_{22} \end{bmatrix}.
+\]</span> We can represent it as a linear combination of basis matrices in the following manner: <span class="math display">\[
+\boldsymbol{A}= a_{11}\begin{bmatrix}1 &amp; 0\\0 &amp; 0\end{bmatrix} +  a_{12}\begin{bmatrix}0 &amp; 1\\0 &amp; 0\end{bmatrix} + a_{21}\begin{bmatrix}0 &amp; 0\\1 &amp; 0\end{bmatrix} + a_{22}\begin{bmatrix}0 &amp; 0\\0 &amp; 1\end{bmatrix},
+\]</span> where <span class="math display">\[
+\begin{bmatrix}1 &amp; 0\\0 &amp; 0\end{bmatrix}, \begin{bmatrix}0 &amp; 1\\0 &amp; 0\end{bmatrix}, \begin{bmatrix}0 &amp; 0\\1 &amp; 0\end{bmatrix}, \text{ and }\begin{bmatrix}0 &amp; 0\\0 &amp; 1\end{bmatrix},
+\]</span> are basis matrices that span <span class="math inline">\(\mathcal{R}^{2\times 2}\)</span>.</p>
+<p>Similarly, space of symmetric matrices in <span class="math inline">\(\mathcal{R}^{2\times 2}\)</span> can be written as <span class="math display">\[
+\boldsymbol{A}= a_{11}\begin{bmatrix}1 &amp; 0\\0 &amp; 0\end{bmatrix} +  a_{12}\begin{bmatrix}0 &amp; 1\\1 &amp; 0\end{bmatrix} + a_{22}\begin{bmatrix}0 &amp; 0\\0 &amp; 1\end{bmatrix} =  \begin{bmatrix}a_{11} &amp; a_{12} \\ a_{12} &amp; a_{22} \end{bmatrix}.
+\]</span></p>
+<p>Recall that inner product of two matrices <span class="math inline">\(\boldsymbol{A},\boldsymbol{B}\)</span> is defined as: <span class="math display">\[
+\left\langle \boldsymbol{A},\boldsymbol{B} \right\rangle := \textbf{tr}\left[\boldsymbol{A}^T\boldsymbol{B}\right],
+\]</span> which can be applied to the basis matrices shown above to confirm that they are <em>orthogonal</em>.</p>
+</section>
+</section>
+<section id="function-space" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="function-space"><span class="header-section-number">9.3</span> Function Space</h2>
+<p>Let us consider an example of function approximation in the <span class="math inline">\(\mathcal{L}^2\)</span> Hilbert space, which consists of all square-integrable functions. Recall that a function <span class="math inline">\(f(x)\)</span> is in <span class="math inline">\(\mathcal{L}^2\)</span> if <span class="math inline">\(\int |f(x)|^2 dx &lt; \infty\)</span>. In this space, the inner product of two functions <span class="math inline">\(f(x)\)</span> and <span class="math inline">\(g(x)\)</span> which maps <span class="math inline">\(\mathcal{R}\)</span> to <span class="math inline">\(\mathcal{R}\)</span> is defined as <span class="math inline">\(\langle f(x), g(x) \rangle = \int f(x)g(x) dx\)</span>. If the functions are vectors or matrices with vector arguments, then we have the following definition of inner products: <span class="math display">\[\begin{align*}
+\text{For vector functions: } &amp; \langle\boldsymbol{f}(\boldsymbol{x}),\boldsymbol{g}(\boldsymbol{x})\rangle := \int_\mathcal{D} \boldsymbol{f}^T(x)\boldsymbol{g}(\boldsymbol{x}) d\boldsymbol{x}, \\
+\text{For matrix functions: } &amp; \langle\boldsymbol{F}(\boldsymbol{x}),\boldsymbol{G}(\boldsymbol{x})\rangle := \int_\mathcal{D} \textbf{tr}\left[\boldsymbol{F}^T(x)\boldsymbol{G}(\boldsymbol{x})\right] d\boldsymbol{x},
+\end{align*}\]</span> where <span class="math inline">\(\mathcal{D}\)</span> is the set over which the functions are defined.</p>
+<section id="basis-functions" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="basis-functions"><span class="header-section-number">9.3.1</span> Basis Functions</h3>
+<p>A Hilbert space is defined by a set of basis functions (or vectors for <span class="math inline">\(l_2\)</span> spaces), which are denoted by <span class="math inline">\(\phi_i(\boldsymbol{x})\)</span> for <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}^n\)</span>. The set of basis functions are denoted <span id="eq-basis-functions"><span class="math display">\[
+\boldsymbol{\Phi}(\boldsymbol{x}) := \begin{bmatrix}\phi_0(\boldsymbol{x})\\\phi_1(\boldsymbol{x}) \\ \vdots \\\phi_N(\boldsymbol{x}) \end{bmatrix}.
+\tag{9.3}\]</span></span></p>
+<p>Scalar functions in this space can be represented as linear combination of these basis functions as, <span class="math display">\[
+\hat{f}(\boldsymbol{x}) = \sum_{i=0}^N \phi_i(\boldsymbol{x})\alpha_i = \boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha}= \boldsymbol{\alpha}^T\boldsymbol{\Phi}(\boldsymbol{x}),
+\]</span> where <span class="math inline">\(\boldsymbol{\alpha}:= \begin{bmatrix}\alpha_0 &amp; \alpha_1 &amp; \cdots &amp;\alpha_N\end{bmatrix}^T\)</span> is the vector of coefficients. Vector functions <span class="math inline">\(\boldsymbol{F}(\boldsymbol{x}):\mathcal{R}^n \mapsto \mathcal{R}^m\)</span> can be represented as <span class="math display">\[
+\hat{\boldsymbol{f}}(\boldsymbol{x}) = \boldsymbol{A}\boldsymbol{\Phi}(\boldsymbol{x}),
+\]</span> where <span class="math inline">\(\boldsymbol{A}\in\mathcal{R}^{m\times (N+1)}\)</span> is the coeffient matrix. We put a <span class="math inline">\(\hat{}\)</span> on the functions to indicate that we will be approximating the true functions in a finite-dimensional Hilbert space.</p>
+<p>When <span class="math inline">\(\phi_i(\boldsymbol{x})\)</span> are orthogonal, i.e., <span class="math inline">\(\langle\phi_i(\boldsymbol{x}),\phi_j(\boldsymbol{x})\rangle = 0\)</span> for <span class="math inline">\(i\neq j\)</span>, the dimension of the Hilbert space is given by the number of basis functions. However, these basis functions need not be orthogonal, resulting in non-minimal set of basis functions. In that case, the dimension of the Hilbert space is given by the rank of the matrix <span class="math inline">\(\langle \boldsymbol{\Phi}^T(\boldsymbol{x}),\boldsymbol{\Phi}^T(\boldsymbol{x}) \rangle\)</span>.</p>
+<p>Let us next consider approximation of a function <span class="math inline">\(f(\boldsymbol{x}):\mathcal{R}^n \mapsto \mathcal{R}\)</span> in the space defined by <span class="math inline">\(\boldsymbol{\Phi}(\boldsymbol{x})\)</span>. Similar to approximation in the Euclidean space, we will define the error (or residual) as <span class="math display">\[
+e(\boldsymbol{x}) := f(\boldsymbol{x}) - \boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha}.
+\]</span> The objective is to determine the coefficient vector <span class="math inline">\(\boldsymbol{\alpha}\)</span> which minimizes <span class="math inline">\(e(\boldsymbol{x})\)</span> in some sense. We will minimize <span class="math inline">\(\|e(\boldsymbol{x})\|^2_2\)</span>, which is defined as <span class="math display">\[\begin{align*}
+\|e(\boldsymbol{x})\|^2_2 &amp;:= \langle e(\boldsymbol{x}),e(\boldsymbol{x}))\rangle^2, \\
+&amp;=  \langle f(\boldsymbol{x}) - \boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha},  f(\boldsymbol{x}) - \boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha}\rangle,\\
+&amp;= \int_\mathcal{D} (f(\boldsymbol{x}) - \boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha})^T (f(\boldsymbol{x}) - \boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha}) d\boldsymbol{x},\\
+&amp; = \int_\mathcal{D} \left(f^2(\boldsymbol{x}) -  2f(\boldsymbol{x})\boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha}+ \boldsymbol{\alpha}^T\boldsymbol{\Phi}(\boldsymbol{x})\boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha}\right)d\boldsymbol{x},\\
+&amp; = \underbrace{\left(\int_\mathcal{D} f^2(\boldsymbol{x})d\boldsymbol{x}\right)}_{=: s} - 2\underbrace{\left(\int_\mathcal{D} f(\boldsymbol{x})\boldsymbol{\Phi}^T(\boldsymbol{x}) \right)}_{=:\boldsymbol{r}^T}\boldsymbol{\alpha}+ \boldsymbol{\alpha}^T \underbrace{\left(\int_\mathcal{D} \boldsymbol{\Phi}(\boldsymbol{x})\boldsymbol{\Phi}^T(\boldsymbol{x}) d\boldsymbol{x}\right)}_{=:\boldsymbol{Q \ge \boldsymbol{0}}}\boldsymbol{\alpha}, \\
+&amp;= \boldsymbol{\alpha}\top\boldsymbol{Q}\boldsymbol{\alpha}-  2\boldsymbol{r}^T\boldsymbol{\alpha}+ s,
+\end{align*}\]</span> which is quadratic in <span class="math inline">\(\boldsymbol{\alpha}\)</span>. The minimum value of a quadratic cost function is obtained by first setting the gradient w.r.t <span class="math inline">\(\boldsymbol{\alpha}\)</span> to zero and then checking the Hessian for positive (semi-)definiteness. Therefore, <span class="math display">\[\begin{align*}
+&amp; \frac{\partial}{\partial \boldsymbol{\alpha}}\left(\boldsymbol{\alpha}\top\boldsymbol{Q}\boldsymbol{\alpha}-  2\boldsymbol{r}^T\boldsymbol{\alpha}+ s\right) = 2\boldsymbol{Q}\boldsymbol{\alpha}- 2\boldsymbol{r} = 0.\\
+\end{align*}\]</span> Therefore, the solution is given by <span id="eq-optimal-L2-error"><span class="math display">\[
+\implies  \boldsymbol{\alpha}^\ast := \boldsymbol{Q}^\dagger\boldsymbol{r}.
+\tag{9.4}\]</span></span></p>
+<p>The Hessian of the cost function is <span class="math inline">\(\boldsymbol{Q}\)</span> which is positive (semi-) definite. Therefore, the candidate solution(s) obtained by setting the gradient to zero is (are) the minima of the function.</p>
+<p>If <span class="math inline">\(\boldsymbol{Q}\)</span> is positive definite then it is invertible and <span class="math inline">\(\boldsymbol{\alpha}^\ast\)</span> is unique. If <span class="math inline">\(\boldsymbol{Q}\)</span> is positive semi-definite then <span class="math inline">\(\boldsymbol{Q}\)</span> is not invertible and there are many solutions of <span class="math inline">\(\boldsymbol{\alpha}\)</span>. The pseudo-inverse gives the <span class="math inline">\(\boldsymbol{\alpha}\)</span> which minimizes <span class="math inline">\(\|\boldsymbol{\alpha}\|_2\)</span>.</p>
+<p>The Hessian of the cost function is <span class="math inline">\(\boldsymbol{Q}\)</span>, which is positive (semi-)definite. Consequently, the potential solution(s) identified by equating the gradient to zero represent the minima of the function. When <span class="math inline">\(\boldsymbol{Q}\)</span> is positive definite, it also becomes invertible, leading to a unique solution denoted as <span class="math inline">\(\boldsymbol{\alpha}^\ast\)</span>. In contrast, if <span class="math inline">\(\boldsymbol{Q}\)</span> is positive semi-definite, it lacks invertibility, resulting in multiple solutions for <span class="math inline">\(\boldsymbol{\alpha}\)</span>. In such cases, the pseudo-inverse method is employed to determine the value of <span class="math inline">\(\boldsymbol{\alpha}\)</span> that minimizes the <span class="math inline">\(\ell_2\)</span> norm, <span class="math inline">\(\|\boldsymbol{\alpha}\|_2\)</span>.</p>
+<p><em>Note:</em> If the function <span class="math inline">\(f(\boldsymbol{x})\)</span> is in the space spanned by <span class="math inline">\(\boldsymbol{\Phi}(x)\)</span>, then the optimal <span class="math inline">\(\|e(\boldsymbol{x})\|^2_2\)</span> will be zero. Otherwise, the optimal residual will be non-zero.</p>
+</section>
+<section id="a-projection-perspective-1" class="level3" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="a-projection-perspective-1"><span class="header-section-number">9.3.2</span> A Projection Perspective</h3>
+<p>We can show that projecting the error <span class="math inline">\(e(\boldsymbol{x})\)</span> on the basis function also results in the optimal solution. We can write <span class="math inline">\(\langle e(\boldsymbol{x}),\phi_i(\boldsymbol{x}) \rangle = 0\)</span> for <span class="math inline">\(i = 0,\cdots,N\)</span> compactly as <span class="math display">\[
+\begin{bmatrix}\langle e(\boldsymbol{x}),\phi_0(\boldsymbol{x}) \rangle\\
+\langle e(\boldsymbol{x}),\phi_1(\boldsymbol{x}) \rangle \\
+\vdots \\
+\langle e(\boldsymbol{x}),\phi_N(\boldsymbol{x}) \rangle
+\end{bmatrix} = \boldsymbol{0} \\
+\implies
+\underbrace{\begin{bmatrix}
+\langle\boldsymbol{\Phi}^T(\boldsymbol{x})\phi_0(\boldsymbol{x})\rangle\\
+\langle\boldsymbol{\Phi}^T(\boldsymbol{x})\phi_1(\boldsymbol{x})\rangle\\
+\vdots \\
+\langle\boldsymbol{\Phi}^T(\boldsymbol{x})\phi_N(\boldsymbol{x})\rangle
+\end{bmatrix}}_{\text{This is equal to } \langle \boldsymbol{\Phi}(\boldsymbol{x})\boldsymbol{\Phi}^T(\boldsymbol{x})\rangle = \boldsymbol{Q}.} \boldsymbol{\alpha}= \underbrace{\begin{bmatrix}\langle f(\boldsymbol{x})\phi_0(\boldsymbol{x})\rangle\\
+\langle f(\boldsymbol{x})\phi_1(\boldsymbol{x})\rangle\\
+\vdots \\
+\langle f(\boldsymbol{x})\phi_N(\boldsymbol{x})\rangle
+\end{bmatrix}}_{\text{This is equal to } \langle \boldsymbol{\Phi}(\boldsymbol{x})f(\boldsymbol{x})\rangle = \boldsymbol{r}.}.
+\]</span> Therefore, the system of linear equations has a solution <span class="math inline">\(\boldsymbol{\alpha}^\ast = \boldsymbol{Q}^\dagger\boldsymbol{r}\)</span>, which is the same solution as <a href="#eq-optimal-L2-error">Equation&nbsp;<span>9.4</span></a>.</p>
+<section id="example-exact-polynomial-representation" class="level4" data-number="9.3.2.1">
+<h4 data-number="9.3.2.1" class="anchored" data-anchor-id="example-exact-polynomial-representation"><span class="header-section-number">9.3.2.1</span> Example: Exact Polynomial Representation</h4>
+<p>Here we consider approximation of <span class="math inline">\(f(x) = 1+x^2 - x^3\)</span> with monomial basis <span class="math inline">\(\boldsymbol{\Phi}(x) = \begin{bmatrix}1 &amp; x &amp; x^2 &amp; x^3 &amp; x^4 \end{bmatrix}^T\)</span>. This is a simple problem, where <span class="math inline">\(f(x)\)</span> is in the space spanned by <span class="math inline">\(\boldsymbol{\Phi}(x)\)</span> and we should expect zero residual error.</p>
+<p>To approximate the function <span class="math inline">\(f(x) = 1 + 2x^2 - x^3\)</span> using a polynomial basis, we can use the SymPy library in Python. We define the inner product in this context as <span class="math inline">\(\langle p(x), q(x) \rangle = \int_{-1}^{1} p(x)q(x) dx\)</span> for polynomials <span class="math inline">\(p(x)\)</span> and <span class="math inline">\(q(x)\)</span>.</p>
+<p>Here’s the Python code to perform this approximation:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sp</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sp.symbols(<span class="st">'x'</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>basis <span class="op">=</span> [<span class="dv">1</span>,x,x<span class="op">**</span><span class="dv">2</span>,x<span class="op">**</span><span class="dv">3</span>,x<span class="op">**</span><span class="dv">4</span>]</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>nbasis <span class="op">=</span> <span class="bu">len</span>(basis)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> x<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute projections using Sympy.</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> basis:</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>   a <span class="op">=</span> sp.integrate(p<span class="op">*</span>f,(x,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>   r.append(a)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> q <span class="kw">in</span> basis:</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>      b <span class="op">=</span> sp.integrate(p<span class="op">*</span>q,(x,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>      Q.append(b)</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve for the coefficients</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>QQ <span class="op">=</span> np.reshape(Q, (nbasis,nbasis)).astype(<span class="bu">float</span>)</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>rr <span class="op">=</span> np.array(r).astype(<span class="bu">float</span>)</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>alp <span class="op">=</span> np.<span class="bu">round</span>(np.linalg.pinv(QQ)<span class="op">@</span>rr,<span class="dv">2</span>)</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>fhat <span class="op">=</span> <span class="bu">sum</span>(basis<span class="op">*</span>alp)</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">' f(x):'</span>,f,<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>,<span class="st">'fhat(x):'</span>, fhat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> f(x): -x**3 + 2*x**2 + 1 
+ fhat(x): -1.0*x**3 + 2.0*x**2 + 1.0</code></pre>
+</div>
+</div>
+<p>We see that the basis functions are able to exactly recover the true function. This is expected since <span class="math inline">\(f(x)\)</span> lies in the space of functions spanned by <span class="math inline">\(\boldsymbol{\Phi}(\boldsymbol{x})\)</span>.</p>
+</section>
+<section id="example-approximation-of-ex-with-monomials" class="level4" data-number="9.3.2.2">
+<h4 data-number="9.3.2.2" class="anchored" data-anchor-id="example-approximation-of-ex-with-monomials"><span class="header-section-number">9.3.2.2</span> Example: Approximation of <span class="math inline">\(e^x\)</span> with Monomials</h4>
+<p>Now consider <span class="math inline">\(f(x) = e^x\)</span>. From Taylor series expansion, we know that we need infinite terms to represent <span class="math inline">\(e^x\)</span>, i.e., <span class="math display">\[
+e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} + \cdots
+\]</span></p>
+<p>Therefore, if we treat each monomial as a basis function, we will need infinite basis to exactly represent <span class="math inline">\(e^x\)</span>. Consequently, we can only <em>approximate</em> <span class="math inline">\(e^x\)</span> with a finite number of monomial basis functions. However, if the approximation interval is small, we may get satisfactorily high accuracy with a few basis functions, as demonstrated next. The following Python code approximates <span class="math inline">\(e^x\)</span> with increasing number of basis functions.</p>
+<div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sp</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sp.symbols(<span class="st">'x'</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>ii <span class="op">=</span> <span class="bu">range</span>(N)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>basis <span class="op">=</span> [x<span class="op">**</span>i <span class="cf">for</span> i <span class="kw">in</span> ii]</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>nbasis <span class="op">=</span> <span class="bu">len</span>(basis)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> sp.exp(x)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute projections using Sympy.</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> basis:</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>   a <span class="op">=</span> sp.integrate(p<span class="op">*</span>f,(x,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>   r.append(a)</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> q <span class="kw">in</span> basis:</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>      b <span class="op">=</span> sp.integrate(p<span class="op">*</span>q,(x,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>      Q.append(b)</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve for the coefficients</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>QQ <span class="op">=</span> np.reshape(Q, (nbasis,nbasis)).astype(<span class="bu">float</span>)</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>rr <span class="op">=</span> np.array(r).astype(<span class="bu">float</span>)</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>alp <span class="op">=</span> np.<span class="bu">round</span>(np.linalg.pinv(QQ)<span class="op">@</span>rr,<span class="dv">2</span>)</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>fhat <span class="op">=</span> <span class="bu">sum</span>(basis<span class="op">*</span>alp)</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>plt.plot(ii,alp,<span class="st">'o-'</span>)<span class="op">;</span> </span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Coefficient Index'</span>)<span class="op">;</span></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'alpha'</span>)<span class="op">;</span></span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Coefficients of various basis functions.'</span>)</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="614"></p>
+<figcaption class="figure-caption">Approximation of <span class="math inline">\(e^x\)</span> with monomial basis functions in the interval <span class="math inline">\([-1,1]\)</span>. The plot shows coefficients associated with each basis function.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>We see that the coefficient for basis number six on onwards are zero, implying we are able accurately represent <span class="math inline">\(e^x\)</span> in the interval <span class="math inline">\([-1,1]\)</span> with the first six basis functions. This is supported by the next set of plots where we plot approximations of <span class="math inline">\(e^x\)</span> with increasing number of basis functions.</p>
+<div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>k1<span class="op">=</span><span class="dv">3</span><span class="op">;</span> fhat1 <span class="op">=</span> sp.lambdify(x,<span class="bu">sum</span>(basis[:k1]<span class="op">*</span>alp[:k1]))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>k2<span class="op">=</span><span class="dv">4</span><span class="op">;</span> fhat2 <span class="op">=</span> sp.lambdify(x,<span class="bu">sum</span>(basis[:k2]<span class="op">*</span>alp[:k2]))</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>k3<span class="op">=</span><span class="dv">5</span><span class="op">;</span> fhat3 <span class="op">=</span> sp.lambdify(x,<span class="bu">sum</span>(basis[:k3]<span class="op">*</span>alp[:k3]))</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">100</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_approximations(k,fhat,xx):</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>   line1, <span class="op">=</span> plt.plot(xx,fhat(xx), label<span class="op">=</span><span class="st">'Approximation'</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>   line2, <span class="op">=</span> plt.plot(xx,np.exp(xx),label<span class="op">=</span><span class="st">'exp(x)'</span>)<span class="op">;</span> </span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>   plt.title(<span class="ss">f'With </span><span class="sc">{</span>k<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> basis functions'</span>)<span class="op">;</span> </span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>   plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>   plt.legend(handles<span class="op">=</span>[line1,line2])</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>plt.figure(<span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span>  plot_approximations(k1,fhat1,xx)<span class="op">;</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span>  plot_approximations(k2,fhat2,xx)<span class="op">;</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span>  plot_approximations(k3,fhat3,xx)<span class="op">;</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-14-3.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Comparison of <span class="math inline">\(e^x\)</span> with its approximation with increasing number of basis functions in the interval <span class="math inline">\([-1,1]\)</span>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><em>Note:</em> Orthogonal polynomials, such as Legendre, Chebyshev, and Hermite, are often favored over monomials for function approximation due to their distinct advantages in numerical stability and efficiency. These polynomials are mutually orthogonal with respect to a specific inner product, ensuring independent coefficients in the polynomial approximation and reducing common numerical problems like ill-conditioning. The approximation process involves projecting the function into a space defined by these polynomials, with coefficients computed via inner products, leading to stable and precise results, especially with higher-degree polynomials. Unique properties of certain orthogonal polynomials, like the minimax property of Chebyshev polynomials and the consistent behavior of Legendre polynomials, make them ideal for function approximation.</p>
+</section>
+<section id="example-approximation-with-trigonometric-basis-functions" class="level4" data-number="9.3.2.3">
+<h4 data-number="9.3.2.3" class="anchored" data-anchor-id="example-approximation-with-trigonometric-basis-functions"><span class="header-section-number">9.3.2.3</span> Example: Approximation with Trigonometric Basis Functions</h4>
+<p>Trigonometric basis functions are useful in approximating periodic functions. Let us consider basis functions <span class="math display">\[
+\boldsymbol{\Phi}(x):= \begin{bmatrix} 1, &amp; \cos(\frac{\pi}{L}x), &amp; \sin(\frac{\pi}{L}x), &amp;\cdots, &amp; \cos(\frac{N\pi}{L}x), &amp; \sin(\frac{N\pi}{L}x) \end{bmatrix}^T,
+\]</span> over the interval <span class="math inline">\([-L,L]\)</span>. These basis functions are orthogonal.</p>
+<p>The following Python code approximates <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> using trigonometric basis functions over the interval <span class="math inline">\([-1,1]\)</span></p>
+<div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sp</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sp.symbols(<span class="st">'x'</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> sp.cos(<span class="dv">3</span><span class="op">*</span>(sp.pi<span class="op">/</span><span class="dv">2</span>)<span class="op">*</span>x)<span class="op">**</span><span class="dv">3</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>x<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>basis <span class="op">=</span> [<span class="dv">1</span>]</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">7</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>ii <span class="op">=</span> <span class="bu">range</span>(N)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> ii:</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>   basis.append(sp.cos(i<span class="op">*</span>sp.pi<span class="op">*</span>x))</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>   basis.append(sp.sin(i<span class="op">*</span>sp.pi<span class="op">*</span>x))</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>nBasis <span class="op">=</span> <span class="bu">len</span>(basis)</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute projections using Sympy.</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> basis:</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>   a <span class="op">=</span> sp.integrate(p<span class="op">*</span>f,(x,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)) <span class="co"># Going to be slow</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>   r.append(a)</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> q <span class="kw">in</span> basis:</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>      b <span class="op">=</span> sp.integrate(p<span class="op">*</span>q,(x,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)) <span class="co"># Going to be slow</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>      Q.append(b)</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve for the coefficients</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>QQ <span class="op">=</span> np.reshape(Q, (nBasis,nBasis)).astype(<span class="bu">float</span>)</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>rr <span class="op">=</span> np.array(r).astype(<span class="bu">float</span>)</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>alp <span class="op">=</span> np.<span class="bu">round</span>(np.linalg.pinv(QQ)<span class="op">@</span>rr,<span class="dv">2</span>)</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">100</span>)</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> sp.lambdify(x,f)</span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>fhat <span class="op">=</span> <span class="bu">sum</span>(alp<span class="op">*</span>basis)</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>Fhat <span class="op">=</span> sp.lambdify(x,fhat)</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>plt.figure(<span class="dv">1</span>)</span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a>plt.plot(xx,F(xx),xx,Fhat(xx),<span class="st">'--'</span>)</span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a>plt.legend((<span class="st">'True'</span>,<span class="st">'Approximate'</span>))</span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Approximation Using </span><span class="ch">\n</span><span class="st"> Trigonometric Basis Functions.'</span>)</span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a>plt.plot(xx,F(xx)<span class="op">-</span>Fhat(xx))</span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Approximation Error.'</span>)</span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-periodic_function" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/fig-periodic_function-5.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9.1: Approximation of a periodic function in the interval <span class="math inline">\([-1,1]\)</span> using trigonometric basis functions.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><a href="#fig-periodic_function">Figure&nbsp;<span>9.1</span></a> shows that we are able to approximate <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> with <span class="math inline">\(15\)</span> basis functions with small errors. We can reduce the error further by increasing the number of basis functions.</p>
+<div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>plt.stem(<span class="bu">range</span>(nBasis),alp)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Basis Index'</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Basis Coefficient'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-periodic_function_coeff" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/fig-periodic_function_coeff-7.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9.2: Coefficients of basis functions.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><a href="#fig-periodic_function_coeff">Figure&nbsp;<span>9.2</span></a> show the coefficients, which are projections of <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> on each of the <span class="math inline">\(15\)</span> basis functions. We see that most of the coefficients are zero indicating the function lies in a much smaller dimensional space than assumed.</p>
+<p>The basis functions are essentially Fourier modes. Therefore, the approximation is nothing but Fourier series expansion of the function and the coefficients of the basis functions gives rise to the discrete Fourier transform of the signal. If chose wavelets as basis, then we would get wavelet transform of the function. Therefore, we can think of all these transforms as projections of a function on different basis functions.</p>
+</section>
+</section>
+<section id="function-approximation-over-discrete-data" class="level3" data-number="9.3.3">
+<h3 data-number="9.3.3" class="anchored" data-anchor-id="function-approximation-over-discrete-data"><span class="header-section-number">9.3.3</span> Function Approximation Over Discrete Data</h3>
+<p>So far we have considered approximation of a function from its analytical form. It involves inner products which require integral of function products. The functions we have considered so far have analytical integrals. However, in more complicated scenarios, analytical integrals may not exist and we have to resort to numerical integrals. In more realistic scenarios, we may have to approximate a function from some data points. In both cases, we have to determine the optimal coefficients for the basis functions from discrete data points.</p>
+<section id="quadrature-methods" class="level4" data-number="9.3.3.1">
+<h4 data-number="9.3.3.1" class="anchored" data-anchor-id="quadrature-methods"><span class="header-section-number">9.3.3.1</span> Quadrature Methods</h4>
+<p>Quadrature, in the context of numerical analysis, refers to the process of estimating the definite integral of a function. It is a fundamental technique used when an integral is too complex to be solved analytically, or when dealing with integrals of data points rather than known functions. The goal of quadrature is to approximate the area under a curve defined by a function over a specific interval.</p>
+<p>The process typically involves approximating the function by a simpler one, often a polynomial, and then dividing the integration interval into smaller subintervals. The integral over each subinterval is estimated using this approximation, and the results are summed to approximate the total integral.</p>
+<p>Common quadrature methods include:</p>
+<ol type="1">
+<li><p><strong>Trapezoidal Rule</strong>: This method approximates the area under the curve as a series of trapezoids and sums their areas. It is simple but less accurate for functions that are not approximately linear over the subintervals.</p></li>
+<li><p><strong>Simpson’s Rule</strong>: Simpson’s Rule improves accuracy by approximating the function with second-degree (quadratic) polynomials. It’s more accurate than the trapezoidal rule for smooth functions.</p></li>
+<li><p><strong>Gaussian Quadrature</strong>: This technique improves accuracy by strategically choosing the points within each interval where the function is evaluated. It can achieve higher accuracy with fewer evaluations than equally-spaced samples. We discuss it in more detail next.</p></li>
+</ol>
+<p>Gaussian quadrature is a sophisticated numerical method for approximating the integral of a function, particularly effective with polynomial and smooth functions. It is based on transforming the integral into a weighted sum of function values at strategically chosen points or abscissas.</p>
+<p>These abscissas are the roots of orthogonal polynomials defined over the integration interval. For a standard Gaussian quadrature over the interval <span class="math inline">\([-1, 1]\)</span>, Legendre polynomials are utilized. These polynomials are orthogonal with respect to the weight function, typically set to <span class="math inline">\(1\)</span>, over the given interval. Mathematically, the orthogonality condition for Legendre polynomials <span class="math inline">\(P_n(x)\)</span> is expressed as <span class="math display">\[\int_{-1}^{1} P_m(x) P_n(x) \, dx = 0, \text{ for } m\neq n.\]</span></p>
+<p>The abscissas are the roots of the Legendre polynomial of degree <span class="math inline">\(n\)</span>, providing <span class="math inline">\(n\)</span> distinct points within the interval. The integration process then hinges on these points, with each accompanied by a specific weight. These weights are derived from the properties of orthogonal polynomials and are calculated by integrating the corresponding Lagrange polynomial, which is constructed to be <span class="math inline">\(1\)</span> at the given abscissa and <span class="math inline">\(0\)</span> at others, over the interval. For Legendre polynomials, the weight formula simplifies to <span class="math display">\[w_i = \frac{2}{(1 - x_i^2) [P_n'(x_i)]^2},\]</span> where <span class="math inline">\(x_i\)</span> are the roots of <span class="math inline">\(P_n(x)\)</span> and <span class="math inline">\(P_n'(x_i)\)</span> is the derivative of <span class="math inline">\(P_n(x)\)</span> evaluated at <span class="math inline">\(x_i\)</span>.</p>
+<p>The Gaussian quadrature approximates the integral by summing the products of function values at each abscissa and the corresponding weights: <span class="math display">\[
+I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p>
+<p>This method is particularly efficient and accurate for polynomial functions, ensuring exact results for polynomials of degree up to <span class="math inline">\(2n-1\)</span> with just <span class="math inline">\(n\)</span> function evaluations.</p>
+<p>We next use Gaussian quadrature to integrate polynomial functions and compare it with the analytical solution. Let us consider polynomial <span class="math inline">\(f(x) = x^3 - 3x^2 + 2x\)</span>. We will integrate this function over an interval <span class="math inline">\([0,5]\)</span>, both analytically and numerically using Gaussian quadrature, and then compare the results. The following Python code demonstrates it.</p>
+<div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> quad, quadrature</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the polynomial function</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> poly_function(x):</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x<span class="op">**</span><span class="dv">3</span> <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Analytical integration of the polynomial</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analytical_integration(a, b):</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Integral of the polynomial is x^4/4 - x^3 + x^2</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (b<span class="op">**</span><span class="dv">4</span>)<span class="op">/</span><span class="dv">4</span> <span class="op">-</span> (b<span class="op">**</span><span class="dv">3</span>) <span class="op">+</span> (b<span class="op">**</span><span class="dv">2</span>) <span class="op">-</span> ((a<span class="op">**</span><span class="dv">4</span>)<span class="op">/</span><span class="dv">4</span> <span class="op">-</span> (a<span class="op">**</span><span class="dv">3</span>) <span class="op">+</span> (a<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Integration limits</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> <span class="dv">0</span>, <span class="dv">5</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform the integration using Gaussian quadrature</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>result_gauss, _ <span class="op">=</span> quadrature(poly_function, a, b)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the analytical result</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>result_analytical <span class="op">=</span> analytical_integration(a, b)</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Gaussian Quadrature Result: </span><span class="sc">{</span>result_gauss<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Analytical Result: </span><span class="sc">{</span>result_analytical<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Error:</span><span class="sc">{</span>result_analytical <span class="op">-</span> result_gauss<span class="sc">}</span><span class="ss">, which is machine precision."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<pre><code>Gaussian Quadrature Result: 56.25000000000001</code></pre>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<pre><code>Analytical Result: 56.25</code></pre>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<pre><code>Error:-7.105427357601002e-15, which is machine precision.</code></pre>
+</div>
+</div>
+</div>
+</div>
+<p>This script uses the <code>quadrature</code> function from SciPy, which implements Gaussian quadrature for numerical integration. It also defines an <code>analytical_integration</code> function that computes the integral of the given polynomial analytically. We see that the numerical integration matches the analytical solution upto machine precision.</p>
+<p>We next show the performance of Gaussian quadrature for integrating non-polynomial functions. We consider integration of <span class="math inline">\(f(x) = e^{-x^2}\)</span> over <span class="math inline">\([0,1]\)</span>, which analytically is <span class="math inline">\(\frac{\sqrt{\pi}}{2}\text{erf}(1)\)</span>, where <span class="math inline">\(\text{erf}(\cdot)\)</span> is the error function.</p>
+<div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> quad, quadrature</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the non-polynomial function</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> non_poly_function(x):</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.exp(<span class="op">-</span>x<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Integration limits</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> <span class="dv">0</span>, <span class="dv">1</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform the integration using Gaussian quadrature</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>result_gauss, _ <span class="op">=</span> quadrature(non_poly_function, a, b)</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the "analytical" result using quad (numerical approximation)</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>result_analytical <span class="op">=</span> math.sqrt(math.pi)<span class="op">*</span>math.erf(<span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Gaussian Quadrature Result: </span><span class="sc">{</span>result_gauss<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Analytical Result: </span><span class="sc">{</span>result_analytical<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Error:</span><span class="sc">{</span>result_analytical <span class="op">-</span> result_gauss<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<pre><code>Gaussian Quadrature Result: 0.7468241328901553</code></pre>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<pre><code>Analytical Result: 0.7468241328124269</code></pre>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<pre><code>Error:-7.772837928854415e-11</code></pre>
+</div>
+</div>
+</div>
+</div>
+<p>The error is quite small, but not quite machine precision.</p>
+</section>
+<section id="least-square-approximation" class="level4" data-number="9.3.3.2">
+<h4 data-number="9.3.3.2" class="anchored" data-anchor-id="least-square-approximation"><span class="header-section-number">9.3.3.2</span> Least-Square Approximation</h4>
+<p>In this case, we assume we do not have analytical form of the function <span class="math inline">\(f(\boldsymbol{x}):\mathcal{R}^n\mapsto\mathcal{R}\)</span>, but only pairs of values <span class="math inline">\((\boldsymbol{x}_k,f(\boldsymbol{x}_k))\)</span> for <span class="math inline">\(k=1,\cdots, d\)</span>. Given a set of basis functions <span class="math inline">\(\boldsymbol{\Phi}(\boldsymbol{x})\)</span>, we want to determine <span class="math inline">\(\hat{f}(\boldsymbol{x}) := \boldsymbol{\Phi}^T(\boldsymbol{x})\boldsymbol{\alpha}\)</span> such that the errors <span class="math inline">\(f(\boldsymbol{x}_k) - \hat{f}(\boldsymbol{x}_k)\)</span> for <span class="math inline">\(k=1,\cdots, d\)</span>; is minimized in some sense. If the error is zero, we say that <span class="math inline">\(\hat{f}(\boldsymbol{x})\)</span> <em>interpolates</em> the data, else it <em>approximates</em> the data.</p>
+<p>We define the error vector <span class="math inline">\(\boldsymbol{e}\)</span> as <span class="math display">\[
+\boldsymbol{e} := \begin{bmatrix}e_1 \\ \vdots \\ e_d \end{bmatrix} =  \begin{bmatrix} f(\boldsymbol{x}_1) - \hat{f}(\boldsymbol{x}_1) \\ \vdots \\ f(\boldsymbol{x}_d) - \hat{f}(\boldsymbol{x}_d) \end{bmatrix} =\underbrace{\begin{bmatrix} f(\boldsymbol{x}_1)\\ \vdots \\ f(\boldsymbol{x}_d) \end{bmatrix}}_{=: \boldsymbol{b}} - \underbrace{\begin{bmatrix}\boldsymbol{\Phi}^T(\boldsymbol{x}_1) \\ \vdots \\ \boldsymbol{\Phi}^T(\boldsymbol{x}_d)\end{bmatrix}}_{=:\boldsymbol{A}}\boldsymbol{\alpha}.
+\]</span></p>
+<p>The two norm of the error vector is given by, <span class="math display">\[\begin{align*}
+\|\boldsymbol{e}\|_2^2 &amp;= \|\boldsymbol{A}\boldsymbol{\alpha}- \boldsymbol{b} \|_2^2, \\
+&amp;= (\boldsymbol{A}\boldsymbol{\alpha}- \boldsymbol{b})^T(\boldsymbol{A}\boldsymbol{\alpha}- \boldsymbol{b}),\\
+&amp;= \boldsymbol{\alpha}^T(\boldsymbol{A}^T\boldsymbol{A})\boldsymbol{\alpha}-2\boldsymbol{\alpha}^T\boldsymbol{A}^T\boldsymbol{b} + \boldsymbol{b}^T\boldsymbol{b},
+\end{align*}\]</span> which is quadratic in <span class="math inline">\(\boldsymbol{\alpha}\)</span> and the optimal solution is given by <span id="eq-lsq_scattered_data"><span class="math display">\[
+\boldsymbol{\alpha}^\ast := (\boldsymbol{A}^T\boldsymbol{A})^\dagger \boldsymbol{A}^T\boldsymbol{b}.
+\tag{9.5}\]</span></span></p>
+<p><em>Note</em>: If <span class="math inline">\(\boldsymbol{A}\)</span> is full rank, then <span class="math inline">\(\|\boldsymbol{e}\|_2^2=0\)</span> and we interpolate the data, i.e., the <span class="math inline">\(\hat{f}(\boldsymbol{x})\)</span> passes through <span class="math inline">\((\boldsymbol{x}_k,f(\boldsymbol{x}_k))\)</span>.</p>
+</section>
+<section id="least-squares-approximation-using-legendre-polynomials." class="level4" data-number="9.3.3.3">
+<h4 data-number="9.3.3.3" class="anchored" data-anchor-id="least-squares-approximation-using-legendre-polynomials."><span class="header-section-number">9.3.3.3</span> Least-Squares Approximation Using Legendre Polynomials.</h4>
+<p>The following Python code illustrates a method for approximating a function using Legendre polynomials on scattered 1D data. Initially, a set of scattered data points is generated. These data points (x) are randomly selected and associated with values (y) derived from a noisy sine wave. The core of this approach lies in constructing a Vandermonde-like matrix for Legendre polynomials. Each column of this matrix, denoted as <span class="math inline">\(\boldsymbol{A}\)</span>, corresponds to a Legendre polynomial of a specific degree evaluated at the data points. To approximate the function, a least squares problem is formulated and solved using <code>np.linalg.lstsq</code>, which essentially returns the optimal solution given by <a href="#eq-lsq_scattered_data">Equation&nbsp;<span>9.5</span></a>.</p>
+<div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate some scattered data</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.sort(np.random.rand(<span class="dv">100</span>))</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> x) <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, x.size)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to approximate the data using Legendre polynomials with linear algebra</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> legendre_approximation(x, y, degree):</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Construct the Vandermonde matrix for Legendre polynomials</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>    A <span class="op">=</span> np.zeros((<span class="bu">len</span>(x), degree <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(degree <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>        A[:, i] <span class="op">=</span> np.polynomial.legendre.legval(x, [<span class="dv">0</span>]<span class="op">*</span>i <span class="op">+</span> [<span class="dv">1</span>])</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Solve the least squares problem</span></span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    coeffs, _, _, _ <span class="op">=</span> np.linalg.lstsq(A, y, rcond<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.polynomial.legendre.Legendre(coeffs)</span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Approximating the data</span></span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>degree <span class="op">=</span> <span class="dv">5</span>  <span class="co"># Degree of the Legendre polynomial</span></span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> legendre_approximation(x, y, degree)</span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the original data and the approximation</span></span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y, label<span class="op">=</span><span class="st">'Original data'</span>)</span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>plt.plot(x, p(x), label<span class="op">=</span><span class="ss">f'Approximation with Legendre basis'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
+<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Function Approximation with Legendre Polynomials Up to Degree </span><span class="sc">{</span>degree<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-19-9.png" class="img-fluid figure-img" width="1152"></p>
+<figcaption class="figure-caption">Function approximation using Legendre polynomials.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="runge-phenomenon" class="level4" data-number="9.3.3.4">
+<h4 data-number="9.3.3.4" class="anchored" data-anchor-id="runge-phenomenon"><span class="header-section-number">9.3.3.4</span> Runge Phenomenon</h4>
+<p>The Runge phenomenon is a notable issue in function approximation using polynomial interpolation. It occurs when high-degree polynomial interpolants are used to approximate certain types of functions, leading to counterintuitive and problematic results.</p>
+<p>This behavior is most prominently seen when using equidistant interpolation points. As the degree of the interpolating polynomial increases, the approximation becomes excellent near the center of the interval but worsens towards the ends. The polynomial starts to exhibit large oscillations, particularly near the endpoints, which severely affects the accuracy of the interpolation. This counterintuitive result is contrary to the expectation that higher-degree polynomials should provide better approximations.</p>
+<p>The Runge phenomenon highlights a fundamental limitation of polynomial interpolation, particularly with equidistant points. It can be mitigated by choosing points that are not evenly spaced, like Chebyshev nodes. Another solution is to use methods like spline interpolation, which involve breaking the range into smaller pieces and using lower-degree polynomials over each piece. This approach avoids the big swings and inaccuracies seen with high-degree polynomials.</p>
+<p>The Runge phenomenon is demonstrated with the approximation of the functon <span class="math inline">\(f(x) = \frac{1}{1 + 25x^2}\)</span> using high-degree polynomials with both equidistant points (which leads to the Runge phenomenon) and Chebyshev nodes (to mitigate the phenomenon). It is demonstrated in the following Python code.</p>
+<div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.polynomial.polynomial <span class="im">import</span> Polynomial</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define Runge's function</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> runge_function(x):</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> <span class="dv">25</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create equidistant and Chebyshev nodes</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_nodes(n, <span class="bu">type</span><span class="op">=</span><span class="st">'equidistant'</span>):</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">type</span> <span class="op">==</span> <span class="st">'equidistant'</span>:</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, n)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">type</span> <span class="op">==</span> <span class="st">'chebyshev'</span>:</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.cos((<span class="dv">2</span> <span class="op">*</span> np.arange(<span class="dv">1</span>, n <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> n) <span class="op">*</span> np.pi)</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Interpolate the function</span></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> interpolate_runge(n, node_type):</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    x_nodes <span class="op">=</span> create_nodes(n, node_type)</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>    y_nodes <span class="op">=</span> runge_function(x_nodes)</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> Polynomial.fit(x_nodes, y_nodes, deg<span class="op">=</span>n<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> p</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of nodes</span></span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Interpolate using equidistant nodes and Chebyshev nodes</span></span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>p_equidistant <span class="op">=</span> interpolate_runge(n, <span class="st">'equidistant'</span>)</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>p_chebyshev <span class="op">=</span> interpolate_runge(n, <span class="st">'chebyshev'</span>)</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1000</span>)</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>plt.plot(x, runge_function(x), label<span class="op">=</span><span class="st">'Runge Function'</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a>plt.plot(x, p_equidistant(x), label<span class="op">=</span><span class="st">'Equidistant Nodes'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>plt.plot(x, p_chebyshev(x), label<span class="op">=</span><span class="st">'Chebyshev Nodes'</span>, linestyle<span class="op">=</span><span class="st">'-.'</span>)</span>
+<span id="cb44-36"><a href="#cb44-36" aria-hidden="true" tabindex="-1"></a>plt.scatter(create_nodes(n, <span class="st">'equidistant'</span>), runge_function(create_nodes(n, <span class="st">'equidistant'</span>)), color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb44-37"><a href="#cb44-37" aria-hidden="true" tabindex="-1"></a>plt.scatter(create_nodes(n, <span class="st">'chebyshev'</span>), runge_function(create_nodes(n, <span class="st">'chebyshev'</span>)), color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb44-38"><a href="#cb44-38" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb44-39"><a href="#cb44-39" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Demonstration of Runge Phenomenon and its Mitigation'</span>)</span>
+<span id="cb44-40"><a href="#cb44-40" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb44-41"><a href="#cb44-41" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'f(x)'</span>)</span>
+<span id="cb44-42"><a href="#cb44-42" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb44-43"><a href="#cb44-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-runge_phenomenon" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/fig-runge_phenomenon-11.png" class="img-fluid figure-img" width="1152"></p>
+<figcaption class="figure-caption">Figure&nbsp;9.3: Demonstration of Runge phenomenon and its mitigation.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="local-vs-global-basis-functions" class="level3" data-number="9.3.4">
+<h3 data-number="9.3.4" class="anchored" data-anchor-id="local-vs-global-basis-functions"><span class="header-section-number">9.3.4</span> Local vs Global Basis Functions</h3>
+<p>In general, the basis functions could be globally or locally supported. Globally supported basis functions, such as polynomials and trigonometric functions, are defined over the entire domain of interest. They offer smoothness and continuity, making them ideal for approximating smooth, globally defined functions with high accuracy. However, they are sensitive to local changes and can be computationally intensive due to dense matrix systems, limiting their practicality for large-scale problems.</p>
+<p>In contrast, local basis functions, like piecewise polynomials in spline interpolation and shape functions in finite element methods, are defined over small subdomains. They provide efficient computation and local control, effectively handling functions with local irregularities or discontinuities. Despite these advantages, ensuring continuity between elements can be challenging, and their piecewise nature adds complexity to their formulation. The choice between these two types of basis functions depends on the problem’s requirements: global basis functions are preferred for smooth, entire-domain applications, while local basis functions are favored for large-scale, locally varying problems.</p>
+<p>Locally supported functions are a class of functions in mathematics that are non-zero only over a specific, limited range and zero everywhere else. This property makes them highly valuable in various applications like finite element analysis, wavelet transforms, and spline interpolation. Below are some notable examples of locally supported functions, along with their mathematical details:</p>
+<section id="splines" class="level4" data-number="9.3.4.1">
+<h4 data-number="9.3.4.1" class="anchored" data-anchor-id="splines"><span class="header-section-number">9.3.4.1</span> Splines</h4>
+<p>A spline is a piecewise polynomial function used in interpolation and approximation. In simple terms, a spline is a series of polynomial segments strung together, with each polynomial defined over a small subinterval.</p>
+<p>For a spline of degree <span class="math inline">\(n\)</span>, each piece is a polynomial of degree <span class="math inline">\(n\)</span> defined on a subinterval <span class="math inline">\([x_i, x_{i+1}]\)</span>. For example, a cubic spline (<span class="math inline">\(n = 3\)</span>) is a piecewise-defined function where each piece is a cubic polynomial.</p>
+<p>Splines have continuity properties at the points where the polynomial pieces meet (called knots). For instance, cubic splines are often constructed to have continuous first and second derivatives across these knots.</p>
+<p>Here is a Python code that demonstrates cubic spline interpolation.</p>
+<div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> interp1d</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data points</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.8</span>, <span class="op">-</span><span class="fl">1.0</span>])</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a cubic spline interpolation of the data</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>cubic_spline <span class="op">=</span> interp1d(x, y, kind<span class="op">=</span><span class="st">'cubic'</span>)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate more points to evaluate the spline</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>x_fine <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">500</span>)</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>y_fine <span class="op">=</span> cubic_spline(x_fine)</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the original data points and the interpolated values</span></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>plt.plot(x, y, <span class="st">'o'</span>, label<span class="op">=</span><span class="st">'Data points'</span>)</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>plt.plot(x_fine, y_fine, <span class="st">'-'</span>, label<span class="op">=</span><span class="st">'Cubic spline interpolation'</span>)</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Spline Interpolation Example'</span>)</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-21-13.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="b-splines" class="level4" data-number="9.3.4.2">
+<h4 data-number="9.3.4.2" class="anchored" data-anchor-id="b-splines"><span class="header-section-number">9.3.4.2</span> B-Splines</h4>
+<p>B-splines or Basis splines are a generalization of the spline concept. They provide a basis for the spline space and are defined by a degree and a set of knot points. A B-spline of degree <span class="math inline">\(n\)</span> is defined piecewise by polynomial segments of degree <span class="math inline">\(n\)</span>. Its shape is influenced by a set of control points, and it is non-zero only in a range defined by <span class="math inline">\(n+1\)</span> consecutive knots. B-splines have local control (adjusting one control point affects the spline shape only in a local region) and are widely used in computer graphics and data fitting due to their stability and flexibility.</p>
+<p>The following code shows the B-spline basis functions.</p>
+<div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> BSpline</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the degree of the B-spline</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>degree <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a set of knots</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: For partition of unity, we need to add degree+1 equal knots at both ends</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>knots <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">4</span>])</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate B-spline basis functions</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(knots[degree], knots[<span class="op">-</span>degree<span class="op">-</span><span class="dv">1</span>], <span class="dv">100</span>)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>basis_functions <span class="op">=</span> []</span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(knots) <span class="op">-</span> degree <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>    coeffs <span class="op">=</span> np.zeros(<span class="bu">len</span>(knots) <span class="op">-</span> degree <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>    coeffs[i] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>    basis_function <span class="op">=</span> BSpline(knots, coeffs, degree)</span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>    basis_functions.append(basis_function(x))</span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the B-spline basis functions</span></span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, basis_function <span class="kw">in</span> <span class="bu">enumerate</span>(basis_functions):</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>    plt.plot(x, basis_function, label<span class="op">=</span><span class="ss">f'B-spline basis </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the sum of all basis functions to demonstrate partition of unity</span></span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>plt.plot(x, np.<span class="bu">sum</span>(basis_functions, axis<span class="op">=</span><span class="dv">0</span>), <span class="st">'k--'</span>, label<span class="op">=</span><span class="st">'Sum of all basis functions'</span>)<span class="op">;</span></span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'B-spline Basis Functions and Partition of Unity'</span>)</span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-22-15.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="figure-caption">B-Spline basis functions satisfying partition of unity, i.e., the sum of all the basis function is equal to one at every point. Note that each basis function is locally supported, i.e., it goes to zero far away from the location of its peak value.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>We next show how to interpolate data using B-Splines.</p>
+<div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> splrep, splev</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data points</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(x)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a B-Spline representation of the data</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>tck <span class="op">=</span> splrep(x, y, s<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate more points to evaluate the spline</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>x_fine <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">200</span>)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>y_fine <span class="op">=</span> splev(x_fine, tck)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the original data points and the B-Spline interpolation</span></span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))<span class="op">;</span></span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>plt.plot(x, y, <span class="st">'o'</span>, label<span class="op">=</span><span class="st">'Data points'</span>)<span class="op">;</span></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>plt.plot(x_fine, y_fine, <span class="st">'-'</span>, label<span class="op">=</span><span class="st">'B-Spline interpolation'</span>)<span class="op">;</span></span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'B-Spline Interpolation Example'</span>)<span class="op">;</span></span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)<span class="op">;</span></span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)<span class="op">;</span></span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span></span>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-23-17.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="wavelets" class="level4" data-number="9.3.4.3">
+<h4 data-number="9.3.4.3" class="anchored" data-anchor-id="wavelets"><span class="header-section-number">9.3.4.3</span> Wavelets</h4>
+<p>Wavelets are functions used to divide a given function or continuous-time signal into different scale components. They have localized support in both time and frequency domains. A wavelet function <span class="math inline">\(\psi(t)\)</span> is typically defined over a finite interval and is used to generate a family of functions through scaling and translation: <span class="math inline">\(\psi_{a,b}(t) = \frac{1}{\sqrt{a}} \psi\left(\frac{t - b}{a}\right)\)</span>, where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are the scaling and translation parameters. Wavelets are useful in signal processing and image compression, as they can represent data at different levels of resolution and are particularly effective in analyzing transient or high-frequency features.</p>
+<p>Here is a Python code that applies Daubechies wavelets to approximate a function. We first show the Daubechies wavelets followed by approximation of a sine function with it.</p>
+<div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot a wavelet</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_wavelet(wavelet, ax, title):</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    wavelet_function, scaling_function, x_values <span class="op">=</span> wavelet</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>    ax.plot(x_values, wavelet_function, label<span class="op">=</span><span class="st">"Wavelet Function"</span>)</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>    ax.plot(x_values, scaling_function, label<span class="op">=</span><span class="st">"Scaling Function"</span>)</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title)</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>    ax.legend()</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a figure with subplots</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="co"># List of Daubechies wavelets to plot</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>wavelets <span class="op">=</span> [<span class="st">'db1'</span>, <span class="st">'db2'</span>, <span class="st">'db3'</span>, <span class="st">'db4'</span>]</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot each wavelet</span></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, wavelet_name <span class="kw">in</span> <span class="bu">enumerate</span>(wavelets):</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>    wavelet <span class="op">=</span> pywt.Wavelet(wavelet_name)</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>    phi, psi, x <span class="op">=</span> pywt.Wavelet(wavelet_name).wavefun(level<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>    plot_wavelet((psi, phi, x), axs[i <span class="op">//</span> <span class="dv">2</span>, i <span class="op">%</span> <span class="dv">2</span>], <span class="ss">f'Daubechies </span><span class="sc">{</span>wavelet_name<span class="sc">.</span>upper()<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the plot</span></span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-24-19.png" class="img-fluid figure-img" width="1152"></p>
+<figcaption class="figure-caption">Daubechies wavelets with increasing complexity.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the function to approximate</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(x):</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sin(x)</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample data</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span> <span class="op">*</span> np.pi, <span class="dv">400</span>)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> f(x)</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a wavelet type and level of decomposition</span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>wavelet_type <span class="op">=</span> <span class="st">'db1'</span>  <span class="co"># Daubechies wavelet</span></span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the wavelet coefficients</span></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>coeffs <span class="op">=</span> pywt.wavedec(y, wavelet_type, level<span class="op">=</span>level)</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Reconstruct the signal from the coefficients</span></span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>y_approx <span class="op">=</span> pywt.waverec(coeffs, wavelet_type)</span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the original and approximated function</span></span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>plt.plot(x, y, label<span class="op">=</span><span class="st">'Original Function'</span>)</span>
+<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a>plt.plot(x, y_approx, label<span class="op">=</span><span class="st">'Wavelet Approximation'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Function Approximation Using Wavelets'</span>)</span>
+<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'f(x)'</span>)</span>
+<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-25-21.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="figure-caption">Approximation of <span class="math inline">\(\sin(x)\)</span> with Daubechies wavelets.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="radial-basis-functions" class="level4" data-number="9.3.4.4">
+<h4 data-number="9.3.4.4" class="anchored" data-anchor-id="radial-basis-functions"><span class="header-section-number">9.3.4.4</span> Radial Basis Functions</h4>
+<p>Radial Basis Functions (RBFs) are a class of functions with radial symmetry. The value of the function depends only on the distance from a central point, termed the center of the RBF. This distance is typically measured using the Euclidean norm, making the function spherically symmetric in multidimensional space.</p>
+<p>Mathematically, an RBF <span class="math inline">\(\phi\)</span> is a function such that <span class="math inline">\(\phi(\boldsymbol{x}) = \phi(\|\boldsymbol{x} - \boldsymbol{c}\|)\)</span>, where <span class="math inline">\(\boldsymbol{x}\)</span> is a point in space, <span class="math inline">\(\boldsymbol{c}\)</span> is the center of the RBF, and <span class="math inline">\(\|\boldsymbol{x} - \boldsymbol{c}\|\)</span> is the distance from <span class="math inline">\(\boldsymbol{x}\)</span> to <span class="math inline">\(\boldsymbol{c}\)</span>.</p>
+<p>Common Types of Radial Basis Functions:</p>
+<ol type="1">
+<li><p><strong>Gaussian</strong>: <span class="math inline">\(\phi(r) = e^{-(\varepsilon r)^2}\)</span>, where <span class="math inline">\(\varepsilon\)</span> is a scaling parameter. Gaussian RBFs are widely used due to their smooth and rapidly decaying nature.</p></li>
+<li><p><strong>Multiquadric</strong>: <span class="math inline">\(\phi(r) = \sqrt{1 + (\varepsilon r)^2}\)</span>. These RBFs are smooth and have been used effectively in various interpolation tasks.</p></li>
+<li><p><strong>Inverse Multiquadric</strong>: <span class="math inline">\(\phi(r) = \frac{1}{\sqrt{1 + (\varepsilon r)^2}}\)</span>. They have a similar form to multiquadric RBFs but behave differently as the distance increases.</p></li>
+<li><p><strong>Polyharmonic Splines</strong>: <span class="math inline">\(\phi(r) = r^k\)</span>, where <span class="math inline">\(k\)</span> is typically an integer. These functions are particularly useful for their smoothness properties in higher dimensions.</p></li>
+</ol>
+<p>Radial Basis Functions stand out due to their flexibility and effectiveness in handling multidimensional data, their ability to create smooth interpolants, and their applicability in a wide range of scientific and engineering disciplines. Their unique radial property ensures that the influence of a point diminishes with distance, making them suitable for localized approximations in high-dimensional spaces.</p>
+<p>The following code uses multiquadric radial basis functions to approximate <span class="math inline">\(\sin(x)\)</span>.</p>
+<div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> Rbf</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the function to approximate</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(x):</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sin(x)</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample data (you can change this to any other function or data points)</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>x_sample <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>y_sample <span class="op">=</span> f(x_sample)</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Radial Basis Function interpolator</span></span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>rbf_interpolator <span class="op">=</span> Rbf(x_sample, y_sample, function<span class="op">=</span><span class="st">'multiquadric'</span>)</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate more points to evaluate the RBF interpolator</span></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>x_fine <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>y_fine <span class="op">=</span> rbf_interpolator(x_fine)</span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the original function, sample points, and RBF approximation</span></span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>plt.plot(x_sample, y_sample, <span class="st">'o'</span>, label<span class="op">=</span><span class="st">'Sample points'</span>)</span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>plt.plot(x_fine, f(x_fine), label<span class="op">=</span><span class="st">'Original function'</span>)</span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>plt.plot(x_fine, y_fine, label<span class="op">=</span><span class="st">'RBF approximation'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Function Approximation using Radial Basis Functions'</span>)</span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'f(x)'</span>)</span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-26-23.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</div>
+</div>
+<p>RBF interpolation is especially useful for scattered data in multiple dimensions, but this example shows its application in a simple 1D case for simplicity.</p>
+<p>We next show how multiquadric RBFs can be used to approximate <span class="math inline">\(\sin(x)\cos(y)\)</span> from scattered data.</p>
+<div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> Rbf</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the 2D function to approximate</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(x, y):</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sin(x) <span class="op">*</span> np.cos(y)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create scattered data points</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>nSamples <span class="op">=</span> <span class="dv">200</span><span class="op">;</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>x_sample <span class="op">=</span> np.random.uniform(<span class="dv">0</span>, <span class="dv">5</span>, nSamples)</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>y_sample <span class="op">=</span> np.random.uniform(<span class="dv">0</span>, <span class="dv">5</span>, nSamples)</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>z_sample <span class="op">=</span> f(x_sample, y_sample)</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Radial Basis Function interpolator</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>rbf_interpolator <span class="op">=</span> Rbf(x_sample, y_sample, z_sample, function<span class="op">=</span><span class="st">'multiquadric'</span>)</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a grid to evaluate the interpolator</span></span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>x_grid, y_grid <span class="op">=</span> np.meshgrid(np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">100</span>), np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">100</span>))</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>z_grid <span class="op">=</span> rbf_interpolator(x_grid, y_grid)</span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the results</span></span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Original function</span></span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_subplot(<span class="dv">121</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>ax1.plot_surface(x_grid, y_grid, f(x_grid, y_grid), cmap<span class="op">=</span><span class="st">'viridis'</span>)</span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">'Original Function'</span>)</span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">'X'</span>)</span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Y'</span>)</span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>ax1.set_zlabel(<span class="st">'f(X, Y)'</span>)</span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a><span class="co"># RBF Interpolation</span></span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_subplot(<span class="dv">122</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a>ax2.plot_surface(x_grid, y_grid, z_grid, cmap<span class="op">=</span><span class="st">'viridis'</span>)</span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a>ax2.scatter(x_sample, y_sample, <span class="fl">0.1</span><span class="op">+</span>z_sample, color<span class="op">=</span><span class="st">'red'</span>)  <span class="co"># Scattered data points. Added 0.1 to make the dots visible.</span></span>
+<span id="cb51-36"><a href="#cb51-36" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">'RBF Interpolation'</span>)</span>
+<span id="cb51-37"><a href="#cb51-37" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'X'</span>)</span>
+<span id="cb51-38"><a href="#cb51-38" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">'Y'</span>)</span>
+<span id="cb51-39"><a href="#cb51-39" aria-hidden="true" tabindex="-1"></a>ax2.set_zlabel(<span class="st">'f(X, Y)'</span>)</span>
+<span id="cb51-40"><a href="#cb51-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb51-41"><a href="#cb51-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function_approximation_files/figure-html/unnamed-chunk-27-25.png" class="img-fluid figure-img" width="1152"></p>
+<figcaption class="figure-caption">Function approximation in 2D with radial basis functions.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./optimization.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./algorithms.html" class="pagination-link">
+        <span class="nav-page-text">Machine Learning Algorithms</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Applied Machine Learning for Aerospace Systems - 5&nbsp; Random Processes and Sequences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./bayesian_inference.html" rel="next">
+<link href="./random_variables.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+    MathJax = {
+      tex: {
+        tags: 'ams'  // should be 'ams', 'none', or 'all'
+      }
+    };
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./random_processes.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Applied Machine Learning for Aerospace Systems</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foundational Mathematics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Algebra</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions &amp; Function Spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_processes.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Monte Carlo Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./function_approximation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./algorithms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Machine Learning Algorithms</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_pre_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./supervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unsupervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dimensionality_reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./aerospace_applications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aerospace Applications</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Aerospace Application 1</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Aerospace Application 2</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#discrete-time-processes" id="toc-discrete-time-processes" class="nav-link active" data-scroll-target="#discrete-time-processes"><span class="header-section-number">5.1</span> Discrete-Time Processes</a>
+  <ul class="collapse">
+  <li><a href="#bernoulli-process" id="toc-bernoulli-process" class="nav-link" data-scroll-target="#bernoulli-process"><span class="header-section-number">5.1.1</span> Bernoulli Process</a></li>
+  <li><a href="#random-walk" id="toc-random-walk" class="nav-link" data-scroll-target="#random-walk"><span class="header-section-number">5.1.2</span> Random Walk</a></li>
+  <li><a href="#markov-chain" id="toc-markov-chain" class="nav-link" data-scroll-target="#markov-chain"><span class="header-section-number">5.1.3</span> Markov Chain</a></li>
+  </ul></li>
+  <li><a href="#continuous-time-processes" id="toc-continuous-time-processes" class="nav-link" data-scroll-target="#continuous-time-processes"><span class="header-section-number">5.2</span> Continuous-Time Processes</a>
+  <ul class="collapse">
+  <li><a href="#brownian-motion-wiener-process" id="toc-brownian-motion-wiener-process" class="nav-link" data-scroll-target="#brownian-motion-wiener-process"><span class="header-section-number">5.2.1</span> Brownian Motion (Wiener Process)</a></li>
+  <li><a href="#poisson-process" id="toc-poisson-process" class="nav-link" data-scroll-target="#poisson-process"><span class="header-section-number">5.2.2</span> Poisson Process</a></li>
+  <li><a href="#gaussian-process" id="toc-gaussian-process" class="nav-link" data-scroll-target="#gaussian-process"><span class="header-section-number">5.2.3</span> Gaussian Process</a></li>
+  <li><a href="#continuous-time-random-walks" id="toc-continuous-time-random-walks" class="nav-link" data-scroll-target="#continuous-time-random-walks"><span class="header-section-number">5.2.4</span> Continuous Time Random Walks</a></li>
+  </ul></li>
+  <li><a href="#some-important-definitions" id="toc-some-important-definitions" class="nav-link" data-scroll-target="#some-important-definitions"><span class="header-section-number">5.3</span> Some Important Definitions</a>
+  <ul class="collapse">
+  <li><a href="#ergodic-process" id="toc-ergodic-process" class="nav-link" data-scroll-target="#ergodic-process"><span class="header-section-number">5.3.1</span> Ergodic Process</a></li>
+  <li><a href="#markov-processes" id="toc-markov-processes" class="nav-link" data-scroll-target="#markov-processes"><span class="header-section-number">5.3.2</span> Markov Processes</a></li>
+  <li><a href="#stationary-non-stationary-processes" id="toc-stationary-non-stationary-processes" class="nav-link" data-scroll-target="#stationary-non-stationary-processes"><span class="header-section-number">5.3.3</span> Stationary &amp; Non Stationary Processes</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>A random process, also known as a stochastic process, is a mathematical concept that describes a collection of random variables ordered in time or space. It is used to model systems that evolve randomly over time or space.</p>
+<p>Mathematicaly, a random process is a family of random variables, <span class="math inline">\(\{X(t) : t \in T\}\)</span>, where <span class="math inline">\(t\)</span> represents a parameter often interpreted as time (but can also represent space or other dimensions), and <span class="math inline">\(T\)</span> is the index set (usually a subset of real numbers). Each random variable <span class="math inline">\(X(t)\)</span> in the family has its own probability distribution, and the joint distribution of any finite number of these random variables is specified.</p>
+<p>The following are important characteristics of random processes:</p>
+<ul>
+<li><strong>Time Dependence</strong>: The evolution of the process over time can be deterministic or stochastic.</li>
+<li><strong>State Space</strong>: The set of possible values (or states) the random variables can take. It can be discrete (like a set of integers) or continuous (like real numbers).</li>
+</ul>
+<p>There are several kinds of random processes. Some of the commonly used are summarized next.</p>
+<section id="discrete-time-processes" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="discrete-time-processes"><span class="header-section-number">5.1</span> Discrete-Time Processes</h2>
+<p>Discrete-time processes are a type of stochastic or random process where the set of indices (usually representing time) is discrete. This means that the process is observed or defined only at specific, separated points in time.</p>
+<p>Key characteristics of discrete-time processes are</p>
+<ul>
+<li><strong>Time Index</strong>: In discrete-time processes, the time index, often denoted as <span class="math inline">\(t\)</span>, takes values from a discrete set, like integers. It’s as if the process is observed at distinct time steps (e.g., daily stock prices).</li>
+<li><strong>Random Variables</strong>: At each time index, the process is described by a random variable. These variables can be independent or have some form of dependency.</li>
+<li><strong>Examples</strong>: Common examples of discrete-time processes include time series in economics, daily weather records, and signal processing data.</li>
+</ul>
+<p>The following are three important types of discete-time processes:</p>
+<section id="bernoulli-process" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="bernoulli-process"><span class="header-section-number">5.1.1</span> Bernoulli Process</h3>
+<p>A Bernoulli Process is a fundamental type of discrete-time stochastic process. It is a sequence of independent and identically distributed (i.i.d.) random variables that take values from a binary set, typically {0, 1}, representing two outcomes, commonly termed “success” and “failure.”</p>
+<p>Let’s denote the random variables in the sequence as <span class="math inline">\(X_1, X_2, ..., X_n\)</span>. Each <span class="math inline">\(X_i\)</span> is a Bernoulli random variable, which means:</p>
+<ul>
+<li><span class="math inline">\(X_i\)</span> takes the value 1 with probability <span class="math inline">\(p\)</span> (success).</li>
+<li><span class="math inline">\(X_i\)</span> takes the value 0 with probability <span class="math inline">\(1 - p\)</span> (failure).</li>
+</ul>
+<p>So, mathematically, the probability mass function (PMF) of each <span class="math inline">\(X_i\)</span> is given by:</p>
+<p><span class="math display">\[ P(X_i = x) = p^x (1 - p)^{1 - x},\]</span></p>
+<p>for <span class="math inline">\(x \in \{0, 1\}\)</span>, where <span class="math inline">\(p\)</span> is the probability of success.</p>
+<p>Notably:</p>
+<ol type="1">
+<li>Each trial (or each random variable in the sequence) is independent of the others.</li>
+<li>Each random variable follows the same Bernoulli distribution with the same probability of success <span class="math inline">\(p\)</span>.</li>
+<li>The process is defined at discrete time intervals (e.g., coin flips in a series of experiments).</li>
+</ol>
+<p>Some examples where Bernoulli process is used to model sequences are:</p>
+<ul>
+<li><strong>Coin Flipping</strong>: A sequence of coin flips where each flip is independent, and the probability of getting heads (success) is <span class="math inline">\(p\)</span>.</li>
+<li><strong>Quality Control</strong>: In manufacturing, where each item produced either passes (success) or fails (failure) quality control with some probability.</li>
+<li><strong>Binary Data Modeling</strong>: In scenarios where data can be modeled as a sequence of binary outcomes, like click/no-click, buy/not buy in user behavior analysis.</li>
+</ul>
+<p>The number of successes in a sequence of Bernoulli trials can be modeled by a Binomial distribution. If you conduct <span class="math inline">\(n\)</span> Bernoulli trials (each with success probability <span class="math inline">\(p\)</span>), the total number of successes follows a Binomial distribution with parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>.</p>
+<p>A Bernoulli Process is a simple yet powerful model for representing scenarios where events or outcomes are binary and independent, a common situation in many practical applications in statistics and machine learning.</p>
+<p>Simulating a Bernoulli process in Python is straightforward and can be done using the numpy library, which offers efficient array operations and random number generation capabilities. Here’s an example of how to simulate a Bernoulli process:</p>
+<div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bernoulli_process(p, n):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Simulate a Bernoulli process.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">        p (float): Probability of success for each trial.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">        n (int): Number of trials.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">        numpy.ndarray: An array representing the Bernoulli process (successes and failures).</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Each trial results in 1 (success) with probability p and 0 (failure) with probability 1-p</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.random.binomial(<span class="dv">1</span>, p, n)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the Bernoulli process</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>probability_of_success <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Example probability (like flipping a fair coin)</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>number_of_trials <span class="op">=</span> <span class="dv">50</span>        <span class="co"># Total number of trials</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate the Bernoulli process</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>process <span class="op">=</span> bernoulli_process(probability_of_success, number_of_trials)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the results</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.stem(process)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Bernoulli Process Simulation'</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Trial'</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Outcome (0=Failure, 1=Success)'</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.yticks([<span class="dv">0</span>, <span class="dv">1</span>])<span class="op">;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="random_processes_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="figure-caption">Sequence of events following a Bernoulli distribution. This models occurence of head or tail from flipping a fair coin.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In this script, the <code>bernoulli_process</code> function simulates the Bernoulli process. It uses <code>numpy.random.binomial</code> with 1 trial for each step, which effectively makes it a Bernoulli trial. We define the probability of success (e.g., 0.5 for a fair coin toss) and the number of trials. The function returns an array of 0s and 1s, representing failures and successes, respectively. The resulting Bernoulli process is visualized using a stem plot, where each stem represents the outcome of a single trial. This code demonstrates a basic simulation of a Bernoulli process and is useful for understanding the behavior of binary outcomes over a series of independent trials.</p>
+</section>
+<section id="random-walk" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="random-walk"><span class="header-section-number">5.1.2</span> Random Walk</h3>
+<p>A random walk is a mathematical model that describes a path consisting of a succession of random steps. This model is widely used in various fields such as physics, finance, biology, and computer science.</p>
+<p>In its simplest form, a one-dimensional random walk can be defined as follows:</p>
+<ol type="1">
+<li><p><strong>Initial Position</strong>: Start at a fixed point, usually <span class="math inline">\(x = 0\)</span>.</p></li>
+<li><p><strong>Random Steps</strong>: At each time step <span class="math inline">\(t\)</span>, take a step either to the left or to the right. The direction of each step is determined randomly.</p></li>
+<li><p><strong>Discrete Steps</strong>: If the step is to the right, the position increases by 1 (i.e., <span class="math inline">\(x_{t+1} = x_t + 1\)</span>). If the step is to the left, the position decreases by 1 (i.e., <span class="math inline">\(x_{t+1} = x_t - 1\)</span>).</p></li>
+</ol>
+<p>Mathematically, if <span class="math inline">\(S_n\)</span> denotes the position after <span class="math inline">\(n\)</span> steps, and each step <span class="math inline">\(X_i\)</span> is a random variable that takes the value +1 or -1 with equal probability, then:</p>
+<p><span class="math display">\[S_n = \sum_{i=1}^n X_i.\]</span></p>
+<p>Notably:</p>
+<ul>
+<li>The steps <span class="math inline">\(X_i\)</span> are independent of each other.</li>
+<li>Each step has an equal probability of being +1 or -1.</li>
+<li>The process takes place in discrete time steps and discrete spatial steps.</li>
+<li>The expected position after <span class="math inline">\(n\)</span> steps is 0, as the walk is symmetric.</li>
+<li>The variance after <span class="math inline">\(n\)</span> steps is <span class="math inline">\(n\)</span>, reflecting the increasing uncertainty about the position over time.</li>
+<li>The concept extends to higher dimensions, where at each step, the move is made in one of the possible directions in the plane or space.</li>
+</ul>
+<p>Random walks are used to model many phenomenon. For example:</p>
+<ul>
+<li><strong>Physics</strong>: Modeling diffusion processes, such as the movement of molecules.</li>
+<li><strong>Finance</strong>: Stock price movements are often modeled as random walks.</li>
+<li><strong>Biology</strong>: Pathways of motile organisms or molecules within cells.</li>
+<li><strong>Computer Science</strong>: Algorithms for searching or optimization.</li>
+</ul>
+<p>A random walk is a fundamental stochastic process and provides a simple yet powerful model for various phenomena. It is a cornerstone model in the study of stochastic processes and has a profound impact on our understanding of random behavior in natural and artificial systems.</p>
+<p>Here’s a Python example that simulates a one-dimensional random walk:</p>
+<div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_walk(steps):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Steps can be -1 or 1</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    walk_steps <span class="op">=</span> np.random.choice([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], size<span class="op">=</span>steps)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cumulative sum to simulate the walk</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    walk <span class="op">=</span> np.cumsum(walk_steps)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> walk</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>n_steps <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate a random walk</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>walk <span class="op">=</span> random_walk(n_steps)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the random walk</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>plt.plot(walk)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'1D Random Walk'</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Steps'</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Position'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="random_processes_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="figure-caption">Simulation of a random walk as random -1s and 1s, representing moves in opposite directions. The position at each step is the cumulative sum of the steps taken up to that point.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="markov-chain" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="markov-chain"><span class="header-section-number">5.1.3</span> Markov Chain</h3>
+<p>A Markov Chain is a stochastic process that undergoes transitions from one state to another within a finite or countably infinite number of possible states. It is characterized by the property that the future state depends only on the current state, not on the sequence of events that preceded it. This property is known as the Markov property or memorylessness.</p>
+<p>Mathematically, a Markov Chain is defined by:</p>
+<ol type="1">
+<li><strong>States</strong>: A set of states <span class="math inline">\(S = \{s_1, s_2, ..., s_n\}\)</span>.</li>
+<li><strong>Transition Probability</strong>: The probability of moving from one state to another. For a state <span class="math inline">\(s_i\)</span> and <span class="math inline">\(s_j\)</span>, the transition probability is denoted as <span class="math inline">\(P_{ij}\)</span>, which is the probability of transitioning from state <span class="math inline">\(s_i\)</span> to state <span class="math inline">\(s_j\)</span>.</li>
+<li><strong>Transition Matrix</strong>: A matrix <span class="math inline">\(P\)</span> where each element <span class="math inline">\(P_{ij}\)</span> represents the transition probability from state <span class="math inline">\(s_i\)</span> to state <span class="math inline">\(s_j\)</span>. For a Markov chain, the sum of the probabilities in each row of the matrix is 1, i.e., <span class="math inline">\(\sum_{j} P_{ij} = 1\)</span> for all <span class="math inline">\(i\)</span>.</li>
+</ol>
+<p>They have the following properties:</p>
+<ul>
+<li><strong>Discrete Time Steps</strong>: The process moves from one state to another at discrete time steps.</li>
+<li><strong>Memorylessness</strong>: The next state depends only on the current state, not on the past states.</li>
+</ul>
+<p>There are three kinds of Markov Chains:</p>
+<ul>
+<li><strong>Irreducible</strong>: A Markov chain is irreducible if it is possible to get to any state from any state.</li>
+<li><strong>Periodic/Aperiodic</strong>: A state has a period if the chain can return to the state only at multiples of some integer. A Markov chain is aperiodic if it has no periodic states.</li>
+<li><strong>Transient and Recurrent States</strong>: A state is transient if the chain can leave it and never return; otherwise, it is recurrent.</li>
+</ul>
+<p>Markov Chains are used in various fields, including economics, genetics, game theory, and computer science.</p>
+<p>As an example, consider the following the Markov chain.</p>
+<!-- ![A three state Markov chain.](./tikz_figs/markov_chain.png){width=75%} -->
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="random_processes_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">A three state Markov chain.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The transition matrix is given by <span class="math display">\[
+\boldsymbol{M} = \begin{bmatrix}
+0.1 &amp; 0.6&amp; 0.3\\
+0.4 &amp; 0.2&amp; 0.4\\
+0.3&amp; 0.3&amp; 0.4
+\end{bmatrix}.
+\]</span> If <span class="math inline">\(\boldsymbol{p}(k) = \begin{bmatrix} p_0(k) &amp; p_1(k) &amp; p_2(k) \end{bmatrix}\)</span> is the probability (row) vector at time <span class="math inline">\(k\)</span>, defined by the propabilities <span class="math inline">\(p_0(k), p_1(k),\)</span> and <span class="math inline">\(p_2(k)\)</span> that the system is in state <span class="math inline">\(S_0\)</span>, <span class="math inline">\(S_1\)</span>, and <span class="math inline">\(S_2\)</span> respectively, the probabilities in the next time step is given by <span class="math display">\[
+\boldsymbol{p}(k+1) = \boldsymbol{p}(k)\boldsymbol{M}.
+\]</span> We start with <span class="math inline">\(\boldsymbol{p}(0)\)</span> and iterate <span class="math inline">\(\boldsymbol{p}(k)\)</span> with the above update equation.</p>
+<p>Here’s a Python script to simulate the Markov Chain shown above:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> np.array([[<span class="fl">0.1</span>, <span class="fl">0.6</span>, <span class="fl">0.3</span>],</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>              [<span class="fl">0.4</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>],</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>              [<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>]])</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> np.array([<span class="fl">1.</span>,<span class="fl">0.</span>,<span class="fl">0.</span>])</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(formatter<span class="op">=</span>{<span class="st">'float'</span>: <span class="st">'</span><span class="sc">{: 0.3f}</span><span class="st">'</span>.<span class="bu">format</span>})</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">iter</span> <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">11</span>):</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f"k=</span><span class="sc">{</span><span class="bu">iter</span><span class="sc">}</span><span class="ss">, p=</span><span class="sc">{</span>p<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  p <span class="op">=</span> p<span class="op">@</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>k=0, p=[ 1.000  0.000  0.000]
+k=1, p=[ 0.100  0.600  0.300]
+k=2, p=[ 0.340  0.270  0.390]
+k=3, p=[ 0.259  0.375  0.366]
+k=4, p=[ 0.286  0.340  0.374]
+k=5, p=[ 0.277  0.352  0.371]
+k=6, p=[ 0.280  0.348  0.372]
+k=7, p=[ 0.279  0.349  0.372]
+k=8, p=[ 0.279  0.349  0.372]
+k=9, p=[ 0.279  0.349  0.372]
+k=10, p=[ 0.279  0.349  0.372]</code></pre>
+</div>
+</div>
+<p>In the code we started from the state <span class="math inline">\(S_0\)</span>, therefore <span class="math inline">\(\boldsymbol{p}(0) = \begin{bmatrix} 1 &amp; 0 &amp; 0 \end{bmatrix}\)</span>. The probabilities associated with each state in the first 10 steps are shown.</p>
+<p>Thus in Markov Chain simulation, we propagate the probabilities associated with states since the system can be in any state with the given probability. In this case, we see that the system reaches a steady-state probability of <span class="math inline">\(\boldsymbol{p}(\infty)=\begin{bmatrix} 0.279 &amp; 0.349 &amp; 0.372 \end{bmatrix}\)</span>.</p>
+<p>The steady-state probabilities can be computed from the eigen-values of the transition matrix. This is shown in the next Python code.</p>
+<div class="cell" data-jupyter="python3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transition matrix</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>transition_matrix <span class="op">=</span> np.array([[<span class="fl">0.1</span>, <span class="fl">0.6</span>, <span class="fl">0.3</span>],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                              [<span class="fl">0.4</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                              [<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>]])</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute left eigenvectors and eigenvalues</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>eigenvalues, left_eigenvectors <span class="op">=</span> np.linalg.eig(transition_matrix.T)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the left eigenvector corresponding to the eigenvalue 1 (steady state)</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>steady_state_index <span class="op">=</span> np.argmin(np.<span class="bu">abs</span>(eigenvalues <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>steady_state_vector <span class="op">=</span> left_eigenvectors[:, steady_state_index].real</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize the steady state vector</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>steady_state_vector <span class="op">/=</span> steady_state_vector.<span class="bu">sum</span>()</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The steady-state probabilities are: </span><span class="sc">{</span>steady_state_vector<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The steady-state probabilities are: [ 0.279  0.349  0.372]</code></pre>
+</div>
+</div>
+<p>The steady state vector for the given Markov Chain, calculated using the left eigenvectors and eigenvalues of the transition matrix, is approximately: <span class="math inline">\(\begin{bmatrix} 0.279 &amp; 0.349&amp; 0.372\end{bmatrix}\)</span>, which matches the simulated output. Therefore, we don’t need to simulate a Markov chain to determine the steady-state probabilities.</p>
+<p>The steady-state probability vector indicates that, in the long run, the system will spend approximately 27.9% of the time in state <span class="math inline">\(S_0\)</span>, 34.9% in state <span class="math inline">\(S_1\)</span>, and 37.2% in state <span class="math inline">\(S_2\)</span>. This steady state is reached regardless of the initial state of the system, given the chain is <em>ergodic</em> (see below for a discussion on ergodic processes).</p>
+</section>
+</section>
+<section id="continuous-time-processes" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="continuous-time-processes"><span class="header-section-number">5.2</span> Continuous-Time Processes</h2>
+<p>A continuous time random process is a collection of random variables ordered in time, where time is considered as a continuous variable. This type of process is used to model systems or phenomena that evolve or change state in a continuous manner over time.</p>
+<p>Key characteristics of a continuous time random process are:</p>
+<ol type="1">
+<li><p>The process is defined for every instant in a continuous time interval. For instance, <span class="math inline">\(X(t)\)</span> for <span class="math inline">\(t\)</span> in the interval <span class="math inline">\([0, \infty)\)</span> or <span class="math inline">\([a, b]\)</span>.</p></li>
+<li><p>Each <span class="math inline">\(X(t)\)</span> is a random variable representing the state of the process at time <span class="math inline">\(t\)</span>.</p></li>
+<li><p>The state space, which is the set of possible values of <span class="math inline">\(X(t)\)</span>, can be discrete or continuous.</p></li>
+<li><p>For each <span class="math inline">\(t\)</span>, <span class="math inline">\(X(t)\)</span> has a probability distribution, and the joint distribution of <span class="math inline">\(X(t_1), ..., X(t_n)\)</span> for any <span class="math inline">\(t_1, ..., t_n\)</span> is defined.</p></li>
+<li><p>The mean function <span class="math inline">\(m(t) = \mathbb{E}\left[X(t)\right]\)</span> and covariance function <span class="math display">\[R(s, t) = \mathbb{E}\left[(X(s) - m(s))(X(t) - m(t))\right],\]</span> describe the first and second moments of the process.</p></li>
+</ol>
+<p>Many continuous time processes are analyzed and solved using differential equations.</p>
+<p>Continuous time random processes are essential in modeling and analyzing systems that exhibit random behavior in a continuous temporal framework. They provide a foundation for understanding and predicting the behavior of a wide range of real-world phenomena. Some examples include:</p>
+<ul>
+<li><strong>Time Series Analysis</strong>: Modeling and predicting stock prices, weather patterns, and other phenomena that change continuously over time.</li>
+<li><strong>Signal Processing</strong>: Analyzing and filtering continuous signals in communications and audio processing.</li>
+<li><strong>Regression Models</strong>: Gaussian processes are used for non-parametric regression, providing uncertainty measurements along with predictions.</li>
+</ul>
+<p>We next describe some important types of continuous time random processes.</p>
+<section id="brownian-motion-wiener-process" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="brownian-motion-wiener-process"><span class="header-section-number">5.2.1</span> Brownian Motion (Wiener Process)</h3>
+<p>Brownian Motion, also known as the Wiener Process, is a fundamental continuous-time stochastic process in mathematics, physics, and finance. It models random motion, often used to represent the unpredictable movement of particles in fluid or the erratic fluctuations in financial markets.</p>
+<p>Key characteristics are:</p>
+<ol type="1">
+<li><strong>Continuous Path</strong>: Unlike discrete processes, Brownian motion has a continuous path with continuous time parameter.</li>
+<li><strong>Normal Increments</strong>: The increments of the process are normally distributed. For any two times <span class="math inline">\(t\)</span> and <span class="math inline">\(s\)</span>, the increment <span class="math inline">\(W(t) - W(s)\)</span> is normally distributed with mean 0 and variance <span class="math inline">\(|t-s|\)</span>.</li>
+<li><strong>Independent Increments</strong>: Increments over non-overlapping intervals are independent.</li>
+<li><strong>Starts at Zero</strong>: The process typically starts at 0, i.e., <span class="math inline">\(W(0) = 0\)</span>.</li>
+</ol>
+<p>Some applications include:</p>
+<ul>
+<li><strong>Physics</strong>: Modeling the random motion of particles suspended in a fluid (a phenomenon observed by botanist Robert Brown).</li>
+<li><strong>Finance</strong>: Used in the Black-Scholes model for option pricing and to model stock prices in the Efficient Market Hypothesis.</li>
+<li><strong>Mathematics</strong>: Fundamental in the study of stochastic processes and calculus.</li>
+</ul>
+<p>Here’s a simple Python script to simulate Brownian Motion using normal increments:</p>
+<div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_brownian_motion(steps, delta_t):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Simulate Brownian Motion (Wiener Process).</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">        steps (int): Number of steps in the simulation.</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">        delta_t (float): Time interval between steps.</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">        numpy.ndarray: Simulated path of Brownian Motion.</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normal increments with mean 0 and variance delta_t</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    increments <span class="op">=</span> np.random.normal(<span class="dv">0</span>, np.sqrt(delta_t), steps)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cumulative sum to simulate the path</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.cumsum(increments)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the simulation</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>number_of_steps <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>time_interval <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate Brownian Motion</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> simulate_brownian_motion(number_of_steps, time_interval)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the results</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>plt.plot(path)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Brownian Motion Simulation'</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time Steps'</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Position'</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="random_processes_files/figure-html/unnamed-chunk-6-5.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="figure-caption">Simulation of a Brownian motion.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In this script, Brownian motion is simulated as a cumulative sum of normal increments. Each increment is normally distributed with mean 0 and variance proportional to the time interval <code>delta_t</code>. The <code>simulate_brownian_motion</code> function generates the path of Brownian motion over a specified number of steps and time interval. The resulting path is plotted to visualize the typical “random walk” pattern of Brownian motion.</p>
+</section>
+<section id="poisson-process" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="poisson-process"><span class="header-section-number">5.2.2</span> Poisson Process</h3>
+<p>A Poisson Process is a fundamental stochastic process used extensively in various fields, including mathematics, physics, finance, and queueing theory. It models the occurrence of random events over time and is particularly useful for situations where events happen independently of each other.</p>
+<p>Key characteristics are:</p>
+<ol type="1">
+<li>The process models random events (like phone calls to a call center, decay of radioactive particles, or arrival of customers at a store) happening over time.</li>
+<li>Events occur independently of each other. The occurrence of one event does not affect the probability of another event occurring.</li>
+<li>The probability of an event occurring in a fixed interval of time is the same for all corresponding intervals of the same length.</li>
+<li>If the rate (average number of events per time unit) is constant the the Poisson process is ordinary or homogeneous. Else, the process is non-homogeneous.</li>
+<li>In a time interval of length <span class="math inline">\(t\)</span>, the number of events <span class="math inline">\(N(t)\)</span> follows a Poisson distribution with parameter <span class="math inline">\(\lambda t\)</span>, where <span class="math inline">\(\lambda\)</span> is the rate of the process.</li>
+<li>The probability of observing <span class="math inline">\(k\)</span> events in time <span class="math inline">\(t\)</span> is given by: <span class="math display">\[ P(N(t) = k) = \frac{e^{-\lambda t} (\lambda t)^k}{k!}.\]</span></li>
+<li>The time between consecutive events follows an exponential distribution with rate <span class="math inline">\(\lambda\)</span>.</li>
+<li>Poisson processes have the memoryless property, meaning that the probability of an event occurring in the future is independent of how much time has already elapsed.</li>
+<li>It is often used to model rare events, where the actual number of occurrences in a fixed time interval is low relative to the potential number of occurrences.</li>
+</ol>
+<p>Some common applications of Poisson process include:</p>
+<ul>
+<li><strong>Queueing Systems</strong>: Modeling arrival of customers, calls, or requests in a system.</li>
+<li><strong>Telecommunications</strong>: Describing the arrival of packets or messages in a network.</li>
+<li><strong>Finance</strong>: Modeling the occurrence of certain types of financial transactions or market events.</li>
+<li><strong>Biology and Medicine</strong>: Modeling random events like mutation occurrences or spread of diseases.</li>
+<li><strong>Physics</strong>: Used in the study of decay processes of unstable particles.</li>
+</ul>
+<p>In summary, the Poisson Process is a powerful tool for modeling and understanding phenomena where events occur randomly and independently over time. It serves as a foundation for more complex stochastic models and is integral to the field of stochastic processes.</p>
+<p>Here is a Python code to simulate a Poisson process.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_poisson_process(rate, duration):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Simulate a Poisson process.</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">        rate (float): The average rate (lambda) of events per unit time.</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">        duration (float): The total time duration for the simulation.</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">        list: Times at which events occur.</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The time between events follows an exponential distribution</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    inter_event_times <span class="op">=</span> np.random.exponential(<span class="dv">1</span><span class="op">/</span>rate, <span class="bu">int</span>(rate <span class="op">*</span> duration))</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The actual event times are the cumulative sum of the inter-event times</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    event_times <span class="op">=</span> np.cumsum(inter_event_times)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter out times beyond the duration</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    event_times <span class="op">=</span> event_times[event_times <span class="op">&lt;=</span> duration]</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> event_times</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>rate <span class="op">=</span> <span class="dv">2</span>  <span class="co"># Average rate of 2 events per unit time</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>duration <span class="op">=</span> <span class="dv">10</span>  <span class="co"># Total duration of 10 time units</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate the Poisson process</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>event_times <span class="op">=</span> simulate_poisson_process(rate, duration)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>plt.plot(event_times, np.arange(<span class="bu">len</span>(event_times)), drawstyle<span class="op">=</span><span class="st">'steps-post'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Simulation of a Poisson Process'</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Events'</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="random_processes_files/figure-html/unnamed-chunk-7-7.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="figure-caption">The plot shows a Poisson process. The y-axis represents the cumulative number of events that have occurred. Each step in the plot (marked with an ‘o’) indicates the occurrence of an event.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The Python script simulates a Poisson process. In this simulation:</p>
+<ul>
+<li>The Poisson process is characterized by an average rate (lambda) of 2 events per unit time.</li>
+<li>The process is simulated over a duration of 10 time units.</li>
+<li>The times at which events occur are generated based on the exponential distribution of inter-event times, which is a characteristic feature of the Poisson process.</li>
+</ul>
+</section>
+<section id="gaussian-process" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="gaussian-process"><span class="header-section-number">5.2.3</span> Gaussian Process</h3>
+<p>A Gaussian Process (GP) is a powerful, flexible probabilistic model used in machine learning, particularly for tasks like regression, classification, and optimization. It is essentially a collection of random variables, any finite number of which have a joint Gaussian distribution.</p>
+<p>Key concepts involved are:</p>
+<ol type="1">
+<li>Unlike a Gaussian distribution defined over a discrete set of points, a GP is defined over a continuous domain, like time or space.</li>
+<li>A GP can be thought of as a distribution over functions. It provides a way to specify prior beliefs about the function being modeled (e.g., smoothness, periodicity).</li>
+<li>A GP is fully specified by its mean function <span class="math inline">\(m(x)\)</span> and covariance function <span class="math inline">\(k(x, x')\)</span>, also known as the kernel. The mean function represents the average value of the function at point <span class="math inline">\(x\)</span>, and the covariance function defines the similarity between the function values at different points <span class="math inline">\(x\)</span> and <span class="math inline">\(x'\)</span>.</li>
+</ol>
+<p>Mathematically, a GP is defined as:</p>
+<p><span class="math display">\[ f(x) \sim \mathcal{GP}(m(x), k(x, x')),\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(f(x)\)</span> is a random function.</li>
+<li><span class="math inline">\(m(x)\)</span> is the mean function, often assumed to be zero (or another constant) for simplicity.</li>
+<li><span class="math inline">\(k(x, x')\)</span> is the covariance function or kernel, which encapsulates our assumptions about the function (like smoothness, periodicity, etc.).</li>
+</ul>
+<p>GP is widely used in machine learning, such as</p>
+<ol type="1">
+<li><p><strong>Regression (Gaussian Process Regression)</strong>: Used for non-linear regression tasks. GPs are particularly useful because they provide not only predictions but also a measure of uncertainty in these predictions.</p></li>
+<li><p><strong>Classification</strong>: GPs can be extended to classification tasks.</p></li>
+<li><p><strong>Hyperparameter Tuning and Optimization</strong>: In Bayesian optimization, GPs are used to model the function to be optimized, particularly useful for optimizing expensive-to-evaluate functions.</p></li>
+<li><p><strong>Spatial Data Modeling</strong>: Useful in geostatistics and environmental modeling for interpolating and predicting spatial data.</p></li>
+<li><p><strong>Time Series Analysis</strong>: Applied in modeling and forecasting in time series data.</p></li>
+</ol>
+<p>Some of the key advantages of using GP in machine learning include:</p>
+<ul>
+<li><strong>Flexibility</strong>: The choice of kernel allows for a wide range of behaviors.</li>
+<li><strong>Uncertainty Quantification</strong>: Provides a probabilistic measure of uncertainty in predictions.</li>
+<li><strong>Non-Parametric</strong>: GPs are non-parametric, meaning they can model complex datasets without having to assume a specific functional form.</li>
+</ul>
+<p>However, there are some shortcomings, such as:</p>
+<ul>
+<li><strong>Computational Complexity</strong>: Involves operations on covariance matrices which can be computationally expensive, particularly for large datasets.</li>
+<li><strong>Choice of Kernel</strong>: Selecting and tuning the right kernel is crucial and can be non-trivial.</li>
+</ul>
+<p>In general, Gaussian Processes offer a principled approach to learning in uncertain environments, providing both predictions and assessments of uncertainty. They are a cornerstone in probabilistic modeling and Bayesian approaches in machine learning.</p>
+<p>Here is a Python code that generates several sample paths from a given specification of a Gaussian process:</p>
+<div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.gaussian_process <span class="im">import</span> GaussianProcessRegressor</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.gaussian_process.kernels <span class="im">import</span> RBF</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_gaussian_process_samples(kernel, n_samples<span class="op">=</span><span class="dv">5</span>, n_points<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Plot samples from a Gaussian Process with a specified kernel.</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">        kernel: Kernel function for the Gaussian Process.</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">        n_samples (int): Number of sample paths to generate.</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">        n_points (int): Number of points in each sample path.</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a Gaussian Process model with the specified kernel</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    gp <span class="op">=</span> GaussianProcessRegressor(kernel<span class="op">=</span>kernel)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate points at which to sample</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, n_points).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate sample paths</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    y_samples <span class="op">=</span> gp.sample_y(x, n_samples)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_samples):</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        plt.plot(x, y_samples[:, i], lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Sample </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'</span><span class="sc">{</span>n_samples<span class="sc">}</span><span class="ss"> Sample functions from a Gaussian Process'</span>)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'y'</span>)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the kernel (RBF in this case)</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>kernel <span class="op">=</span> RBF(length_scale<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot sample paths from the Gaussian Process</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>plot_gaussian_process_samples(kernel, n_samples<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="random_processes_files/figure-html/unnamed-chunk-8-9.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="figure-caption">In the plot each line represents a sample path from the Gaussian Process. The variability in the paths illustrates the range of functions consistent with the Gaussian Process prior and the chosen RBF kernel.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The Python script uses the <code>sklearn.gaussian_process</code> module to simulate and plot sample paths from a Gaussian Process with a Radial Basis Function (RBF) kernel.</p>
+</section>
+<section id="continuous-time-random-walks" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="continuous-time-random-walks"><span class="header-section-number">5.2.4</span> Continuous Time Random Walks</h3>
+<p>A Continuous Time Random Walk (CTRW) is a stochastic model that extends the concept of a traditional random walk to a continuous time setting. Unlike discrete random walks where steps occur at regular intervals, CTRW allows for irregular timing of steps, making it a versatile tool for modeling a wide range of real-world phenomena. In a CTRW, the steps themselves and the waiting times between these steps are treated as random variables. The step sizes can follow any chosen distribution, allowing the model to adapt to the specific characteristics of the system being studied, such as the erratic movement of stock prices or the random motion of particles in fluid dynamics.</p>
+<p>The waiting time distribution between steps, often modeled by exponential or heavy-tailed distributions, introduces a degree of randomness in the timing of events, which is crucial for systems where events occur sporadically. This randomness in both step sizes and timing distinguishes CTRW from models like Brownian motion, which assumes infinitesimally small, Gaussian-distributed steps at continuous intervals.</p>
+<p>CTRWs are widely used in various fields including physics, for modeling diffusion in complex media; finance, for stock price movement; ecology, for animal movement tracking; and network theory, for traffic and communication patterns. Their flexibility and adaptability in modeling both the magnitude and timing of changes make them particularly valuable in studying complex systems where traditional models may fall short. The analysis of CTRWs often involves Monte Carlo simulations and statistical methods to understand and predict the behavior of the underlying process.</p>
+</section>
+</section>
+<section id="some-important-definitions" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="some-important-definitions"><span class="header-section-number">5.3</span> Some Important Definitions</h2>
+<section id="ergodic-process" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="ergodic-process"><span class="header-section-number">5.3.1</span> Ergodic Process</h3>
+<p>An ergodic process is a type of stochastic process that, over a long period, exhibits the same behavior averaged over time as it does averaged over the space of all its possible states. In other words, time averages and ensemble averages are equivalent for ergodic processes. This concept is vital in statistics, thermodynamics, and information theory, as it ensures that long-term observations are representative of the whole process.</p>
+<p><strong>Ergodic Process in Discrete Time</strong> In discrete-time stochastic processes (like Markov chains), an ergodic process must satisfy two conditions:</p>
+<ol type="1">
+<li><p><strong>Irreducibility</strong>: From any state, there is a non-zero probability of reaching any other state. This ensures that the process doesn’t get stuck in a subset of states but can explore the entire state space over time.</p></li>
+<li><p><strong>Aperiodicity</strong>: The process should not be locked into a cyclic pattern. In other words, the system should not return to the same state only at multiples of some fixed number of steps.</p></li>
+</ol>
+<p>When a discrete-time stochastic process, such as a Markov chain, is ergodic, it means that it will eventually reach a steady state distribution that does not depend on the initial state. This steady state distribution is used for ensemble averages, and over a long time, the time averages of the process will converge to the same values.</p>
+<p><strong>Ergodic Process in Continuous Time</strong></p>
+<p>In continuous-time stochastic processes (like Brownian motion or certain differential equations), ergodicity implies that the statistical properties (like mean and variance) can be deduced from a single, sufficiently long, random sample path of the process.</p>
+<p>In continuous time, an ergodic process must satisfy two conditions:</p>
+<ul>
+<li>The process must be stationary: its statistical properties should not change over time.</li>
+<li>Similar to the discrete case, the process should not be restricted to a subset of its state space; it should be able to explore its entire state space given enough time.</li>
+</ul>
+<p>Ergodicity plays a significant role in machine learning, particularly in ensuring the reliability and robustness of various algorithms and models. Some examples are:</p>
+<ol type="1">
+<li><p><strong>Markov Chain Monte Carlo (MCMC) Methods</strong>: In MCMC, ergodicity is crucial to ensure that the Markov chain explores the entire state space adequately, thereby guaranteeing that samples generated from the chain are representative of the target distribution. This is essential in Bayesian inference, where MCMC methods are used to approximate posterior distributions when analytical solutions are infeasible.</p></li>
+<li><p><strong>Time Series Analysis</strong>: In time series analysis, the assumption of ergodicity allows for the use of time averages as substitutes for ensemble averages. This is particularly important when dealing with real-world data where obtaining multiple sample paths is impractical. Ergodic time series models ensure that inferences drawn from a single observed sequence over time are representative of the process’s overall behavior.</p></li>
+<li><p><strong>Reinforcement Learning (RL)</strong>: In RL, many algorithms rely on the ergodicity of Markov Decision Processes (MDPs) to ensure that the state-action space is sufficiently explored. This exploration guarantees that the learned policy will perform well across the entire state space, not just in frequently visited regions.</p></li>
+<li><p><strong>Stationary Processes in Machine Learning Models</strong>: Ergodicity is often assumed in stationary processes, where statistical properties like mean and variance are constant over time. This assumption simplifies the modeling and prediction tasks in various machine learning applications, from natural language processing to financial modeling.</p></li>
+<li><p><strong>Robustness of Algorithms</strong>: Ergodicity can contribute to the robustness of machine learning algorithms by ensuring that the conclusions drawn from the training process (such as parameter estimates or feature importance) are representative of the entire data distribution and not biased by specific characteristics of the training set.</p></li>
+<li><p><strong>Statistical Learning Theory</strong>: In the broader context of statistical learning, ergodicity helps in understanding and proving convergence properties of learning algorithms, ensuring that they perform well not just on the training data but also on unseen data.</p></li>
+</ol>
+<p>In summary, ergodicity is leveraged in machine learning to ensure that models and algorithms are representative, robust, and reliable, particularly in scenarios involving stochastic processes, Bayesian inference, time series analysis, and reinforcement learning. It forms a foundational aspect of ensuring that long-term behavior or averaged behavior of models aligns with the true underlying patterns of the data.</p>
+</section>
+<section id="markov-processes" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="markov-processes"><span class="header-section-number">5.3.2</span> Markov Processes</h3>
+<p>A Markov Process, fundamentally characterized by the Markov property, asserts that the conditional probability distribution of future states of the process depends only upon the present state, not on the sequence of events that preceded it. In discrete time, this process is exemplified by a Markov Chain, where transitions between a finite or countably infinite set of states are governed by a transition matrix <span class="math inline">\(P\)</span>. Each element <span class="math inline">\(P_{ij}\)</span> in this matrix represents the probability of moving from state <span class="math inline">\(i\)</span> to state <span class="math inline">\(j\)</span> in one time step, thus encapsulating the process’s dynamics. The transition matrix is a (right) stochastic matrix, i.e., the rows sums are equal to one. The Markov Chain’s analysis often involves studying its stationary distribution, if it exists, where the state probabilities stabilize over time.</p>
+<p>In contrast, continuous-time Markov Processes, which are more complex, often manifest as Markovian jump processes or are defined by Stochastic Differential Equations (SDEs). The state transitions occur at random intervals, dictated by exponential distributions, and are characterized by a rate matrix or generator matrix, <span class="math inline">\(Q\)</span>, where each element <span class="math inline">\(Q_{ij}\)</span> (for <span class="math inline">\(i \neq j\)</span>) indicates the rate of transitioning from state <span class="math inline">\(i\)</span> to state <span class="math inline">\(j\)</span>. The diagonal elements <span class="math inline">\(Q_{ii}\)</span> are defined such that each row sums to zero, ensuring the conservation of probability. These processes are key in modeling systems where changes are continuous and event timings are stochastic, such as in financial modeling for interest rates or particle dynamics in physics.</p>
+<p>Both discrete and continuous-time Markov Processes share the principle of memorylessness — the future evolution is independent of the past, given the present. This property simplifies the analysis and modeling of complex stochastic systems, making Markov Processes a fundamental tool in fields ranging from statistical mechanics to quantitative finance. The study of these processes involves a range of mathematical techniques, from linear algebra and probability theory in discrete time to differential equations and stochastic calculus in continuous time.</p>
+<p>In machine learning, Markov Processes, encompassing both discrete-time Markov chains and continuous-time processes, are instrumental in various algorithms and models, particularly those involving sequential data or decision-making under uncertainty. Some examples are:</p>
+<ol type="1">
+<li><p><strong>Hidden Markov Models (HMMs)</strong>: These are widely used in sequence modeling tasks such as speech recognition, natural language processing, and bioinformatics. In HMMs, the observed data are considered to be a probabilistic function of underlying hidden states that follow a Markov process. The model aims to learn the hidden state sequence that most likely explains the observed data.</p></li>
+<li><p><strong>Reinforcement Learning (RL)</strong>: Markov Decision Processes (MDPs), an extension of Markov processes, are foundational in RL. They provide a mathematical framework for modeling decision-making in situations where outcomes are partly random and partly under the control of a decision-maker. RL algorithms learn optimal policies to maximize cumulative rewards in MDPs, applicable in robotics, game playing, and autonomous systems.</p></li>
+<li><p><strong>Time Series Analysis</strong>: Markov models are used for forecasting in financial modeling, weather prediction, and other areas where future states of a series depend on current states. They provide a way to model temporal dynamics and make predictions.</p></li>
+<li><p><strong>Graphical Models</strong>: In probabilistic graphical models like Bayesian Networks, the Markov property is used to simplify the joint probability distribution over a set of random variables. This approach is useful in various tasks like causal inference, diagnosis, and prediction in complex systems.</p></li>
+<li><p><strong>Natural Language Processing (NLP)</strong>: Beyond HMMs, other Markov process-based models are used for tasks like text generation, where the next word in a sequence depends on the previous ones.</p></li>
+<li><p><strong>Clustering and Segmentation</strong>: Markov models can be used to identify clusters or segments in sequential data, such as segmenting customer transaction sequences into meaningful phases.</p></li>
+<li><p><strong>Queueing Theory in Systems Optimization</strong>: In areas like network traffic management or supply chain optimization, Markov processes model the behavior of queues, aiding in the design of more efficient systems.</p></li>
+</ol>
+<p>In machine learning, the application of Markov Processes is rooted in their ability to model stochastic behavior in sequential data and decision-making environments. Their versatility makes them a key component in the toolkit for addressing a wide range of problems where understanding and predicting temporal dynamics are crucial.</p>
+</section>
+<section id="stationary-non-stationary-processes" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="stationary-non-stationary-processes"><span class="header-section-number">5.3.3</span> Stationary &amp; Non Stationary Processes</h3>
+<p>A stationary process is a type of stochastic process whose statistical properties, such as mean, variance, and autocorrelation, do not change over time. This concept is crucial in time series analysis and signal processing, as it implies that the process behaves consistently over time, making it easier to analyze and predict.</p>
+<p><strong>Types of Stationarity</strong> 1. <strong>Strict (Strong) Stationarity</strong>: A process is strictly stationary if the joint probability distribution of any set of variables <span class="math inline">\(X_{t_1}, X_{t_2}, ..., X_{t_n}\)</span> is the same as the distribution of $X_{t_1+h}, X_{t_2+h}, …, X_{t_n+h} $ for all <span class="math inline">\(t_1, t_2, ..., t_n\)</span> and for any time shift <span class="math inline">\(h\)</span>. This means that not just the mean and variance, but all moments and joint distributions, are invariant over time.</p>
+<ol start="2" type="1">
+<li><strong>Weak (Covariance) Stationarity</strong>: A process is weakly stationary if the mean is constant over time, the variance is finite and time-invariant, and the covariance between two time points depends only on the time lag between them and not on the actual time points themselves.</li>
+</ol>
+<p>Examples of stationary processes are:</p>
+<ol type="1">
+<li><p><strong>White Noise</strong>: A classic example of a stationary process is white noise. In white noise, each random variable has the same distribution, usually a normal distribution with constant mean and variance, and each variable is independent of the others. This process is often used as a baseline or simple error model in time series analysis.</p></li>
+<li><p><strong>Rolling Dice</strong>: The process of rolling a fair dice repeatedly over time can be considered a stationary process. The probability distribution (each face having a 1/6 chance of appearing) does not change over time, satisfying the criteria for stationarity.</p></li>
+<li><p><strong>Daily Temperature Variations</strong>: Assuming a stable climate, the daily temperature variations in a specific location could be modeled as a stationary process if the average temperature and variation remain consistent year after year.</p></li>
+</ol>
+<p>In contrast, a non-stationary process is one whose statistical properties change over time. Such processes are more complex to analyze and model because their behavior varies, and the techniques used for stationary processes are often not applicable.</p>
+<p>Some characteristics of non-stationary process are:</p>
+<ol type="1">
+<li><strong>Changing Mean or Variance</strong>: The mean or variance (or both) of a non-stationary process may change over time, which can be due to trends, cyclic patterns, or other structural changes in the data.</li>
+<li><strong>Time-Dependent Covariance</strong>: The covariance between observations may depend on the actual time at which the observations are made, not just the lag between them.</li>
+</ol>
+<p>Examples of non-stationary processes are:</p>
+<ol type="1">
+<li><p><strong>Economic Growth</strong>: The Gross Domestic Product (GDP) of a country is a typical example of a non-stationary process. It often shows a trend over time, with the average GDP and its variance changing, reflecting economic growth or recession phases.</p></li>
+<li><p><strong>Stock Prices</strong>: The prices of stocks in financial markets are non-stationary. They often exhibit trends, sudden jumps, and changes in volatility (variance), making them challenging to predict over long periods.</p></li>
+<li><p><strong>Seasonal Sales Data</strong>: Retail sales data often show non-stationarity due to seasonal effects. For example, sales might increase during the holiday season each year, showing a recurring but time-dependent pattern.</p></li>
+<li><p><strong>Climate Change Data</strong>: Long-term climate data, such as global temperatures, can be non-stationary, especially in the context of global warming, where there is a clear upward trend in average temperatures over the years.</p></li>
+</ol>
+<p>In the aforementioned examples, the distinguishing factor is the evolution of the process’s statistical characteristics over time. Stationary processes maintain consistent statistical properties, simplifying their analysis and modeling. Conversely, non-stationary processes exhibit changing statistical features, such as mean and variance, requiring more intricate models to accommodate these changes. Understanding the process’s nature is essential for selecting suitable statistical or machine learning methods for analysis and prediction.</p>
+<p>Analytical approaches often presuppose stationarity, particularly weak stationarity. For data that is non-stationary, techniques like differencing, detrending, or seasonal adjustments are typically employed to render the data stationary prior to analysis. The selection of predictive or analytical models is greatly influenced by the process’s stationarity. For example, ARIMA models are frequently used for stationary data, whereas variations of ARIMA that include differencing or trend components are applied to non-stationary data. Therefore, discerning whether a process is stationary or non-stationary is fundamental in choosing the appropriate analytical tools and methods for a range of fields such as economics, finance, meteorology, and signal processing.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./random_variables.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./bayesian_inference.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

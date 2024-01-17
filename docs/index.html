@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Raktim Bhattacharya">
+<meta name="dcterms.date" content="2023-12-05">
+
+<title>Applied Machine Learning for Aerospace Systems</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./intro.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+    MathJax = {
+      tex: {
+        tags: 'ams'  // should be 'ams', 'none', or 'all'
+      }
+    };
+  </script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Applied Machine Learning for Aerospace Systems</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foundational Mathematics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Algebra</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions &amp; Function Spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./random_processes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Monte Carlo Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./function_approximation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./algorithms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Machine Learning Algorithms</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_pre_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./supervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unsupervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dimensionality_reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./aerospace_applications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aerospace Applications</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Aerospace Application 1</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Aerospace Application 2</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
+  <ul class="collapse">
+  <li><a href="#what-is-machine-learning" id="toc-what-is-machine-learning" class="nav-link" data-scroll-target="#what-is-machine-learning">What is Machine Learning?</a></li>
+  <li><a href="#machine-learning-in-aerospace-engineering" id="toc-machine-learning-in-aerospace-engineering" class="nav-link" data-scroll-target="#machine-learning-in-aerospace-engineering">Machine Learning in Aerospace Engineering</a></li>
+  <li><a href="#what-machine-learning-is-not" id="toc-what-machine-learning-is-not" class="nav-link" data-scroll-target="#what-machine-learning-is-not">What Machine Learning Is Not</a></li>
+  <li><a href="#words-of-caution" id="toc-words-of-caution" class="nav-link" data-scroll-target="#words-of-caution">Words of Caution</a></li>
+  <li><a href="#an-optimization-mind-set" id="toc-an-optimization-mind-set" class="nav-link" data-scroll-target="#an-optimization-mind-set">An Optimization Mind Set</a></li>
+  <li><a href="#theory-and-data-driven-aerospace-machine-learning" id="toc-theory-and-data-driven-aerospace-machine-learning" class="nav-link" data-scroll-target="#theory-and-data-driven-aerospace-machine-learning">Theory and Data Driven Aerospace Machine Learning</a></li>
+  <li><a href="#scope-of-the-book" id="toc-scope-of-the-book" class="nav-link" data-scroll-target="#scope-of-the-book">Scope of the book</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Applied Machine Learning for Aerospace Systems</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Raktim Bhattacharya </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 5, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preface" class="level1 unnumbered">
+<h1 class="unnumbered">Preface</h1>
+<p>This book aims to introduce machine learning to senior-level undergraduates and graduate students in aerospace engineering.</p>
+<section id="what-is-machine-learning" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-machine-learning">What is Machine Learning?</h3>
+<p>Machine learning, a transformative branch of artificial intelligence, has revolutionized how we approach problem-solving across various domains. Machine learning involves training computers to learn from data, identify patterns, and make decisions with minimal human intervention. This rapidly evolving field leverages statistical methods to enable machines to improve tasks through feedback and data, offering immense potential for innovation and efficiency.</p>
+</section>
+<section id="machine-learning-in-aerospace-engineering" class="level3">
+<h3 class="anchored" data-anchor-id="machine-learning-in-aerospace-engineering">Machine Learning in Aerospace Engineering</h3>
+<p>Machine learning (ML) is revolutionizing aerospace engineering with its current applications and promising future potential. There are several emerging areas within aerospace engineering where ML is expected to have significant impact. Some of the emerging trends are summarized below.</p>
+<p><strong>Space Exploration</strong> – ML in driving autonomy is particularly critical in space exploration. Space missions, often extending over vast distances and durations, necessitate systems that can operate with minimal human oversight. ML algorithms are instrumental in this context, enabling spacecraft to navigate, manage systems, and make crucial decisions autonomously. This autonomy is vital for deep space missions, where communication delays with Earth make real-time human control impractical. ML allows spacecraft to adapt to unforeseen circumstances, such as changes in trajectory, asteroid avoidance, or equipment malfunctions, ensuring mission success despite space environments’ challenging and unpredictable nature. Additionally, ML-driven autonomous systems are essential for analyzing and processing the vast amounts of scientific data collected during these missions, identifying critical findings that human researchers might miss. As ML technology advances, its role in enhancing the autonomy of space missions becomes increasingly significant, promising groundbreaking discoveries and more ambitious explorations beyond our current capabilities.</p>
+<p><strong>Air Traffic Management</strong> – ML is increasingly pivotal in advancing aircraft flight management systems, and it plays a crucial role in the emerging sector of urban air mobility (UAM). In flight management, ML algorithms enhance route optimization, fuel efficiency, and in-flight safety by analyzing vast amounts of flight data and environmental variables in real-time. These systems can adaptively manage complex flight dynamics, navigate busy airspaces, and respond proactively to unforeseen circumstances like adverse weather or mechanical issues. The application of ML is particularly significant in UAM, a field focusing on developing small, automated aircraft for urban transportation. Here, ML is essential for ensuring safe, efficient, and autonomous operation in densely populated urban environments. It enables these aircraft to make intelligent navigation decisions, manage air traffic autonomously, and ensure passenger safety, all while adhering to stringent regulatory standards. As UAM evolves, ML will be at the forefront of this innovation, driving the development of smart, efficient, and safe urban air transport solutions.</p>
+<p><strong>Aerospace Digital Twins</strong> – ML is revolutionizing the concept of digital twins in aerospace engineering, offering a sophisticated approach to simulate, monitor, and analyze real-world aircraft and spacecraft systems. Digital twins, essentially virtual replicas of physical systems, utilize ML to process real-time data from various sensors and systems on the actual aircraft or spacecraft. This integration enables predictive analytics and real-time diagnostics, allowing engineers to anticipate potential failures, optimize maintenance schedules, and improve overall operational efficiency. ML algorithms also play a crucial role in simulating complex scenarios, from aerodynamic performance to structural integrity under various conditions, providing invaluable insights for design improvements and innovation. This synergy of ML and digital twin technology in aerospace not only enhances current operational performance but also significantly aids in the development of more advanced, reliable, and efficient future aerospace systems.</p>
+<p><strong>Computational Fluid Dynamics</strong> – ML is increasingly being integrated into computational fluid dynamics (CFD) for aerospace applications, offering transformative capabilities in simulating and analyzing aerodynamic behaviors. In CFD, ML algorithms are used to refine and accelerate simulations, making them more efficient and accurate. These algorithms can learn from vast datasets of previous simulations and real-world experiments, enabling them to predict fluid flow patterns, pressure distributions, and thermal characteristics more quickly than traditional methods. This is particularly beneficial in complex scenarios like turbulent flows or supersonic speeds, where traditional CFD can be computationally intensive. ML also assists in optimizing designs for better aerodynamic performance, reducing drag, and enhancing fuel efficiency. By improving the predictive capabilities of CFD models, ML helps aerospace engineers in designing more efficient aircraft, spacecraft, and propulsion systems, ultimately leading to advancements in performance and energy efficiency.</p>
+<p><strong>Aircraft Design</strong> – ML is significantly impacting aircraft design, offering new avenues for innovation and efficiency. In aircraft design, ML algorithms analyze vast datasets to identify optimal design parameters that traditional methods might overlook. This includes refining aerodynamic shapes, optimizing weight distribution, and enhancing material selection for better performance and fuel efficiency. ML also plays a pivotal role in structural health monitoring, where it helps predict stress points and potential fatigue in aircraft components, leading to safer and more reliable designs. Furthermore, ML algorithms assist in noise reduction, both internally and externally, by analyzing and predicting acoustic patterns, thereby contributing to more environmentally friendly and passenger-comfort-focused designs. The integration of ML in aircraft design not only accelerates the design process but also enables the development of more advanced, efficient, and sustainable aircraft, pushing the boundaries of what is currently achievable in aerospace engineering.</p>
+<p><strong>Aerospace Material Science</strong> – The integration of ML in material science is revolutionizing aerospace engineering, significantly enhancing the development and optimization of aerospace materials. ML algorithms are adept at sifting through and analyzing large datasets, uncovering patterns and relationships in material properties that might be missed by conventional methods. This capability is crucial for discovering new materials with desired properties such as lightweight, high strength, and thermal resistance, essential for aerospace applications. ML also accelerates the process of material testing and validation, predicting how new materials will perform under various stressors and environmental conditions. This predictive power enables more efficient design and testing cycles, reducing the time and cost associated with material development. In essence, ML is not just optimizing existing materials for aerospace use but also paving the way for the discovery and creation of novel materials, potentially leading to lighter, stronger, and more efficient aerospace components and structures.</p>
+<p>In conclusion, ML is not just an auxiliary tool but a transformative force in aerospace engineering, enhancing current practices and promising to redefine the future of air and space travel. As ML technology continues to evolve, its role in aerospace engineering is set to become increasingly pivotal, pushing the boundaries of what’s possible in this field.</p>
+</section>
+<section id="what-machine-learning-is-not" class="level3">
+<h3 class="anchored" data-anchor-id="what-machine-learning-is-not">What Machine Learning Is Not</h3>
+<p>It is essential to clarify a common misconception: machines don’t actually learn in the way we traditionally understand learning. What we call a “learning machine” is a system that discovers a mathematical formula. When applied to a set of inputs known as “training data,” this formula yields the expected outputs. Furthermore, it can produce accurate outputs for various inputs, provided these inputs share a statistical distribution similar to the training data.</p>
+<p>However, this process differs significantly from learning in the animal world. For instance, if you learn to play a video game by looking directly at the screen, a slight rotation of the screen won’t drastically affect your ability to play. In contrast, a machine learning algorithm trained under specific conditions may fail when those conditions change slightly, such as in the case of screen rotation, unless it’s specifically trained to recognize such changes.</p>
+<p>While working at IBM, the term “machine learning” was coined in 1959 by Arthur Samuel, an American pioneer in computer gaming and artificial intelligence. Much like IBM’s later promotion of “cognitive computing,” this naming was part of a marketing strategy to attract clients and talent. Thus, while “artificial intelligence” doesn’t imply human-like intelligence, “machine learning” does not equate to the learning process seen in animals. Instead, it refers to creating machines that can perform various tasks without being explicitly programmed for each task. The word “learning” here is more analogous to animal learning rather than a literal interpretation.</p>
+<p>In contemporary media, machine learning is often shrouded in misconceptions, frequently portrayed as a near-magical or ominously omnipotent technology. Contrary to these dramatizations, machine learning is fundamentally grounded in sophisticated yet comprehensible mathematics. It involves algorithms that analyze and “learn” from data to optimize specific tasks. While it’s highly effective at tasks like pattern recognition and predictive analysis, machine learning isn’t a cure-all. Its “intelligence” is derived from the performance of algorithms tailored and improved over time, informed by data and the laws of physics. It cannot understand moral or ethical issues or grasp abstract concepts beyond its programming. Recognizing these limitations is critical to appreciating the real capabilities and scope of machine learning, which remains a potent yet human-dependent tool.</p>
+</section>
+<section id="words-of-caution" class="level3">
+<h3 class="anchored" data-anchor-id="words-of-caution">Words of Caution</h3>
+<p>In the realm of engineering, particularly in disciplines as exacting as aerospace engineering, the concept of correctness carries significant weight. Engineering solutions are expected to adhere to stringent standards of accuracy and reliability, a criterion that current machine-learning applications may not always meet. The outputs of machine learning algorithms are often more suited to contexts where accuracy is subjective and less critical. This divergence becomes especially relevant when integrating machine learning into engineering tasks, where the margin for error is minimal. In aerospace engineering, where the stakes are exceptionally high, carefully assessing errors and uncertainties in machine learning outputs becomes imperative. Ensuring the safety, efficiency, and reliability of aerospace systems demands a meticulous evaluation of machine learning applications, underlining the need for precise error analysis and validation against the uncompromising standards of engineering accuracy.</p>
+</section>
+<section id="an-optimization-mind-set" class="level3">
+<h3 class="anchored" data-anchor-id="an-optimization-mind-set">An Optimization Mind Set</h3>
+<p>This book presents a practical and insightful approach, positioning machine learning as a key optimization tool across various domains, especially critical in aerospace engineering. It emphasizes machine learning’s role in discovering innovative solutions to complex challenges within this field. By leveraging the power of machine learning algorithms to process and analyze intricate, multi-faceted data, we can unearth previously hidden patterns and connections. This strategy isn’t about replacing human creativity; rather, it’s about enhancing it with machine-based computational efficiency. By employing these algorithms, we can more effectively explore vast solution spaces within an optimization framework, thereby accelerating the pace of innovation. This viewpoint underscores the significance of machine learning as an indispensable resource in driving forward advanced designs, elevating safety and operational efficiency, and pioneering new frontiers in aerospace engineering. The book encourages the development of an optimization mindset, crucial for tackling the complex problems of aerospace engineering with machine learning, blending computational power with human expertise to push the boundaries of what’s possible.</p>
+</section>
+<section id="theory-and-data-driven-aerospace-machine-learning" class="level3">
+<h3 class="anchored" data-anchor-id="theory-and-data-driven-aerospace-machine-learning">Theory and Data Driven Aerospace Machine Learning</h3>
+<p>An ideal strategy for aerospace machine learning should effectively integrate physics principles with machine learning concepts, utilizing mathematical equations to compensate for any data deficiencies. Rather than viewing physical laws as mere restrictions, they should be considered as crucial insights that steer the machine learning process. The efficiency of problem solving can be greatly improved by adeptly combining empirical data with these core physical principles. The result of merging data with physics is the generation of solutions that are as firmly based on empirical evidence as they are on the foundational principles of physics. Adopting such an all-encompassing approach ensures that machine learning algorithms are not only responsive to data but also precisely adjusted in accordance with the fundamental laws that drive aerospace phenomena. This synergy of data and physics carves out a route towards the development of innovative, dependable, and accurately fine-tuned answers to the intricate problems faced in aerospace engineering.</p>
+</section>
+<section id="scope-of-the-book" class="level3">
+<h3 class="anchored" data-anchor-id="scope-of-the-book">Scope of the book</h3>
+<p>This book aims to complement the newly introduced machine learning course in the Aerospace Engineering Department at Texas A&amp;M University. Recognizing the extensive range of machine learning’s applicability in aerospace, the book offers a detailed examination of select, complex issues within this domain, tailored for machine learning solutions. It is crafted with undergraduate seniors and graduate students in mind, aiming to deepen their comprehension of the interplay and enhancement of aerospace technologies by machine learning. The book is also structured to be approachable for professionals, given they have a foundational understanding of mathematical concepts and computer programming. This book strives to connect academic theory with real-world industry practices by integrating theoretical knowledge with practical case studies. It is envisioned as a critical resource for those keen on exploring the cutting-edge applications of machine learning in aerospace, whether for academic advancement or practical application. As the course evolves, we anticipate expanding the topics covered in this book and hope to achieve these lofty goals.</p>
+<p><strong>Raktim Bhattacharya</strong><br> <em>Professor</em><br> Aerospace Engineering, Texas A&amp;M University.<br> College Station, TX, 77843-3141, USA.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./intro.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Machine Learning</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
