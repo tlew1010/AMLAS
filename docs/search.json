@@ -191,28 +191,28 @@
   {
     "objectID": "monte_carlo_methods.html",
     "href": "monte_carlo_methods.html",
-    "title": "7  Monte Carlo Methods",
+    "title": "7  Monte Carlo Methods*",
     "section": "",
     "text": "Monte Carlo Simulation: Estimating integrals and expectations, important in approximation algorithms.\nMarkov Chain Monte Carlo (MCMC): Algorithms for sampling from complex distributions. Propagation of distributions through functions.\nPython Code: Simple Monte Carlo integration and examples of MCMC."
   },
   {
     "objectID": "optimization.html#convex-sets",
     "href": "optimization.html#convex-sets",
-    "title": "8  Optimization",
+    "title": "8  Optimization*",
     "section": "8.1 Convex Sets",
     "text": "8.1 Convex Sets"
   },
   {
     "objectID": "optimization.html#convex-functions",
     "href": "optimization.html#convex-functions",
-    "title": "8  Optimization",
+    "title": "8  Optimization*",
     "section": "8.2 Convex Functions",
     "text": "8.2 Convex Functions"
   },
   {
     "objectID": "optimization.html#some-useful-inequalities",
     "href": "optimization.html#some-useful-inequalities",
-    "title": "8  Optimization",
+    "title": "8  Optimization*",
     "section": "8.3 Some Useful Inequalities",
     "text": "8.3 Some Useful Inequalities"
   },
