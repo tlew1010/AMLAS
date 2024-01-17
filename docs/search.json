@@ -184,7 +184,7 @@
   {
     "objectID": "bayesian_inference.html",
     "href": "bayesian_inference.html",
-    "title": "6  Bayesian Inference",
+    "title": "6  Bayesian Inference*",
     "section": "",
     "text": "Bayesian vs. Frequentist Approach: Philosophical differences and their implications in machine learning.\nBayesian Inference and Prior Distributions: How to update beliefs with evidence, essential in many machine learning models.\nPython Code: Implement simple Bayesian inference examples."
   },
