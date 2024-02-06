@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.3.450" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
 
-<title>Applied Machine Learning for Aerospace Systems - 13&nbsp; Dimensionality Reduction</title>
+<title>Applied Machine Learning for Aerospace Systems – 14  Dimensionality Reduction</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,25 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./aerospace_applications.html" rel="next">
-<link href="./unsupervised_learning.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<!-- htmldependencies:E3FAD763 -->
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -108,17 +92,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar floating">
+<body>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn"
+      data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./algorithms.html">Machine Learning Algorithms</a></li><li class="breadcrumb-item"><a href="./dimensionality_reduction.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <h1 class="quarto-secondary-nav-title"></h1>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -132,7 +121,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Applied Machine Learning for Aerospace Systems</a> 
+      <a href="/">
+      Applied Machine Learning for Aerospace Systems
+      </a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -144,19 +135,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Machine Learning</span></span></a>
+  <a href="/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Machine Learning</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./math.html" class="sidebar-item-text sidebar-link">
+            <a href="/math.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Foundational Mathematics</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -165,57 +156,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./linear_algebra.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Algebra</span></span></a>
+  <a href="/linear_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>2</span>  <span class='chapter-title'>Linear Algebra</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./functions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions &amp; Function Spaces</span></span></a>
+  <a href="/functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>3</span>  <span class='chapter-title'>Functions & Function Spaces</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./random_variables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
+  <a href="/random_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>4</span>  <span class='chapter-title'>Random Variables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./random_processes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></span></a>
+  <a href="/random_processes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>5</span>  <span class='chapter-title'>Random Processes and Sequences</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
+  <a href="/bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>6</span>  <span class='chapter-title'>Bayesian Inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./monte_carlo_methods.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Monte Carlo Methods</span></span></a>
+  <a href="/monte_carlo_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>7</span>  <span class='chapter-title'>Monte Carlo Methods</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization</span></span></a>
+  <a href="/optimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>8</span>  <span class='chapter-title'>Optimization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./function_approximation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></span></a>
+  <a href="/function_approximation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>9</span>  <span class='chapter-title'>Function Approximation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/neural_networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>10</span>  <span class='chapter-title'>Neural Networks</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./algorithms.html" class="sidebar-item-text sidebar-link">
+            <a href="/algorithms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Machine Learning Algorithms</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -224,33 +221,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data_pre_processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span></a>
+  <a href="/data_pre_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>11</span>  <span class='chapter-title'>Data Pre-Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./supervised_learning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span></a>
+  <a href="/supervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>12</span>  <span class='chapter-title'>Supervised Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./unsupervised_learning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span></a>
+  <a href="/unsupervised_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>13</span>  <span class='chapter-title'>Unsupervised Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dimensionality_reduction.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+  <a href="/dimensionality_reduction.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class='chapter-number'>14</span>  <span class='chapter-title'>Dimensionality Reduction</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./aerospace_applications.html" class="sidebar-item-text sidebar-link">
+            <a href="/aerospace_applications.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Aerospace Applications</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -259,53 +256,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./application1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Aerospace Application 1</span></span></a>
+  <a href="/application1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>15</span>  <span class='chapter-title'>Aerospace Application 1</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./application2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Aerospace Application 2</span></span></a>
+  <a href="/application2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>16</span>  <span class='chapter-title'>Aerospace Application 2</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  <a href="/summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>17</span>  <span class='chapter-title'>Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="/references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" ></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#pca" id="toc-pca" class="nav-link active" data-scroll-target="#pca"><span class="header-section-number">13.1</span> PCA</a>
-  <ul class="collapse">
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
-  </ul></li>
-  </ul>
-</nav>
+        <div id="quarto-toc-target"></div>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></h1>
+<h1 class="title"><span class="chapter-number">14</span>  <span class="chapter-title">Dimensionality Reduction</span></h1>
 </div>
 
 
@@ -319,70 +307,79 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 </header>
-
-<section id="pca" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="pca"><span class="header-section-number">13.1</span> PCA</h2>
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#pca" id="toc-pca"><span class="header-section-number">14.1</span> PCA</a>
+  <ul>
+  <li><a href="#examples" id="toc-examples">Examples</a></li>
+  </ul></li>
+  </ul>
+</nav>
+<section id="pca" class="level2" data-number="14.1">
+<h2 data-number="14.1"><span class="header-section-number">14.1</span> PCA</h2>
 <section id="examples" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="examples">Examples</h3>
+<h3 class="unnumbered">Examples</h3>
 <p>We next consider an image approximation (or compression) example where matrix basis are used. Consider the following image:</p>
 <div class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>True</code></pre>
 </div>
 </div>
-<div id="fig-circle" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="images/circle.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;13.1: An 100x100 image of a circle.</figcaption>
+<div id="fig-circle" class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="images/circle.png" class="img-fluid" /></p>
+<figcaption>Figure 14.1: An 100x100 image of a circle.</figcaption>
 </figure>
 </div>
-<p><a href="#fig-circle">Figure&nbsp;<span>13.1</span></a> shows an image of a circle, which is <span class="math inline">\(100 \times 100\)</span> in size. While the image is in 2D, the pixel space is <span class="math inline">\(\mathcal{R}^{100\times 100}\)</span>, which needs <span class="math inline">\(100\times 100=10000\)</span> basis matrices!</p>
+<p><a href="#fig-circle">Figure <span class="quarto-unresolved-ref">fig-circle</span></a> shows an image of a circle, which is <span class="math inline">\(100 \times 100\)</span> in size. While the image is in 2D, the pixel space is <span class="math inline">\(\mathcal{R}^{100\times 100}\)</span>, which needs <span class="math inline">\(100\times 100=10000\)</span> basis matrices!</p>
 <p>However, looking at the image, we can see that most of the image is empty (black pixels) and the circle can be represented with much smaller number of basis functions. Thus, by inspection, we can infer that the image can be represented in a lower dimensional space. We can apply singular value decomposition to determine lower dimensional (or <em>reduced order</em>) representation of the image. This is also known as <em>image compression</em>.</p>
 <p>The following Python code demonstrates it.</p>
 <div>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> svd</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the image into a numpy array.</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="st">'images/circle.png'</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="st">&#39;images/circle.png&#39;</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform SVD</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>U, Sigma, Vt <span class="op">=</span> svd(img)</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>markerline, stemline, baseline <span class="op">=</span> plt.stem(<span class="bu">range</span>(<span class="bu">len</span>(Sigma)),Sigma)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.setp(markerline, markersize <span class="op">=</span> <span class="dv">3</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Singular values of the image matrix."</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Index k."</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Singular Value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;Singular values of the image matrix.&quot;</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Index k.&quot;</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Singular Value&quot;</span>)</span></code></pre></div>
 <div id="fig-svd_of_image" class="cell quarto-layout-panel" data-execution_count="2">
-<figure class="figure">
+<figure>
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div id="fig-svd_of_image-1" class="quarto-figure quarto-figure-center anchored" style="flex-basis: 100.0%;justify-content: center;">
-<figure class="figure">
-<pre><code>Text(0, 0.5, 'Singular Value')</code></pre>
-<figcaption class="figure-caption">(a) Singular values of the image matrix. Most of the singular values are zero, which means the image can be represented in lower dimensional space.</figcaption>
+<div id="fig-svd_of_image-1" class="quarto-figure quarto-figure-center" style="flex-basis: 100.0%;justify-content: center;">
+<figure>
+<pre><code>Text(0, 0.5, &#39;Singular Value&#39;)</code></pre>
+<figcaption>(a) Singular values of the image matrix. Most of the singular values are zero, which means the image can be represented in lower dimensional space.</figcaption>
 </figure>
 </div>
 </div>
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-svd_of_image-2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="dimensionality_reduction_files/figure-html/fig-svd_of_image-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-svd_of_image" width="602"></p>
-<figcaption class="figure-caption">(b)</figcaption>
+<div id="fig-svd_of_image-2" class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="dimensionality_reduction_files/figure-html/fig-svd_of_image-output-2.png" class="img-fluid" data-ref-parent="fig-svd_of_image" width="602" /></p>
+<figcaption>(b)</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p></p><figcaption class="figure-caption">Figure&nbsp;13.2: <strong>?(caption)</strong></figcaption><p></p>
+<p><figcaption>Figure 14.2: <strong>?(caption)</strong></figcaption></p>
 </figure>
 </div>
 </div>
-<p><a href="#fig-svd_of_image">Figure&nbsp;<span>13.2</span></a> shows the singular values of the image matrix. We observe that most of the singular values are zero, indicating the image can be represented in a much lower dimensional space. The next Python code shows how it can be done.</p>
+<p><a href="#fig-svd_of_image">Figure <span class="quarto-unresolved-ref">fig-svd_of_image</span></a> shows the singular values of the image matrix. We observe that most of the singular values are zero, indicating the image can be represented in a much lower dimensional space. The next Python code shows how it can be done.</p>
 <div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compress_image(U,Vt,Sigma,k):</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compress_image(U,Vt,Sigma,k):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  U_k <span class="op">=</span> U[:, :k]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  Sigma_k <span class="op">=</span> np.diag(Sigma[:k])</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  Vt_k <span class="op">=</span> Vt[:k, :]</span>
@@ -398,23 +395,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the original and the compressed image</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.imshow(img, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Original Image'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.imshow(img, cmap<span class="op">=</span><span class="st">&#39;gray&#39;</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Original Image&#39;</span>)</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.imshow(img1, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Compressed Image with k=20'</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.imshow(img1, cmap<span class="op">=</span><span class="st">&#39;gray&#39;</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Compressed Image with k=20&#39;</span>)</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>plt.imshow(img2, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Compressed Image with k=10'</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>plt.imshow(img2, cmap<span class="op">=</span><span class="st">&#39;gray&#39;</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Compressed Image with k=10&#39;</span>)</span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>plt.imshow(img3, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Compressed Image with k=5'</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>plt.imshow(img3, cmap<span class="op">=</span><span class="st">&#39;gray&#39;</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Compressed Image with k=5&#39;</span>)</span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <div class="cell quarto-layout-panel" data-execution_count="3">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
@@ -426,22 +423,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="dimensionality_reduction_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img" width="568"></p>
-<figcaption class="figure-caption">Various representations of original image in lower dimensional spaces.</figcaption>
+<figure>
+<p><img src="dimensionality_reduction_files/figure-html/cell-4-output-2.png" class="img-fluid" width="569" /></p>
+<figcaption>Various representations of original image in lower dimensional spaces.</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-
-
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden" data-render-id="quarto-int-sidebar-title">Applied Machine Learning for Aerospace Systems</span> <span class="hidden" data-render-id="quarto-int-navbar-title">Applied Machine Learning for Aerospace Systems</span> <span class="hidden" data-render-id="quarto-int-next">Aerospace Applications</span> <span class="hidden" data-render-id="quarto-int-prev"><span class="chapter-number">13</span>  <span class="chapter-title">Unsupervised Learning</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/index.html">Preface</span> <span class="hidden" data-render-id="quarto-int-sidebar:/intro.html"><span class="chapter-number">1</span>  <span class="chapter-title">Introduction to Machine Learning</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-1">Foundational Mathematics</span> <span class="hidden" data-render-id="quarto-int-sidebar:/linear_algebra.html"><span class="chapter-number">2</span>  <span class="chapter-title">Linear Algebra</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/functions.html"><span class="chapter-number">3</span>  <span class="chapter-title">Functions &amp; Function Spaces</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/random_variables.html"><span class="chapter-number">4</span>  <span class="chapter-title">Random Variables</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/random_processes.html"><span class="chapter-number">5</span>  <span class="chapter-title">Random Processes and Sequences</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/bayesian_inference.html"><span class="chapter-number">6</span>  <span class="chapter-title">Bayesian Inference</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/monte_carlo_methods.html"><span class="chapter-number">7</span>  <span class="chapter-title">Monte Carlo Methods</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/optimization.html"><span class="chapter-number">8</span>  <span class="chapter-title">Optimization</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/function_approximation.html"><span class="chapter-number">9</span>  <span class="chapter-title">Function Approximation</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/neural_networks.html"><span class="chapter-number">10</span>  <span class="chapter-title">Neural Networks</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-2">Machine Learning Algorithms</span> <span class="hidden" data-render-id="quarto-int-sidebar:/data_pre_processing.html"><span class="chapter-number">11</span>  <span class="chapter-title">Data Pre-Processing</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/supervised_learning.html"><span class="chapter-number">12</span>  <span class="chapter-title">Supervised Learning</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/unsupervised_learning.html"><span class="chapter-number">13</span>  <span class="chapter-title">Unsupervised Learning</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/dimensionality_reduction.html"><span class="chapter-number">14</span>  <span class="chapter-title">Dimensionality Reduction</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-3">Aerospace Applications</span> <span class="hidden" data-render-id="quarto-int-sidebar:/application1.html"><span class="chapter-number">15</span>  <span class="chapter-title">Aerospace Application 1</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/application2.html"><span class="chapter-number">16</span>  <span class="chapter-title">Aerospace Application 2</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/summary.html"><span class="chapter-number">17</span>  <span class="chapter-title">Summary</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/references.html">References</span> <span class="hidden" data-render-id="quarto-breadcrumbs-b116c42d981c9bb502950df18fbcdc02">Machine Learning Algorithms</span> <span class="hidden" data-render-id="quarto-breadcrumbs-672c0a21e269eb60d7c07514656454b0"><span class="chapter-number">14</span>  <span class="chapter-title">Dimensionality Reduction</span></span></p>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden" data-render-id="quarto-metatitle">Applied Machine Learning for Aerospace Systems - <span class="chapter-number">14</span>  <span class="chapter-title">Dimensionality Reduction</span></span> <span class="hidden" data-render-id="quarto-twittercardtitle">Applied Machine Learning for Aerospace Systems - <span class="chapter-number">14</span>  <span class="chapter-title">Dimensionality Reduction</span></span> <span class="hidden" data-render-id="quarto-ogcardtitle">Applied Machine Learning for Aerospace Systems - <span class="chapter-number">14</span>  <span class="chapter-title">Dimensionality Reduction</span></span> <span class="hidden" data-render-id="quarto-metasitename">Applied Machine Learning for Aerospace Systems</span> <span class="hidden" data-render-id="quarto-twittercarddesc"></span> <span class="hidden" data-render-id="quarto-ogcardddesc"></span></p>
+</div>
 </section>
 </section>
 
 </main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+<script id = "quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -676,18 +677,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./unsupervised_learning.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span>
+      <a  href="/unsupervised_learning.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class='chapter-number'>13</span>  <span class='chapter-title'>Unsupervised Learning</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./aerospace_applications.html" class="pagination-link">
+      <a  href="/aerospace_applications.html" class="pagination-link">
         <span class="nav-page-text">Aerospace Applications</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 
+</body>
 
-
-</body></html>
+</html>

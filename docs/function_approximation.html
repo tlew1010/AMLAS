@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./algorithms.html" rel="next">
+<link href="./neural_networks.html" rel="next">
 <link href="./optimization.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -211,6 +211,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./neural_networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neural Networks</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -225,25 +231,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data_pre_processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./supervised_learning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./unsupervised_learning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dimensionality_reduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
   </div>
 </li>
       </ul>
@@ -260,13 +266,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./application1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Aerospace Application 1</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Aerospace Application 1</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./application2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Aerospace Application 2</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Aerospace Application 2</span></span></a>
   </div>
 </li>
       </ul>
@@ -274,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -455,7 +461,7 @@ x_i = \left\langle \boldsymbol{x},\boldsymbol{e}_i \right\rangle.
 <pre><code>3</code></pre>
 </div>
 </div>
-<p>Let us now represent a vector <span class="math inline">\(\boldsymbol{x}:=\begin{bmatrix} 1 &amp; 1 &amp; 1\end{bmatrix}^T\)</span> with the basis provided. Using (<a href="#eq-optmal-ls-euclidean">Equation&nbsp;<span>9.1</span></a>), the optimal components of <span class="math inline">\(\boldsymbol{x}\)</span> in <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^5\)</span> is given by:</p>
+<p>Let us now represent a vector <span class="math inline">\(\boldsymbol{x}:=\begin{bmatrix} 1 &amp; 1 &amp; 1\end{bmatrix}^T\)</span> with the basis provided. Using (<a href="#eq-optmal-ls-euclidean">Equation&nbsp;<span class="quarto-unresolved-ref">eq-optmal-ls-euclidean</span></a>), the optimal components of <span class="math inline">\(\boldsymbol{x}\)</span> in <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^5\)</span> is given by:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>yopt <span class="op">=</span> np.linalg.pinv(E.T<span class="op">@</span>E)<span class="op">@</span>E.T<span class="op">@</span>x</span>
@@ -570,7 +576,7 @@ x_i = \left\langle \boldsymbol{x},\boldsymbol{e}_i \right\rangle.
 <p>The optimal representation of <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}\)</span> in that case satisfies <span id="eq-projection-theorem"><span class="math display">\[
 \left\langle \boldsymbol{r},\boldsymbol{e}_i \right\rangle = 0, \text{ for } i = 1,\cdots,m.
 \tag{9.2}\]</span></span></p>
-<p>Recalling that <span class="math inline">\(\boldsymbol{r}:=\boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}\)</span> and <span class="math inline">\(\left\langle \boldsymbol{r},\boldsymbol{e}_i \right\rangle\)</span> for vectors is simply <span class="math inline">\(\boldsymbol{r}^T \boldsymbol{e}_i = \boldsymbol{e}_i^T\boldsymbol{r}\)</span>, <a href="#eq-projection-theorem">Equation&nbsp;<span>9.2</span></a> can be written as <span class="math display">\[\begin{align*}
+<p>Recalling that <span class="math inline">\(\boldsymbol{r}:=\boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}\)</span> and <span class="math inline">\(\left\langle \boldsymbol{r},\boldsymbol{e}_i \right\rangle\)</span> for vectors is simply <span class="math inline">\(\boldsymbol{r}^T \boldsymbol{e}_i = \boldsymbol{e}_i^T\boldsymbol{r}\)</span>, <a href="#eq-projection-theorem">Equation&nbsp;<span class="quarto-unresolved-ref">eq-projection-theorem</span></a> can be written as <span class="math display">\[\begin{align*}
 &amp; \boldsymbol{e}_i^T\boldsymbol{x}- \boldsymbol{e}_i^T\boldsymbol{E}\boldsymbol{y}= 0,\\
 \text{ or }&amp; \boldsymbol{e}_i^T\boldsymbol{E}\boldsymbol{y}= \boldsymbol{e}_i^T\boldsymbol{x}, \text{ for } i = 1,\cdots,m,
 \end{align*}\]</span> or more compactly as <span class="math display">\[
@@ -578,7 +584,7 @@ x_i = \left\langle \boldsymbol{x},\boldsymbol{e}_i \right\rangle.
 \]</span></p>
 <p>Therefore, the coefficients <span class="math inline">\(\boldsymbol{y}\)</span> can be solved as <span class="math display">\[
 \boldsymbol{y}= (\boldsymbol{E}^T\boldsymbol{E})^\dagger\boldsymbol{E}^T\boldsymbol{x},
-\]</span> which is the same as <a href="#eq-optmal-ls-euclidean">Equation&nbsp;<span>9.1</span></a>. Therefore, projecting the residual on each basis results in the optimal approximation.</p>
+\]</span> which is the same as <a href="#eq-optmal-ls-euclidean">Equation&nbsp;<span class="quarto-unresolved-ref">eq-optmal-ls-euclidean</span></a>. Therefore, projecting the residual on each basis results in the optimal approximation.</p>
 </section>
 </section>
 <section id="matrix-spaces" class="level3" data-number="9.2.4">
@@ -653,7 +659,7 @@ e(\boldsymbol{x}) := f(\boldsymbol{x}) - \boldsymbol{\Phi}^T(\boldsymbol{x})\bol
 \vdots \\
 \langle f(\boldsymbol{x})\phi_N(\boldsymbol{x})\rangle
 \end{bmatrix}}_{\text{This is equal to } \langle \boldsymbol{\Phi}(\boldsymbol{x})f(\boldsymbol{x})\rangle = \boldsymbol{r}.}.
-\]</span> Therefore, the system of linear equations has a solution <span class="math inline">\(\boldsymbol{\alpha}^\ast = \boldsymbol{Q}^\dagger\boldsymbol{r}\)</span>, which is the same solution as <a href="#eq-optimal-L2-error">Equation&nbsp;<span>9.4</span></a>.</p>
+\]</span> Therefore, the system of linear equations has a solution <span class="math inline">\(\boldsymbol{\alpha}^\ast = \boldsymbol{Q}^\dagger\boldsymbol{r}\)</span>, which is the same solution as <a href="#eq-optimal-L2-error">Equation&nbsp;<span class="quarto-unresolved-ref">eq-optimal-L2-error</span></a>.</p>
 <section id="example-exact-polynomial-representation" class="level4" data-number="9.3.2.1">
 <h4 data-number="9.3.2.1" class="anchored" data-anchor-id="example-exact-polynomial-representation"><span class="header-section-number">9.3.2.1</span> Example: Exact Polynomial Representation</h4>
 <p>Here we consider approximation of <span class="math inline">\(f(x) = 1+x^2 - x^3\)</span> with monomial basis <span class="math inline">\(\boldsymbol{\Phi}(x) = \begin{bmatrix}1 &amp; x &amp; x^2 &amp; x^3 &amp; x^4 \end{bmatrix}^T\)</span>. This is a simple problem, where <span class="math inline">\(f(x)\)</span> is in the space spanned by <span class="math inline">\(\boldsymbol{\Phi}(x)\)</span> and we should expect zero residual error.</p>
@@ -854,7 +860,7 @@ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} 
 </div>
 </div>
 </div>
-<p><a href="#fig-periodic_function">Figure&nbsp;<span>9.1</span></a> shows that we are able to approximate <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> with <span class="math inline">\(15\)</span> basis functions with small errors. We can reduce the error further by increasing the number of basis functions.</p>
+<p><a href="#fig-periodic_function">Figure&nbsp;<span class="quarto-unresolved-ref">fig-periodic_function</span></a> shows that we are able to approximate <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> with <span class="math inline">\(15\)</span> basis functions with small errors. We can reduce the error further by increasing the number of basis functions.</p>
 <div>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>plt.stem(<span class="bu">range</span>(nBasis),alp)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Basis Index'</span>)</span>
@@ -872,7 +878,7 @@ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} 
 </div>
 </div>
 </div>
-<p><a href="#fig-periodic_function_coeff">Figure&nbsp;<span>9.2</span></a> show the coefficients, which are projections of <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> on each of the <span class="math inline">\(15\)</span> basis functions. We see that most of the coefficients are zero indicating the function lies in a much smaller dimensional space than assumed.</p>
+<p><a href="#fig-periodic_function_coeff">Figure&nbsp;<span class="quarto-unresolved-ref">fig-periodic_function_coeff</span></a> show the coefficients, which are projections of <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> on each of the <span class="math inline">\(15\)</span> basis functions. We see that most of the coefficients are zero indicating the function lies in a much smaller dimensional space than assumed.</p>
 <p>The basis functions are essentially Fourier modes. Therefore, the approximation is nothing but Fourier series expansion of the function and the coefficients of the basis functions gives rise to the discrete Fourier transform of the signal. If chose wavelets as basis, then we would get wavelet transform of the function. Therefore, we can think of all these transforms as projections of a function on different basis functions.</p>
 </section>
 </section>
@@ -1001,7 +1007,7 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 </section>
 <section id="least-squares-approximation-using-legendre-polynomials." class="level4" data-number="9.3.3.3">
 <h4 data-number="9.3.3.3" class="anchored" data-anchor-id="least-squares-approximation-using-legendre-polynomials."><span class="header-section-number">9.3.3.3</span> Least-Squares Approximation Using Legendre Polynomials.</h4>
-<p>The following Python code illustrates a method for approximating a function using Legendre polynomials on scattered 1D data. Initially, a set of scattered data points is generated. These data points (x) are randomly selected and associated with values (y) derived from a noisy sine wave. The core of this approach lies in constructing a Vandermonde-like matrix for Legendre polynomials. Each column of this matrix, denoted as <span class="math inline">\(\boldsymbol{A}\)</span>, corresponds to a Legendre polynomial of a specific degree evaluated at the data points. To approximate the function, a least squares problem is formulated and solved using <code>np.linalg.lstsq</code>, which essentially returns the optimal solution given by <a href="#eq-lsq_scattered_data">Equation&nbsp;<span>9.5</span></a>.</p>
+<p>The following Python code illustrates a method for approximating a function using Legendre polynomials on scattered 1D data. Initially, a set of scattered data points is generated. These data points (x) are randomly selected and associated with values (y) derived from a noisy sine wave. The core of this approach lies in constructing a Vandermonde-like matrix for Legendre polynomials. Each column of this matrix, denoted as <span class="math inline">\(\boldsymbol{A}\)</span>, corresponds to a Legendre polynomial of a specific degree evaluated at the data points. To approximate the function, a least squares problem is formulated and solved using <code>np.linalg.lstsq</code>, which essentially returns the optimal solution given by <a href="#eq-lsq_scattered_data">Equation&nbsp;<span class="quarto-unresolved-ref">eq-lsq_scattered_data</span></a>.</p>
 <div>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1690,8 +1696,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./algorithms.html" class="pagination-link">
-        <span class="nav-page-text">Machine Learning Algorithms</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./neural_networks.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neural Networks</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
