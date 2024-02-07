@@ -368,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <div id="fig-knn-demo" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="supervised_learning_files/figure-html/fig-knn-demo-output-1.png" class="img-fluid figure-img" width="661"></p>
+<p><img src="supervised_learning_files/figure-html/fig-knn-demo-output-1.png" class="img-fluid figure-img" width="662"></p>
 <figcaption class="figure-caption">Figure&nbsp;12.1: Five nearest neighbors of a given point in a scattered data set.</figcaption>
 </figure>
 </div>
@@ -465,15 +465,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(label_test, label_pred))</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(label_test, label_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[[47  0]
- [ 2 51]]
+<pre><code>[[37  0]
+ [ 2 61]]
               precision    recall  f1-score   support
 
-        -1.0       0.96      1.00      0.98        47
-         1.0       1.00      0.96      0.98        53
+        -1.0       0.95      1.00      0.97        37
+         1.0       1.00      0.97      0.98        63
 
     accuracy                           0.98       100
-   macro avg       0.98      0.98      0.98       100
+   macro avg       0.97      0.98      0.98       100
 weighted avg       0.98      0.98      0.98       100
 </code></pre>
 </div>
@@ -488,7 +488,7 @@ weighted avg       0.98      0.98      0.98       100
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>prediction <span class="op">=</span> knn.predict(candidate_lambda)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Prediction: Eigen value </span><span class="sc">{</span>candidate_lambda[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> corresponds to </span><span class="sc">{</span>Outcome[prediction[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Prediction: Eigen value [ 0.13911578 -0.86748436] corresponds to an unstable mode.</code></pre>
+<pre><code>Prediction: Eigen value [-0.19081313  0.71456278] corresponds to a stable mode.</code></pre>
 </div>
 </div>
 <p>It is unlikely that we will apply this method for verifying the stability of a linear system, as it is much simpler to check the sign of the real part of eigenvalues. The purpose of this example is merely to demonstrate that using proximity can often be an effective way to classify data. Indeed, KNN and other machine learning techniques are more likely to be utilized in scenarios where a direct mathematical relationship between input and output isn’t readily apparent.</p>
@@ -966,15 +966,15 @@ CV Scores: 0.8699999999999999</code></pre>
 <div class="cell quarto-layout-panel" data-execution_count="10">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<pre><code>Mean square error (nominal):0.005428571876515409
-Mean square error (high accuracy):0.00011254970801102898</code></pre>
+<pre><code>Mean square error (nominal):0.0054106869508642776
+Mean square error (high accuracy):0.00011740223018556576</code></pre>
 </div>
 </div>
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <div id="fig-svr_sine" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="supervised_learning_files/figure-html/fig-svr_sine-output-2.png" class="img-fluid figure-img" width="950"></p>
+<p><img src="supervised_learning_files/figure-html/fig-svr_sine-output-2.png" class="img-fluid figure-img" width="949"></p>
 <figcaption class="figure-caption">Figure&nbsp;12.6: Approximation of <span class="math inline">\(\sin(x)\)</span> from scattered data using SVR with an RBF kernel. Parameters <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(C\)</span> and <span class="math inline">\(\epsilon\)</span> control tradeoff between overfit and accuracy.</figcaption>
 </figure>
 </div>

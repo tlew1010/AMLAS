@@ -295,7 +295,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#universal-approximation-theory" id="toc-universal-approximation-theory" class="nav-link active" data-scroll-target="#universal-approximation-theory"><span class="header-section-number">10.0.1</span> Universal Approximation Theory</a></li>
+  <li><a href="#impact-of-weights-and-biases" id="toc-impact-of-weights-and-biases" class="nav-link" data-scroll-target="#impact-of-weights-and-biases"><span class="header-section-number">10.0.2</span> Impact of Weights and Biases</a></li>
+  <li><a href="#deep-neural-network" id="toc-deep-neural-network" class="nav-link" data-scroll-target="#deep-neural-network"><span class="header-section-number">10.0.3</span> Deep Neural Network</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -451,8 +459,137 @@ y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2),
 <p><img src="neural_networks_files/figure-html/unnamed-chunk-5-5.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<section id="universal-approximation-theory" class="level3" data-number="10.0.1">
+<h3 data-number="10.0.1" class="anchored" data-anchor-id="universal-approximation-theory"><span class="header-section-number">10.0.1</span> Universal Approximation Theory</h3>
+<p>Universal Approximation Theory is a foundational concept in the field of neural networks, particularly relevant to artificial intelligence and machine learning. It addresses the capability of neural networks, especially feedforward neural networks with a single hidden layer, to approximate any continuous function to a desired degree of accuracy, given sufficient neurons in the hidden layer.</p>
+<p>The theory asserts that a neural network can represent a wide variety of interesting functions when given appropriate parameters (weights and biases), regardless of the specific details of the function. This property does not guarantee that the network will learn the function; instead, it assures that the network architecture is theoretically capable of representing the function.</p>
+<p>Key points of the Universal Approximation Theory include:</p>
+<ol type="1">
+<li><p><strong>Function Approximation Capability</strong>: It specifically applies to continuous functions on compact subsets of <span class="math inline">\(\mathbb{R}^n\)</span>. The theory tells us that for any continuous function, there exists a neural network that can approximate the function as closely as desired. The approximation is not limited by the complexity or the shape of the function.</p></li>
+<li><p><strong>Architecture Requirements</strong>: The original form of the theory emphasized networks with only one hidden layer. However, subsequent research has shown that deeper networks can achieve the same approximation with potentially fewer neurons, albeit the training might become more complex.</p></li>
+<li><p><strong>Activation Function</strong>: The choice of activation function in the neurons is crucial. The theory typically assumes non-linear activation functions, such as sigmoid, tanh, or ReLU (Rectified Linear Unit), which enable the network to capture non-linearities in the data.</p></li>
+<li><p><strong>Implications for Deep Learning</strong>: This theory underpins the success of deep learning, providing a theoretical justification for the use of neural networks in a wide range of applications, from speech recognition to image processing. It explains why deep learning models, with their capacity to approximate complex functions, have become a powerful tool in artificial intelligence.</p></li>
+<li><p><strong>Limitations</strong>: While the theory assures us of the neural network’s potential as a universal approximator, it does not provide guidance on how to train the network, ensure convergence, or select the appropriate architecture for a specific problem. It also does not address issues like overfitting, where the model learns the training data too closely and performs poorly on unseen data.</p></li>
+</ol>
+<p>In summary, the Universal Approximation Theory highlights the theoretical capabilities of neural networks to approximate any continuous function, reinforcing their versatility and potential in modeling complex patterns and behaviors across various domains. However, practical challenges in training, architecture design, and generalization remain important considerations for leveraging neural networks effectively.</p>
+</section>
+<section id="impact-of-weights-and-biases" class="level3" data-number="10.0.2">
+<h3 data-number="10.0.2" class="anchored" data-anchor-id="impact-of-weights-and-biases"><span class="header-section-number">10.0.2</span> Impact of Weights and Biases</h3>
+<div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(x,w,b):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>      y <span class="op">=</span> w<span class="op">*</span>x<span class="op">+</span>b</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>np.exp(<span class="op">-</span>y))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">200</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,<span class="dv">5</span>,<span class="dv">0</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="dv">100</span>,<span class="dv">0</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>y3 <span class="op">=</span> sigmoid(x,<span class="dv">5</span>,<span class="dv">4</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>y4 <span class="op">=</span> sigmoid(x,<span class="op">-</span><span class="dv">5</span>,<span class="dv">0</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y1,label<span class="op">=</span><span class="st">'w=5, b=0'</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y2,label<span class="op">=</span><span class="st">'w=100, b=0'</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y3,label<span class="op">=</span><span class="st">'w=5, b=4'</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y4,label<span class="op">=</span><span class="st">'w=-5, b=0'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'$\sigma(wx+b)$'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-sigWeights" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="neural_networks_files/figure-html/fig-sigWeights-7.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.4: Effect of weights and biases on a sigmoid.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><a href="#fig-sigWeights">Figure&nbsp;<span>10.4</span></a> shows the effect of the weight <span class="math inline">\(w\)</span> and the bias <span class="math inline">\(b\)</span> on the shape of <span class="math inline">\(\sigma(wx+b)\)</span>. The weight <span class="math inline">\(w\)</span> plays a crucial role in determining the rate at which the function changes around the activation point. For instance, a large weight coupled with zero bias leads to the emergence of a step-like function, illustrated in orange. The interplay between the weight <span class="math inline">\(w\)</span> and the bias <span class="math inline">\(b\)</span> is pivotal in setting the activation point’s location. This is evident in the case where a shifted sigmoid function is observed with <span class="math inline">\(w=5\)</span> and <span class="math inline">\(b=4\)</span>, depicted in green. In scenarios where the weight takes on a negative value, the expression <span class="math inline">\(\sigma(wx+b)\)</span> serves as a deactivation function, transitioning from one to zero, as also highlighted in the figure, with the transition shown in red. Consequently, it’s clear that the parameters <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span> have a significant impact on the shape of <span class="math inline">\(\sigma(wx+b)\)</span>. Additionally, it’s feasible to linearly blend sigmoid and affine functions to create different <em>locally supported functions</em>, as shown next.</p>
+<div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,<span class="dv">5</span>,<span class="dv">1</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span><span class="dv">5</span>,<span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="st">'$y_1 = \sigma(5x+1)$'</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="st">'$y_2 = \sigma(-5x+1)$'</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-bellnn" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="neural_networks_files/figure-html/fig-bellnn-9.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.5: Bell-shaped function using neural networks.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,w,b)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span>w,b)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="st">'$y_1 = \sigma(100x+100)$'</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="st">'$y_2 = \sigma(-100x+100)$'</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-boxnn" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="neural_networks_files/figure-html/fig-boxnn-11.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.6: Box-Wavelet shaped function using neural networks.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">200</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>w1 <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> b1 <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>w2 <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> b2 <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,w1,b1)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span>w2,b2)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="ss">f'$y_1 = \sigma(</span><span class="sc">{</span>w1<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b1<span class="sc">}</span><span class="ss">)$'</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="ss">f'$y_2 = \sigma(-</span><span class="sc">{</span>w2<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b2<span class="sc">}</span><span class="ss">)$'</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-asymnn" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="neural_networks_files/figure-html/fig-asymnn-13.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.7: Asymmetric shaped function using neural networks.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><a href="#fig-bellnn">Figure&nbsp;<span>10.5</span></a> demonstrates how a bell-shaped function can be constructed by superimposing sigmoid functions over affine functions. Similarly, <a href="#fig-boxnn">Figure&nbsp;<span>10.6</span></a> presents a square wave, while <a href="#fig-asymnn">Figure&nbsp;<span>10.7</span></a> showcases an asymmetric function. These varied functions emerge from adjusting the weights and biases within the affine functions inside each sigmoid. By optimizing these weights and biases, it is possible to modify the characteristics of these locally supported functions. Such local functions can be referred to as <em>neural basis functions</em>.</p>
+</section>
+<section id="deep-neural-network" class="level3" data-number="10.0.3">
+<h3 data-number="10.0.3" class="anchored" data-anchor-id="deep-neural-network"><span class="header-section-number">10.0.3</span> Deep Neural Network</h3>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
