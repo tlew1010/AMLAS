@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -106,6 +113,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -114,12 +148,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./algorithms.html">Machine Learning Algorithms</a></li><li class="breadcrumb-item"><a href="./data_pre_processing.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./algorithms.html">Machine Learning Algorithms</a></li><li class="breadcrumb-item"><a href="./data_pre_processing.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -129,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Applied Machine Learning for Aerospace Systems</a> 
@@ -292,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
@@ -319,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./algorithms.html">Machine Learning Algorithms</a></li><li class="breadcrumb-item"><a href="./data_pre_processing.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></h1>
 </div>
@@ -334,7 +368,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>Data preprocessing is a critical step in the machine learning pipeline. It involves preparing and cleaning the raw data before feeding it into a model. The aim is to make the data more suitable for modeling, improve its quality, and increase the overall efficiency of the learning process. Here are some of the common data preprocessing techniques in machine learning:</p>
 <section id="data-cleaning" class="level2" data-number="11.1">
@@ -551,7 +587,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The moving average technique is a widely used method for smoothing noisy data, particularly in time series analysis. It involves calculating the average of a specified number of data points within a moving window that progresses through the dataset. For example, in a simple moving average, each data point is replaced with the average of itself and the surrounding data points within the window. This method effectively dampens short-term fluctuations and highlights longer-term trends or cycles in the data.</p>
 <p><strong>Advantage:</strong> One of the main advantages of the moving average technique is its simplicity and ease of implementation. It requires minimal computational resources, making it suitable for large datasets and real-time data analysis. Additionally, it’s intuitive and straightforward to interpret, which is particularly beneficial for quick insights and initial data exploration.</p>
 <p>To demonstrate the advantage of moving average smoothing, let’s create a Python example where we apply this technique to a time series data set with some random noise. The goal is to see how the moving average can smooth out short-term fluctuations and reveal underlying trends in the data. We’ll start by generating a simple time series dataset with added random noise and then apply a moving average smoothing technique to it:</p>
-<div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -577,23 +612,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Value'</span>)</span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="5">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-moving_average" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-moving_average-output-1.png" class="img-fluid figure-img" width="972"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.1: Demonstration of moving average as a technique for data de-noising.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="5" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-moving_average" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-moving_average-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-moving_average-output-1.png" width="972" height="523" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-moving_average-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.1: Demonstration of moving average as a technique for data de-noising.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p>In this code, we create a time series dataset (<code>data</code>) that represents some signal (in this case, a sine wave) with added Gaussian noise. The data is put into a pandas DataFrame for ease of manipulation. We then apply a moving average smoothing with a window size of 10. This means each point in the ‘Moving_Average’ column is the average of the current and the previous 9 points in the ‘Data’ column. Finally, we plot both the original and the smoothed data. <a href="#fig-moving_average">Figure&nbsp;<span class="quarto-unresolved-ref">fig-moving_average</span></a> shows how the moving average smooths out the fluctuations and reveals the underlying sine wave pattern more clearly.</p>
+<p>In this code, we create a time series dataset (<code>data</code>) that represents some signal (in this case, a sine wave) with added Gaussian noise. The data is put into a pandas DataFrame for ease of manipulation. We then apply a moving average smoothing with a window size of 10. This means each point in the ‘Moving_Average’ column is the average of the current and the previous 9 points in the ‘Data’ column. Finally, we plot both the original and the smoothed data. <a href="#fig-moving_average" class="quarto-xref">Figure&nbsp;<span>11.1</span></a> shows how the moving average smooths out the fluctuations and reveals the underlying sine wave pattern more clearly.</p>
 <p><strong>Disadvantage:</strong> However, the moving average technique also has its limitations. A significant disadvantage is its inability to handle rapid changes or non-linear trends in the data effectively. The method tends to “lag” behind the actual data, especially with larger window sizes, meaning that it might not be responsive enough to recent changes in the data. Furthermore, the choice of the window size is crucial; a window that is too small may not smooth the data sufficiently, while a window that is too large can oversmooth the data, potentially obscuring important details and patterns. Additionally, the moving average does not differentiate between older and more recent data points within the window, treating all points with equal importance, which might not always be appropriate depending on the data’s nature and the analysis’s goals.</p>
 <p>The following Python code demonstrate a disadvantage of using the moving average for data denoising, especially in the context of rapidly changing or non-linear trends. The code generates a time series dataset that includes a sudden change in trend, highlighting a key disadvantage of the moving average smoothing method. Initially, random data is generated to simulate a scenario where the data abruptly shifts from one trend to another. Specifically, for the first half of the time series, the data follows a normal distribution with a mean of 0, and then it suddenly shifts to a different normal distribution with a mean of 5, representing a distinct change in trend.</p>
-<div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -619,28 +656,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Value'</span>)</span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="6">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-moving_average_bad" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-moving_average_bad-output-1.png" class="img-fluid figure-img" width="959"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.2: Limitations of moving average data denoising.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="6" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-moving_average_bad" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-moving_average_bad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-moving_average_bad-output-1.png" width="959" height="523" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-moving_average_bad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.2: Limitations of moving average data denoising.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
 <p>This dataset is converted into a pandas DataFrame for ease of manipulation. A moving average is then applied to this data with a window size of 10. This window size means that each point in the ‘Moving_Average’ column of the DataFrame represents the average of the current and the previous nine points in the ‘Data’ column.</p>
-<p>The key point of interest is observed in <a href="#fig-moving_average_bad">Figure&nbsp;<span class="quarto-unresolved-ref">fig-moving_average_bad</span></a>, where both the original and smoothed data are plotted. The plot clearly illustrates the disadvantage of the moving average in this scenario. Due to the moving average’s inherent nature, it <em>lags</em> in responding to the sudden change in trend. This lag is particularly noticeable at the point where the data shifts from one distribution to another. This lag can lead to misinterpretation or delay in recognizing significant changes in the data, which is a critical drawback in applications where timely and accurate response to data trends is essential. ​</p>
+<p>The key point of interest is observed in <a href="#fig-moving_average_bad" class="quarto-xref">Figure&nbsp;<span>11.2</span></a>, where both the original and smoothed data are plotted. The plot clearly illustrates the disadvantage of the moving average in this scenario. Due to the moving average’s inherent nature, it <em>lags</em> in responding to the sudden change in trend. This lag is particularly noticeable at the point where the data shifts from one distribution to another. This lag can lead to misinterpretation or delay in recognizing significant changes in the data, which is a critical drawback in applications where timely and accurate response to data trends is essential. ​</p>
 </section>
 <section id="exponential-smoothing" class="level4" data-number="11.1.2.4">
 <h4 data-number="11.1.2.4" class="anchored" data-anchor-id="exponential-smoothing"><span class="header-section-number">11.1.2.4</span> Exponential Smoothing</h4>
 <p>Exponential smoothing is a popular data smoothing technique, particularly effective in time series forecasting. It operates by applying decreasing weights to past observations, with the most recent observations given more significance. The fundamental principle is that more recent data is a better reflector of the future, hence the exponential decrease in weight for older data. This weighting is achieved through a smoothing factor, typically denoted as <span class="math inline">\(\alpha\)</span>, which determines how rapidly the weights decrease; a higher alpha places more emphasis on recent observations.</p>
 <p><strong>Advantages:</strong> One of the key advantages of exponential smoothing is its adaptability to changes in data trends and patterns. Unlike simple moving averages that treat all points in the window equally, exponential smoothing can quickly adjust to recent changes, making it more responsive to shifts in the underlying data pattern. This feature makes it particularly useful for forecasting in scenarios where data trends are dynamic and evolving.</p>
-<p>Here is a Python code example demonstrating the use of exponential smoothing on a time series dataset. We use the same data as shown in <a href="#fig-moving_average_bad">Figure&nbsp;<span class="quarto-unresolved-ref">fig-moving_average_bad</span></a>, where the simple moving average was lagging.</p>
-<div>
+<p>Here is a Python code example demonstrating the use of exponential smoothing on a time series dataset. We use the same data as shown in <a href="#fig-moving_average_bad" class="quarto-xref">Figure&nbsp;<span>11.2</span></a>, where the simple moving average was lagging.</p>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -666,20 +705,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Value'</span>)</span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="7">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-exp_smoothing_good" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-exp_smoothing_good-output-1.png" class="img-fluid figure-img" width="959"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.3: Exponential smoothing of a noisy data with sudden jumps in trends.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="7" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-exp_smoothing_good" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exp_smoothing_good-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-exp_smoothing_good-output-1.png" width="959" height="523" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exp_smoothing_good-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.3: Exponential smoothing of a noisy data with sudden jumps in trends.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p><a href="#fig-exp_smoothing_good">Figure&nbsp;<span class="quarto-unresolved-ref">fig-exp_smoothing_good</span></a> shows both the original noisy data and the smoothed data. It illustrates how exponential smoothing effectively smooths out the noise, and is more responsive to changes in trends in comparison with simple moving average shown in <a href="#fig-moving_average_bad">Figure&nbsp;<span class="quarto-unresolved-ref">fig-moving_average_bad</span></a>.</p>
+<p><a href="#fig-exp_smoothing_good" class="quarto-xref">Figure&nbsp;<span>11.3</span></a> shows both the original noisy data and the smoothed data. It illustrates how exponential smoothing effectively smooths out the noise, and is more responsive to changes in trends in comparison with simple moving average shown in <a href="#fig-moving_average_bad" class="quarto-xref">Figure&nbsp;<span>11.2</span></a>.</p>
 <p><strong>Limitations:</strong> However, the method also has its drawbacks. Choosing the right smoothing factor <span class="math inline">\(\alpha\)</span> can be challenging and may require trial and error or optimization techniques. If <span class="math inline">\(\alpha\)</span> is set too high, the smoothed data might become too sensitive to recent changes, capturing random fluctuations rather than the underlying trend. Conversely, if <span class="math inline">\(\alpha\)</span> is too low, the method becomes similar to a moving average, potentially lagging behind recent trends. Another limitation is its simplicity; exponential smoothing is best suited for univariate time series without seasonality or trend components. For more complex data structures, more sophisticated methods like Holt-Winters exponential smoothing, which extends the basic idea to capture seasonality and trends, are often required. We can change <span class="math inline">\(\alpha\)</span> in the above code to <span class="math inline">\(0.1\)</span> to see increased lag in the prediction, which is worse than the simple moving average example.</p>
 <p>While exponential smoothing is a valuable tool in time series analysis, especially for its quick adaptation to recent data changes and its ease of implementation. However, its effectiveness is dependent on the appropriate setting of the smoothing factor and the complexity of the time series data. It works best for simpler, non-seasonal series and might not be suitable for more complex datasets with multiple influencing factors.</p>
 </section>
@@ -694,7 +736,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Implementation</strong>: Low-pass filtering can be implemented in several ways, such as using Fourier transforms, moving averages, or specific digital filter designs like Butterworth or Chebyshev filters. The choice of method depends on the nature of the data and the specific requirements of the task.</p></li>
 </ol>
 <p><strong>Advantages:</strong> Low-pass filtering is a valuable preprocessing step at reducing high-frequency noise, which is a common characteristic of many types of noise in data, especially in signal processing and time-series analysis. These filters can preserve the main signal or trend in the data if the cutoff frequency is chosen correctly. This makes them particularly useful for applications where the signal of interest is of lower frequency. Low-pass filters are generally simple to implement and computationally efficient. They don’t require extensive computational resources, making them suitable for real-time applications. By removing noise, they can improve the performance of machine learning models, reducing the chance of overfitting and enhancing the model’s ability to generalize from training to unseen data. There are various types of low-pass filters (e.g., Butterworth, Chebyshev), offering flexibility to choose one that best fits the specific characteristics of the data. Here is a Python code demonstrating advantages of using low-pass filtering.</p>
-<div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> butter, lfilter</span>
@@ -750,24 +791,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="8">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-low_pass_filtering" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-low_pass_filtering-output-1.png" class="img-fluid figure-img" width="1430"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.4: Low-pass filtering to denoise data.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="8" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-low_pass_filtering" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-low_pass_filtering-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-low_pass_filtering-output-1.png" width="1430" height="469" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-low_pass_filtering-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.4: Low-pass filtering to denoise data.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p><a href="#fig-low_pass_filtering">Figure&nbsp;<span class="quarto-unresolved-ref">fig-low_pass_filtering</span></a> shows three plots: the original clean sinusoidal signal, the same signal with added noise, and the noisy signal after applying a low-pass filter. We see that the filtered signal is devoid of any noise, but has a magnitude and phase distortion when compared to the clean signal.</p>
+<p><a href="#fig-low_pass_filtering" class="quarto-xref">Figure&nbsp;<span>11.4</span></a> shows three plots: the original clean sinusoidal signal, the same signal with added noise, and the noisy signal after applying a low-pass filter. We see that the filtered signal is devoid of any noise, but has a magnitude and phase distortion when compared to the clean signal.</p>
 <p><strong>Limitations:</strong> Low-pass filtering, while effective for reducing high-frequency noise, presents several challenges and limitations. A significant concern is the potential loss of valuable high-frequency information, which can be detrimental if the signal of interest includes crucial high-frequency components. Additionally, selecting the correct cutoff frequency is a critical yet often challenging task; an inappropriate cutoff may either inadequately filter noise or inadvertently eliminate important signal elements. Low-pass filters can also introduce phase shifts or distortions, which are problematic in scenarios where signal phase is key. There’s also a risk of oversmoothing with excessive use of these filters, leading to a loss of important data variations and details. Moreover, these filters are specifically tailored for high-frequency noise and may not be suitable for low-frequency or broadly distributed noise types. Finally, in the context of time-series or spatial data, low-pass filtering can cause edge effects at data boundaries, where the performance of the filter may be compromised due to insufficient surrounding data points. These limitations highlight the need for careful consideration and application of low-pass filtering in data processing and analysis.</p>
 <p>The following Python code demonstrates the disadvantages of using low-pass filtering in denoising data. The example focuses on two primary concerns: the loss of significant high-frequency signal components and the possibility of phase shift. We first create a composite signal with both low and high-frequency elements, mimicking a real-world scenario where a signal carries multiple frequencies. Then we add a random noise to it, simulating typical real-life interference. The noisy data is then smoothened using a low-pass filter.</p>
 <p>While the filter’s primary objective is to remove noise, it is important to observe its impact on the high-frequency components of the signal. Low-pass filtering, by design, attenuates high-frequency elements, and this effect becomes evident in this example. Finally, the example involves a comparison among the original signal, the noisy version, and the filtered output. This comparison is crucial as it highlights the loss of high-frequency details due to filtering, and it also reveals phase shift introduced by the filter. Such phase shifts can misalign signal components in time, which can be a critical issue in applications where the timing of signal events is important – for example detecting faults in safety critical systems.</p>
-<div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> butter, lfilter</span>
@@ -830,20 +873,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="9">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-low_pass_bad" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-low_pass_bad-output-1.png" class="img-fluid figure-img" width="1430"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.5: Loss of high frequency features, and phase and magnitude distortions, in low-pass filtering.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="9" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-low_pass_bad" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-low_pass_bad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-low_pass_bad-output-1.png" width="1430" height="661" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-low_pass_bad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.5: Loss of high frequency features, and phase and magnitude distortions, in low-pass filtering.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p>The code generates four plots (see <a href="#fig-low_pass_bad">Figure&nbsp;<span class="quarto-unresolved-ref">fig-low_pass_bad</span></a>): the original composite signal with both low and high-frequency components, the same signal with added noise, the filtered signal, and the high-frequency component of the original signal. After applying the low-pass filter, we notice that the high-frequency component is lost in the filtered signal, illustrating the disadvantage of losing important high-frequency details. Additionally, there are magnitude and phase distortions in the predicted (or reconstructed) low frequency signal. This example underscores the need for careful consideration when applying low-pass filters, as they can potentially alter the desired characteristics of the original signal.</p>
+<p>The code generates four plots (see <a href="#fig-low_pass_bad" class="quarto-xref">Figure&nbsp;<span>11.5</span></a>): the original composite signal with both low and high-frequency components, the same signal with added noise, the filtered signal, and the high-frequency component of the original signal. After applying the low-pass filter, we notice that the high-frequency component is lost in the filtered signal, illustrating the disadvantage of losing important high-frequency details. Additionally, there are magnitude and phase distortions in the predicted (or reconstructed) low frequency signal. This example underscores the need for careful consideration when applying low-pass filters, as they can potentially alter the desired characteristics of the original signal.</p>
 </section>
 <section id="wavelet-transformation" class="level4" data-number="11.1.2.6">
 <h4 data-number="11.1.2.6" class="anchored" data-anchor-id="wavelet-transformation"><span class="header-section-number">11.1.2.6</span> Wavelet Transformation</h4>
@@ -854,7 +900,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>DWT provides a discrete and computationally efficient version of the wavelet transform. It is defined using dyadic scales and positions: <span class="math display">\[DWT_{jk} = \sum_{n} x[n] \psi_{jk}[n],\]</span> where <span class="math inline">\(\psi_{jk}[n] = 2^{-j/2} \psi(2^{-j}n - k)\)</span> are the discrete wavelets, <span class="math inline">\(j\)</span> and <span class="math inline">\(k\)</span> are integers that control the scale and translation, respectively, and <span class="math inline">\(x[n]\)</span> is the discrete signal.</p>
 <p>DWT is typically implemented using a filter bank consisting of a high-pass and a low-pass filter, corresponding to the decomposition of the signal into approximation and detail coefficients at each level. The process is iterative, where the approximation coefficients at each level are further decomposed in subsequent levels.</p>
 <p><strong>Advantages:</strong> One of the main advantages of wavelet transformation is its ability to handle non-stationary signals, where the statistical properties of the signal change over time. This makes it particularly useful in real-world scenarios where data often exhibits such characteristics. The wavelet transform is also efficient in localizing both time and frequency features, making it superior to traditional Fourier methods for many applications. This localization allows for more precise denoising, as it can differentiate between noise and signal characteristics at different scales. The following Python code demonstrates denoising data (or signals) with wavelet transformation.</p>
-<div>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
@@ -890,21 +935,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="10">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-wavelet_denoising" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-wavelet_denoising-output-1.png" class="img-fluid figure-img" width="1142"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.6: Denoising data using wavelet transformations.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="10" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-wavelet_denoising" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wavelet_denoising-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-wavelet_denoising-output-1.png" width="1142" height="757" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wavelet_denoising-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.6: Denoising data using wavelet transformations.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
 <p>In the above Python code, we demonstrate the use of wavelet transformation for effective denoising of a signal.We frist generate a 5 Hz sine wave, with random Gaussian noise added to create a noisy signal. The key to the denoising process is the <code>wavelet_denoise</code> function, which leverages the Discrete Wavelet Transform (DWT). This function decomposes the noisy signal into wavelet coefficients, then applies a noise-reduction technique by thresholding these coefficients. The thresholding method employed is the universal threshold with soft thresholding, a common approach in denoising tasks. This method calculates the threshold value based on the median of the coefficients at the highest decomposition level, adjusted by a factor related to the length of the data. This calculation is critical in determining an optimal threshold for effectively removing noise.</p>
-<p>For simplicity and demonstration purposes, the Daubechies wavelet (‘db10’) is used, though the choice of wavelet can vary depending on the specific characteristics of the signal being processed. <a href="#fig-wavelet_denoising">Figure&nbsp;<span class="quarto-unresolved-ref">fig-wavelet_denoising</span></a> shows the original signal, the noisy version, and the denoised signal. We observe that the wavelet transform is an effective techniques to denoise signals. However, it introduces distortions in the reconstructed signal, but are less prone to introducing phase distortions compared to some other signal processing techniques.</p>
+<p>For simplicity and demonstration purposes, the Daubechies wavelet (‘db10’) is used, though the choice of wavelet can vary depending on the specific characteristics of the signal being processed. <a href="#fig-wavelet_denoising" class="quarto-xref">Figure&nbsp;<span>11.6</span></a> shows the original signal, the noisy version, and the denoised signal. We observe that the wavelet transform is an effective techniques to denoise signals. However, it introduces distortions in the reconstructed signal, but are less prone to introducing phase distortions compared to some other signal processing techniques.</p>
 <p><strong>Limitations:</strong> However, there are also disadvantages to using wavelet transformation. The selection of an appropriate wavelet function and the determination of the correct level of decomposition are not straightforward and often require expert knowledge and experimentation. This can make the technique less accessible to non-experts. Additionally, the effectiveness of wavelet denoising can be highly dependent on the characteristics of the noise and signal in the data. In cases where noise and signal characteristics overlap significantly in the wavelet domain, denoising becomes more challenging and can lead to the loss of important signal information.</p>
 </section>
 </section>
@@ -1087,7 +1135,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Scoring Anomalies:</strong> The average path length is used to calculate an anomaly score for each data point. A shorter path length results in a higher anomaly score, indicating a higher likelihood of the point being an outlier.</p></li>
 </ol>
 <p>Here is a Python code demonstrating detection of outliers using the algorithm.</p>
-<div>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> IsolationForest</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1112,21 +1159,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Feature 1"</span>)</span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Feature 2"</span>)</span>
 <span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="13">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-ifa" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-ifa-output-1.png" class="img-fluid figure-img" width="811"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.7: Detection of outliers using the Isolation Forest algorithm.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="13" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-ifa" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ifa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-ifa-output-1.png" width="811" height="523" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ifa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.7: Detection of outliers using the Isolation Forest algorithm.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
 <p>The above Python code demonstrates the use of the Isolation Forest algorithm for outlier detection in a synthetic dataset. We first create a synthetic dataset by generating random data points using a normal distribution (<code>np.random.randn</code>) and then scaling them by a factor of 0.3. To introduce some variability, the generated points are shifted to create two clusters (<code>X + 2</code> and <code>X - 2</code>). Additionally, a set of outlier points is created using a uniform distribution over a wider range (<code>np.random.uniform</code>). These outlier points are then combined with the original data to form the complete dataset (<code>X</code>). An Isolation Forest model (<code>IsolationForest</code>) is instantiated with a specified <code>max_samples</code> parameter (100 in this case, which is the number of samples to draw from the dataset to train each base estimator in the forest). The model is then fitted to the dataset using the <code>fit</code> method. After fitting the model, it’s used to predict the nature of each data point in the dataset (<code>y_pred</code>). The prediction results in a label for each point, where <code>1</code> indicates a normal point (inlier), and <code>-1</code> indicates an outlier.</p>
-<p><a href="#fig-ifa">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ifa</span></a> demonstrates how the Isolation Forest algorithm separates outliers from normal observations. The outliers, which are fewer and more scattered, are identified and marked distinctly from the denser clusters of normal data points. This demonstration provides a practical insight into the algorithm’s capability in handling unsupervised outlier detection in a dataset.</p>
+<p><a href="#fig-ifa" class="quarto-xref">Figure&nbsp;<span>11.7</span></a> demonstrates how the Isolation Forest algorithm separates outliers from normal observations. The outliers, which are fewer and more scattered, are identified and marked distinctly from the denser clusters of normal data points. This demonstration provides a practical insight into the algorithm’s capability in handling unsupervised outlier detection in a dataset.</p>
 <p><strong>Advantages:</strong> The Isolation Forest algorithm offers several distinct advantages, making it a popular choice for outlier detection, especially in large and complex datasets. One of its primary strengths is efficiency: it can handle large datasets and high-dimensional data effectively due to its sampling strategy and the simplicity of isolation trees. Unlike many traditional statistical methods, the Isolation Forest does not assume a normal distribution of data, making it versatile and robust in handling various types of datasets. This characteristic is particularly beneficial in real-world scenarios where data often deviates from theoretical distributions.</p>
 <p>Another advantage of the Isolation Forest is its resilience to the swamping and masking effects. Traditional outlier detection methods can sometimes misclassify normal observations as outliers (swamping) or fail to detect actual outliers (masking). The Isolation Forest algorithm, with its unique approach of isolating anomalies, tends to be less prone to these issues, leading to more accurate detection.</p>
 <p>Furthermore, the algorithm’s random forest approach contributes to its effectiveness. By creating multiple isolation trees and averaging their results, the algorithm can achieve a more reliable and stable outlier detection, mitigating the randomness that might arise from any single tree. This ensemble technique enhances the overall accuracy of the model. Lastly, the Isolation Forest is relatively straightforward to implement and does not require extensive parameter tuning, which adds to its practicality in various applications, from fraud detection to anomaly detection in network traffic or sensor data monitoring.</p>
@@ -1149,7 +1199,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Advantages</strong>: DBSCAN offers several significant advantages as a clustering algorithm. First and foremost, its ability to identify clusters of arbitrary shapes is a major strength, especially when dealing with complex spatial data. This contrasts with algorithms like K-Means, which tend to identify only spherical clusters. Secondly, DBSCAN is particularly adept at handling noise and outliers in the data set. It can effectively differentiate between core points (dense areas of the dataset), border points (edges of clusters), and noise, providing a more accurate clustering result in noisy environments. Another advantage of DBSCAN is that it does not require the number of clusters to be defined a priori, unlike K-Means. This makes it particularly useful in exploratory data analysis where the number of clusters is not known beforehand. Additionally, DBSCAN’s minimal reliance on domain knowledge for setting its two main parameters (radius and minimum number of points) simplifies its application across various domains. Lastly, DBSCAN’s capability to discover clusters within clusters allows for a deeper and more nuanced understanding of the data structure, making it a versatile tool for a wide range of data analysis tasks. These advantages make DBSCAN a popular choice for many real-world applications, including image processing, genetics, and spatial data analysis.</p>
 <p><strong>Limitations:</strong> DBSCAN, while versatile, has certain limitations that can affect its performance and applicability. One of the primary challenges lies in determining the appropriate values for its two main parameters: epsilon (<span class="math inline">\(\epsilon\)</span>), which defines the radius around a point to search for neighboring points, and MinPts, the minimum number of points required to form a dense region. The choice of these parameters can significantly influence the clustering outcome, and finding the right balance often requires domain knowledge or trial-and-error, which can be impractical in many situations. Another limitation is DBSCAN’s sensitivity to varying densities within the same dataset. It may struggle to identify clusters correctly if there are significant differences in the density of clusters, leading to either fragmented clusters or over-merging of clusters. Additionally, DBSCAN’s performance can degrade with high-dimensional data due to the curse of dimensionality, as the notion of density becomes less meaningful in high-dimensional spaces. Finally, the computational complexity of DBSCAN, particularly with large datasets, can be a drawback. It requires calculating the distance between points, which can be computationally intensive for large datasets, although optimized implementations can mitigate this to some extent. Despite these limitations, DBSCAN remains a popular and effective clustering method for datasets where its unique advantages can be fully leveraged.</p>
 <p>Below is an example of how to use the DBSCAN algorithm for clustering in Python using the <code>scikit-learn</code> library.</p>
-<div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
@@ -1170,22 +1219,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Feature 1'</span>)</span>
 <span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Feature 2'</span>)</span>
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="14">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-dbscan" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-dbscan-output-1.png" class="img-fluid figure-img" width="609"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.8: Clustering of complicated data using DBSCAN.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="14" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-dbscan" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dbscan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-dbscan-output-1.png" width="609" height="449" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbscan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.8: Clustering of complicated data using DBSCAN.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p>In this script, we first generate a two-dimensional dataset using <code>make_moons</code> from <code>sklearn.datasets</code>. We then apply the DBSCAN algorithm to this data, where <code>eps</code> and <code>min_samples</code> are key parameters. <a href="#fig-dbscan">Figure&nbsp;<span class="quarto-unresolved-ref">fig-dbscan</span></a> shows the results where each cluster is colored differently, and outliers (points not belonging to any cluster) are usually shown in a different color.</p>
+<p>In this script, we first generate a two-dimensional dataset using <code>make_moons</code> from <code>sklearn.datasets</code>. We then apply the DBSCAN algorithm to this data, where <code>eps</code> and <code>min_samples</code> are key parameters. <a href="#fig-dbscan" class="quarto-xref">Figure&nbsp;<span>11.8</span></a> shows the results where each cluster is colored differently, and outliers (points not belonging to any cluster) are usually shown in a different color.</p>
 <p>The next code shows outlier detection using DBSCAN.</p>
-<div>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
@@ -1230,20 +1281,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Feature 1'</span>)</span>
 <span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Feature 2'</span>)</span>
 <span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="15">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-dbscan_outlier" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="data_pre_processing_files/figure-html/fig-dbscan_outlier-output-1.png" class="img-fluid figure-img" width="587"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.9: Outlier detection using DBSCAN.</figcaption>
+<div class="cell quarto-layout-panel" data-execution_count="15" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-dbscan_outlier" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dbscan_outlier-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_pre_processing_files/figure-html/fig-dbscan_outlier-output-1.png" width="587" height="449" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbscan_outlier-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.9: Outlier detection using DBSCAN.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p>In the above Python code, the process of outlier detection using the DBSCAN algorithm is illustrated through a series of steps. Initially, a sample dataset is created using the <code>make_blobs</code> function, which generates clusters of data points. To simulate a real-world scenario where data might contain anomalies, additional random points are introduced into this dataset, serving as potential outliers. Following the creation of this dataset, the DBSCAN algorithm is applied. DBSCAN operates by identifying clusters based on the density of data points, and it labels points that do not belong to any cluster as -1, effectively categorizing them as outliers. After the application of DBSCAN, the results are shown in <a href="#fig-dbscan_outlier">Figure&nbsp;<span class="quarto-unresolved-ref">fig-dbscan_outlier</span></a>. This plot distinctly shows the core points (the dense central parts of clusters), border points (points on the edges of clusters), and outliers. The outliers, which are points identified as not belonging to any cluster, are typically highlighted in black. This visual representation aids in understanding how DBSCAN segregates outliers from the main clusters in the dataset, showcasing its utility in outlier detection.</p>
+<p>In the above Python code, the process of outlier detection using the DBSCAN algorithm is illustrated through a series of steps. Initially, a sample dataset is created using the <code>make_blobs</code> function, which generates clusters of data points. To simulate a real-world scenario where data might contain anomalies, additional random points are introduced into this dataset, serving as potential outliers. Following the creation of this dataset, the DBSCAN algorithm is applied. DBSCAN operates by identifying clusters based on the density of data points, and it labels points that do not belong to any cluster as -1, effectively categorizing them as outliers. After the application of DBSCAN, the results are shown in <a href="#fig-dbscan_outlier" class="quarto-xref">Figure&nbsp;<span>11.9</span></a>. This plot distinctly shows the core points (the dense central parts of clusters), border points (points on the edges of clusters), and outliers. The outliers, which are points identified as not belonging to any cluster, are typically highlighted in black. This visual representation aids in understanding how DBSCAN segregates outliers from the main clusters in the dataset, showcasing its utility in outlier detection.</p>
 </section>
 <section id="outliers-and-rare-events" class="level4" data-number="11.1.3.5">
 <h4 data-number="11.1.3.5" class="anchored" data-anchor-id="outliers-and-rare-events"><span class="header-section-number">11.1.3.5</span> Outliers and Rare Events</h4>
@@ -1492,10 +1546,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1505,8 +1558,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1519,6 +1581,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1562,6 +1743,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1587,6 +1769,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1648,17 +1856,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./algorithms.html" class="pagination-link">
+      <a href="./algorithms.html" class="pagination-link  aria-label=" machine="" learning="" algorithms"="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Machine Learning Algorithms</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./supervised_learning.html" class="pagination-link">
+      <a href="./supervised_learning.html" class="pagination-link" aria-label="<span class='chapter-number'>12</span>&nbsp; <span class='chapter-title'>Supervised Learning</span>">
         <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Supervised Learning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

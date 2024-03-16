@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -106,6 +113,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -114,12 +148,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./neural_networks.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neural Networks</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./neural_networks.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neural Networks</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -129,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Applied Machine Learning for Aerospace Systems</a> 
@@ -292,23 +326,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#universal-approximation-theory" id="toc-universal-approximation-theory" class="nav-link active" data-scroll-target="#universal-approximation-theory"><span class="header-section-number">10.0.1</span> Universal Approximation Theory</a></li>
-  <li><a href="#impact-of-weights-and-biases" id="toc-impact-of-weights-and-biases" class="nav-link" data-scroll-target="#impact-of-weights-and-biases"><span class="header-section-number">10.0.2</span> Impact of Weights and Biases</a></li>
-  <li><a href="#deep-neural-network" id="toc-deep-neural-network" class="nav-link" data-scroll-target="#deep-neural-network"><span class="header-section-number">10.0.3</span> Deep Neural Network</a></li>
+  <li><a href="#universal-approximation-theory" id="toc-universal-approximation-theory" class="nav-link active" data-scroll-target="#universal-approximation-theory"><span class="header-section-number">10.1</span> Universal Approximation Theory</a></li>
+  <li><a href="#impact-of-weights-and-biases" id="toc-impact-of-weights-and-biases" class="nav-link" data-scroll-target="#impact-of-weights-and-biases"><span class="header-section-number">10.2</span> Impact of Weights and Biases</a></li>
+  <li><a href="#deep-neural-network" id="toc-deep-neural-network" class="nav-link" data-scroll-target="#deep-neural-network"><span class="header-section-number">10.3</span> Deep Neural Network</a>
+  <ul class="collapse">
+  <li><a href="#feed-forward-neural-network-ffnn" id="toc-feed-forward-neural-network-ffnn" class="nav-link" data-scroll-target="#feed-forward-neural-network-ffnn"><span class="header-section-number">10.3.1</span> Feed Forward Neural Network (FFNN)</a></li>
+  <li><a href="#recurrent-neural-networks-rnns" id="toc-recurrent-neural-networks-rnns" class="nav-link" data-scroll-target="#recurrent-neural-networks-rnns"><span class="header-section-number">10.3.2</span> Recurrent Neural Networks (RNNs)</a></li>
+  <li><a href="#long-short-term-memory-lstm-networks" id="toc-long-short-term-memory-lstm-networks" class="nav-link" data-scroll-target="#long-short-term-memory-lstm-networks"><span class="header-section-number">10.3.3</span> Long Short-Term Memory (LSTM) Networks</a></li>
+  <li><a href="#autoencoders" id="toc-autoencoders" class="nav-link" data-scroll-target="#autoencoders"><span class="header-section-number">10.3.4</span> Autoencoders</a></li>
+  <li><a href="#convolutional-neural-networks-cnns" id="toc-convolutional-neural-networks-cnns" class="nav-link" data-scroll-target="#convolutional-neural-networks-cnns"><span class="header-section-number">10.3.5</span> Convolutional Neural Networks (CNNs)</a></li>
+  <li><a href="#generative-adversarial-networks-gans" id="toc-generative-adversarial-networks-gans" class="nav-link" data-scroll-target="#generative-adversarial-networks-gans"><span class="header-section-number">10.3.6</span> Generative Adversarial Networks (GANs)</a></li>
+  <li><a href="#transformer-networks" id="toc-transformer-networks" class="nav-link" data-scroll-target="#transformer-networks"><span class="header-section-number">10.3.7</span> Transformer Networks</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./neural_networks.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neural Networks</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neural Networks</span></h1>
 </div>
@@ -323,28 +366,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
 
-<div class="cell" data-layout-align="center" data-engine.opts="{&quot;dvisvgm.opts&quot;:&quot;--font-format=woff&quot;}">
-<div class="cell-output-display">
-<div id="fig-simpleANN" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="neural_networks_files/figure-html/fig-simpleANN-1.svg" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10.1: The simplest neural network.</figcaption>
+
+<div id="fig-simpleANN" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-simpleANN-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/simple_nn.svg" class="img-fluid figure-img" style="width:3in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simpleANN-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.1: A simple neural network.
+</figcaption>
 </figure>
 </div>
+<p><a href="#fig-simpleANN" class="quarto-xref">Figure&nbsp;<span>10.1</span></a> illustrates the simplest neural network that consists of an input node <span class="math inline">\(x\in\mathcal{R}\)</span>, a processing node <span class="math inline">\(f(x)\)</span>, and an output node <span class="math inline">\(y\in\mathcal{R}\)</span>. It is essentially a graphical representation of a function <span class="math inline">\(y:= f(x)\)</span>. The function could take arbitrary number of inputs e.g.&nbsp;<span class="math inline">\(y:= f(x_1, \cdots, x_n )\)</span>. Sometimes, the functions are parameterized, for example an affine network with scalar input and output can be defined as <span class="math inline">\(f(x,\boldsymbol{\rho}):= ax+b\)</span>, with parameter <span class="math inline">\(\boldsymbol{\rho} := \begin{bmatrix} a &amp; b \end{bmatrix}^T\)</span>. A more complex neural network is shown in <a href="#fig-complexANN" class="quarto-xref">Figure&nbsp;<span>10.2</span></a>.</p>
+<div id="fig-complexANN" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-complexANN-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/complex_nn.svg" class="img-fluid figure-img" style="width:4in">
 </div>
-</div>
-<p><a href="#fig-simpleANN">Figure&nbsp;<span>10.1</span></a> illustrates the simplest neural network that consists of an input node <span class="math inline">\(x\in\mathcal{R}\)</span>, a processing node <span class="math inline">\(f(x)\)</span>, and an output node <span class="math inline">\(y\in\mathcal{R}\)</span>. It is essentially a graphical representation of a function <span class="math inline">\(y:= f(x)\)</span>. The function could take arbitrary number of inputs e.g.&nbsp;<span class="math inline">\(y:= f(x_1, \cdots, x_n )\)</span>. Sometimes, the functions are parameterized, for example an affine network with scalar input and output can be defined as <span class="math inline">\(f(x,\boldsymbol{\rho}):= ax+b\)</span>, with parameter <span class="math inline">\(\boldsymbol{\rho} := \begin{bmatrix} a &amp; b \end{bmatrix}^T\)</span>.</p>
-<div class="cell" data-layout-align="center" data-engine.opts="{&quot;dvisvgm.opts&quot;:&quot;--font-format=woff&quot;}">
-<div class="cell-output-display">
-<div id="fig-complexANN" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="neural_networks_files/figure-html/fig-complexANN-1.svg" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10.2: A complex network of functions. This is an example of feed forward neural network.</figcaption>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-complexANN-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.2: A complex neural network.
+</figcaption>
 </figure>
-</div>
-</div>
 </div>
 <p>In general, we will define a scalar function with inputs <span class="math inline">\(x_1,\cdots,x_n\)</span> and parameters <span class="math inline">\(\rho_1, \cdots, \rho_p\)</span> as</p>
 <p><span class="math display">\[
@@ -353,10 +398,14 @@ y:= f(\boldsymbol{x}, \boldsymbol{\rho}),
 <p>where <span class="math display">\[
 \boldsymbol{x} = \begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix}, \text{ and } \boldsymbol{\rho}= \begin{bmatrix} \rho_1 \\ \vdots \\ \rho_p \end{bmatrix}.
 \]</span></p>
-<p><a href="#tbl-activFcn">Table&nbsp;<span>10.1</span></a> below shows some common functions used in the construction of ANNs, which are also plotted in <a href="#fig-activFcn">Figure&nbsp;<span>10.3</span></a>.</p>
-<div id="tbl-activFcn" class="anchored">
+<p><a href="#tbl-activFcn" class="quarto-xref">Table&nbsp;<span>10.1</span></a> below shows some common functions used in the construction of ANNs, which are also plotted in <span class="quarto-unresolved-ref">?fig-activFcn</span>.</p>
+<div id="tbl-activFcn" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-activFcn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10.1: Commonly used activation functions in ANN.
+</figcaption>
+<div aria-describedby="tbl-activFcn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table">
-<caption>Table&nbsp;10.1: Commonly used activation functions in ANN.</caption>
 <colgroup>
 <col style="width: 26%">
 <col style="width: 36%">
@@ -393,26 +442,35 @@ y:= f(\boldsymbol{x}, \boldsymbol{\rho}),
 </tbody>
 </table>
 </div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-activFcn" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="neural_networks_files/figure-html/fig-activFcn-1.png" class="img-fluid figure-img" width="614"></p>
-<figcaption class="figure-caption">Figure&nbsp;10.3: Plots of commonly used activation functions in ANN.</figcaption>
+</figure>
+</div>
+<div>
+
+</div>
+<div id="cell-fig-activFcn" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-activfcn" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-activfcn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="neural_networks_files/figure-html/fig-activfcn-output-1.png" width="662" height="468" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-activfcn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.3: Plots of commonly used activation functions in ANN.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<p>It is possible to use the simple setup, as shown in <a href="#fig-simpleANN">Figure&nbsp;<span>10.1</span></a>, to construct a complex network as shown in <a href="#fig-complexANN">Figure&nbsp;<span>10.2</span></a>. The nodes <span class="math inline">\(z_1\)</span> and <span class="math inline">\(z_2\)</span> represent nodes that hold intermediate values. The output function is then given by <span class="math display">\[
+<p>It is possible to use the simple setup, as shown in <a href="#fig-simpleANN" class="quarto-xref">Figure&nbsp;<span>10.1</span></a>, to construct a complex network as shown in <a href="#fig-complexANN" class="quarto-xref">Figure&nbsp;<span>10.2</span></a>. The nodes <span class="math inline">\(z_1\)</span> and <span class="math inline">\(z_2\)</span> represent nodes that hold intermediate values. The output function is then given by <span class="math display">\[
 y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2), \boldsymbol{\rho}_3\right),
 \]</span> a nonlinear function in <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, <span class="math inline">\(x_3\)</span>, and <span class="math inline">\(x_4\)</span>; with parameters <span class="math inline">\(\boldsymbol{\rho}_1\)</span>, <span class="math inline">\(\boldsymbol{\rho}_2\)</span>, and <span class="math inline">\(\boldsymbol{\rho}_3\)</span>. With <span class="math display">\[
 \boldsymbol{x} := \begin{pmatrix}x_1 \\ x_2 \\ x_3 \\ x_4 \end{pmatrix}, \text{ and } \boldsymbol{\rho} \in \mathcal{R}^{p_1+p_2+p_3}:= \begin{pmatrix}\boldsymbol{\rho}_1 \\ \boldsymbol{\rho}_2 \\ \boldsymbol{\rho}_3 \end{pmatrix},
 \]</span> we can represent this parameterized nonlinear function as <span class="math display">\[y = f(\boldsymbol{x},\boldsymbol{\rho}).\]</span></p>
-<p>Therefore, the neural network can be thought of as a <em>graphical architecture for defining parameterized nonlinear functions</em> by composing simpler parameterized functions, such as those shown in <a href="#tbl-activFcn">Table&nbsp;<span>10.1</span></a>. This network representation is motivated by the neural network in the brain where millions of simple processing nodes, such as the functions in <a href="#tbl-activFcn">Table&nbsp;<span>10.1</span></a>, are densely interconnected. In the ANN parlance, these functions are called <em>activation functions</em>, since their inputs only affect the outputs when they are above a threshold.</p>
+<p>Therefore, the neural network can be thought of as a <em>graphical architecture for defining parameterized nonlinear functions</em> by composing simpler parameterized functions, such as those shown in <a href="#tbl-activFcn" class="quarto-xref">Table&nbsp;<span>10.1</span></a>. This network representation is motivated by the neural network in the brain where millions of simple processing nodes, such as the functions in <a href="#tbl-activFcn" class="quarto-xref">Table&nbsp;<span>10.1</span></a>, are densely interconnected. In the ANN parlance, these functions are called <em>activation functions</em>, since their inputs only affect the outputs when they are above a threshold.</p>
 <p>Using TensorFlow, we can easily create such a function as shown next</p>
-<div class="cell">
+<div id="7d77a5d3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> keras.models <span class="im">import</span> Sequential</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> keras.layers <span class="im">import</span> Dense</span>
@@ -423,8 +481,8 @@ y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2),
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>fhat.add(Dense(<span class="dv">5</span>, activation<span class="op">=</span><span class="st">"tanh"</span>))</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fhat.add(Dense(<span class="dv">1</span>,activation<span class="op">=</span><span class="st">"sigmoid"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In this code, the parameters are randomly initialized. We can plot this function like a regular function</p>
-<div class="cell">
+<p>In this code, the parameters are randomly initialized. We can plot this function like a regular function.</p>
+<div id="17f1a985" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> fhat(x)</span>
@@ -433,12 +491,9 @@ y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2),
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Plot of a NN function, with randomly initialized parameters.'</span>)<span class="op">;</span> </span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="st">'on'</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="neural_networks_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid" width="672"></p>
 </div>
-</div>
-<p>We can compute gradient of the function with respect to <span class="math inline">\(x\)</span> and <span class="math inline">\(\boldsymbol{\rho}\)</span> using the automatic differentiation capability in TensorFlow.</p>
-<div class="cell">
+<p>We can compute gradient of the function with respect to <span class="math inline">\(x\)</span> and <span class="math inline">\(\boldsymbol{\rho}\)</span> using the automatic differentiation capability in TensorFlow. Both function and its derivative is shown in <a href="#fig-nn_func_deriv" class="quarto-xref">Figure&nbsp;<span>10.4</span></a>.</p>
+<div id="51919b3e" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> tf.linspace(<span class="op">-</span><span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the function with Reverse AD enabled.</span></span>
@@ -455,12 +510,19 @@ y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2),
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="st">'on'</span>)</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="neural_networks_files/figure-html/unnamed-chunk-5-5.png" class="img-fluid" width="672"></p>
 </div>
+<div id="fig-nn_func_deriv" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn_func_deriv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/nn_func_deriv.svg" class="img-fluid figure-img">
 </div>
-<section id="universal-approximation-theory" class="level3" data-number="10.0.1">
-<h3 data-number="10.0.1" class="anchored" data-anchor-id="universal-approximation-theory"><span class="header-section-number">10.0.1</span> Universal Approximation Theory</h3>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn_func_deriv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.4: A neural network function with randomly initialized coefficients and its derivative with automatic differentiation.
+</figcaption>
+</figure>
+</div>
+<section id="universal-approximation-theory" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="universal-approximation-theory"><span class="header-section-number">10.1</span> Universal Approximation Theory</h2>
 <p>Universal Approximation Theory is a foundational concept in the field of neural networks, particularly relevant to artificial intelligence and machine learning. It addresses the capability of neural networks, especially feedforward neural networks with a single hidden layer, to approximate any continuous function to a desired degree of accuracy, given sufficient neurons in the hidden layer.</p>
 <p>The theory asserts that a neural network can represent a wide variety of interesting functions when given appropriate parameters (weights and biases), regardless of the specific details of the function. This property does not guarantee that the network will learn the function; instead, it assures that the network architecture is theoretically capable of representing the function.</p>
 <p>Key points of the Universal Approximation Theory include:</p>
@@ -473,122 +535,315 @@ y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2),
 </ol>
 <p>In summary, the Universal Approximation Theory highlights the theoretical capabilities of neural networks to approximate any continuous function, reinforcing their versatility and potential in modeling complex patterns and behaviors across various domains. However, practical challenges in training, architecture design, and generalization remain important considerations for leveraging neural networks effectively.</p>
 </section>
-<section id="impact-of-weights-and-biases" class="level3" data-number="10.0.2">
-<h3 data-number="10.0.2" class="anchored" data-anchor-id="impact-of-weights-and-biases"><span class="header-section-number">10.0.2</span> Impact of Weights and Biases</h3>
-<div>
+<section id="impact-of-weights-and-biases" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="impact-of-weights-and-biases"><span class="header-section-number">10.2</span> Impact of Weights and Biases</h2>
+<div id="fig-sigWeights" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sigWeights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/weights_and_biases.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sigWeights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.5: Effect of weights and biases on a sigmoid.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-sigWeights" class="quarto-xref">Figure&nbsp;<span>10.5</span></a> shows the effect of the weight <span class="math inline">\(w\)</span> and the bias <span class="math inline">\(b\)</span> on the shape of <span class="math inline">\(\sigma(wx+b)\)</span>. The weight <span class="math inline">\(w\)</span> plays a crucial role in determining the rate at which the function changes around the activation point. For instance, a large weight coupled with zero bias leads to the emergence of a step-like function, illustrated in orange. The interplay between the weight <span class="math inline">\(w\)</span> and the bias <span class="math inline">\(b\)</span> is important in setting the activation point’s location. This is evident in the case where a shifted sigmoid function is observed with <span class="math inline">\(w=5\)</span> and <span class="math inline">\(b=4\)</span>, depicted in green. In scenarios where the weight takes on a negative value, the expression <span class="math inline">\(\sigma(wx+b)\)</span> serves as a deactivation function, transitioning from one to zero, as also highlighted in the figure, with the transition shown in red. Consequently, it’s clear that the parameters <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span> have a significant impact on the shape of <span class="math inline">\(\sigma(wx+b)\)</span>. Additionally, it’s feasible to linearly blend sigmoid and affine functions to create different <em>locally supported functions</em>, as shown next.</p>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(x,w,b):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>      y <span class="op">=</span> w<span class="op">*</span>x<span class="op">+</span>b</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>np.exp(<span class="op">-</span>y))</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">200</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,<span class="dv">5</span>,<span class="dv">0</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="dv">100</span>,<span class="dv">0</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>y3 <span class="op">=</span> sigmoid(x,<span class="dv">5</span>,<span class="dv">4</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>y4 <span class="op">=</span> sigmoid(x,<span class="op">-</span><span class="dv">5</span>,<span class="dv">0</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y1,label<span class="op">=</span><span class="st">'w=5, b=0'</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y2,label<span class="op">=</span><span class="st">'w=100, b=0'</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y3,label<span class="op">=</span><span class="st">'w=5, b=4'</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y4,label<span class="op">=</span><span class="st">'w=-5, b=0'</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'$\sigma(wx+b)$'</span>)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-sigWeights" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="neural_networks_files/figure-html/fig-sigWeights-7.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10.4: Effect of weights and biases on a sigmoid.</figcaption>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,w,b)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span>w,b)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="ss">f'$y_1 = \sigma(</span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">)$'</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="ss">f'$y_2 = \sigma(-</span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">)$'</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-fig-bellnn" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="5">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-bellnn" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bellnn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="neural_networks_files/figure-html/fig-bellnn-output-1.png" width="662" height="468" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bellnn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.6: Bell-shaped function using neural networks.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p><a href="#fig-sigWeights">Figure&nbsp;<span>10.4</span></a> shows the effect of the weight <span class="math inline">\(w\)</span> and the bias <span class="math inline">\(b\)</span> on the shape of <span class="math inline">\(\sigma(wx+b)\)</span>. The weight <span class="math inline">\(w\)</span> plays a crucial role in determining the rate at which the function changes around the activation point. For instance, a large weight coupled with zero bias leads to the emergence of a step-like function, illustrated in orange. The interplay between the weight <span class="math inline">\(w\)</span> and the bias <span class="math inline">\(b\)</span> is pivotal in setting the activation point’s location. This is evident in the case where a shifted sigmoid function is observed with <span class="math inline">\(w=5\)</span> and <span class="math inline">\(b=4\)</span>, depicted in green. In scenarios where the weight takes on a negative value, the expression <span class="math inline">\(\sigma(wx+b)\)</span> serves as a deactivation function, transitioning from one to zero, as also highlighted in the figure, with the transition shown in red. Consequently, it’s clear that the parameters <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span> have a significant impact on the shape of <span class="math inline">\(\sigma(wx+b)\)</span>. Additionally, it’s feasible to linearly blend sigmoid and affine functions to create different <em>locally supported functions</em>, as shown next.</p>
-<div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,<span class="dv">5</span>,<span class="dv">1</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span><span class="dv">5</span>,<span class="dv">1</span>)</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> <span class="dv">50</span><span class="op">;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">200</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="st">'$y_1 = \sigma(5x+1)$'</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="st">'$y_2 = \sigma(-5x+1)$'</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-bellnn" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="neural_networks_files/figure-html/fig-bellnn-9.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10.5: Bell-shaped function using neural networks.</figcaption>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,w,b)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span>w,b)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="ss">f'$y_1 = \sigma(</span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">)$'</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="ss">f'$y_2 = \sigma(-</span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">)$'</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-fig-boxnn" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="6">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-boxnn" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxnn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="neural_networks_files/figure-html/fig-boxnn-output-1.png" width="662" height="468" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxnn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.7: Box-Wavelet shaped function using neural networks.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">12</span>,<span class="dv">22</span>,<span class="dv">200</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>w1 <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> b1 <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>w2 <span class="op">=</span> <span class="fl">0.5</span><span class="op">;</span> b2 <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,w1,b1)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span>w2,b2)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="ss">f'$y_1 = \sigma(</span><span class="sc">{</span>w1<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b1<span class="sc">}</span><span class="ss">)$'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="ss">f'$y_2 = \sigma(-</span><span class="sc">{</span>w2<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b2<span class="sc">}</span><span class="ss">)$'</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-fig-asymnn" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="7">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-asymnn" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-asymnn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="neural_networks_files/figure-html/fig-asymnn-output-1.png" width="662" height="468" class="figure-img">
 </div>
-<div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">100</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,w,b)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span>w,b)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="st">'$y_1 = \sigma(100x+100)$'</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="st">'$y_2 = \sigma(-100x+100)$'</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-boxnn" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="neural_networks_files/figure-html/fig-boxnn-11.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10.6: Box-Wavelet shaped function using neural networks.</figcaption>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-asymnn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.8: Asymmetric shaped function using neural networks.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">200</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>w1 <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> b1 <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>w2 <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> b2 <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> sigmoid(x,w1,b1)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> sigmoid(x,<span class="op">-</span>w2,b2)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)<span class="op">;</span> plt.plot(x,y1)<span class="op">;</span> plt.title(<span class="ss">f'$y_1 = \sigma(</span><span class="sc">{</span>w1<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b1<span class="sc">}</span><span class="ss">)$'</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)<span class="op">;</span> plt.plot(x,y2)<span class="op">;</span> plt.title(<span class="ss">f'$y_2 = \sigma(-</span><span class="sc">{</span>w2<span class="sc">}</span><span class="ss">x+</span><span class="sc">{</span>b2<span class="sc">}</span><span class="ss">)$'</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-asymnn" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="neural_networks_files/figure-html/fig-asymnn-13.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10.7: Asymmetric shaped function using neural networks.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p><a href="#fig-bellnn">Figure&nbsp;<span>10.5</span></a> demonstrates how a bell-shaped function can be constructed by superimposing sigmoid functions over affine functions. Similarly, <a href="#fig-boxnn">Figure&nbsp;<span>10.6</span></a> presents a square wave, while <a href="#fig-asymnn">Figure&nbsp;<span>10.7</span></a> showcases an asymmetric function. These varied functions emerge from adjusting the weights and biases within the affine functions inside each sigmoid. By optimizing these weights and biases, it is possible to modify the characteristics of these locally supported functions. Such local functions can be referred to as <em>neural basis functions</em>.</p>
+<p><a href="#fig-bellnn" class="quarto-xref">Figure&nbsp;<span>10.6</span></a> demonstrates how a bell-shaped function can be constructed by superimposing sigmoid functions over affine functions. Similarly, <a href="#fig-boxnn" class="quarto-xref">Figure&nbsp;<span>10.7</span></a> presents a square wave, while <a href="#fig-asymnn" class="quarto-xref">Figure&nbsp;<span>10.8</span></a> showcases an asymmetric function. These varied functions emerge from adjusting the weights and biases within the affine functions inside each sigmoid. By optimizing these weights and biases, it is possible to modify the characteristics of these locally supported functions. Such local functions can be referred to as <em>neural basis functions</em>.</p>
 </section>
-<section id="deep-neural-network" class="level3" data-number="10.0.3">
-<h3 data-number="10.0.3" class="anchored" data-anchor-id="deep-neural-network"><span class="header-section-number">10.0.3</span> Deep Neural Network</h3>
+<section id="deep-neural-network" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="deep-neural-network"><span class="header-section-number">10.3</span> Deep Neural Network</h2>
+<p>Deep neural networks (DNNs) are a subset of machine learning algorithms characterized by their multi-layered structure, which mimics the human brain’s neural architecture. These networks comprise interconnected nodes, or neurons, distributed across several layers, allowing them to learn complex patterns in data. DNNs are particularly effective for tasks that involve high-dimensional data, such as image and speech recognition, as well as natural language processing. The layered architecture enables the extraction of hierarchical features, with each layer building on the previous one to refine the network’s understanding. This capacity for feature extraction and pattern recognition has established deep neural networks as a fundamental component in the field of artificial intelligence, contributing to significant advancements across various applications and research areas.</p>
+<p>Deep neural networks (DNNs) encompass various architectures, each tailored for specific data types and tasks. Key architectures are summarized next.</p>
+<section id="feed-forward-neural-network-ffnn" class="level3" data-number="10.3.1">
+<h3 data-number="10.3.1" class="anchored" data-anchor-id="feed-forward-neural-network-ffnn"><span class="header-section-number">10.3.1</span> Feed Forward Neural Network (FFNN)</h3>
+<p>Also known as fully connected networks, FFNNs consist of layers where each neuron in one layer connects to every neuron in the subsequent layer. Such networks are suitable for tabular data and classification tasks.</p>
+<p>Mathematically, a function approximated by an MLP can be expressed as <span class="math display">\[
+\boldsymbol{F}(\boldsymbol{x}) = \boldsymbol{F}_N(\boldsymbol{F}_{N-1}(...\boldsymbol{F}_1(\boldsymbol{x}))) = (\boldsymbol{F}_N \circ \boldsymbol{F}_{N-1} \circ \cdots \circ \boldsymbol{F}_1)(\boldsymbol{x}),
+\]</span> where <span class="math inline">\((\boldsymbol{F}_i\circ \boldsymbol{F}_j)(\boldsymbol{x})\)</span> denotes function composition and equivalent to <span class="math inline">\(\boldsymbol{F}_i(\boldsymbol{F}_j(\boldsymbol{x}))\)</span>. Each function representes a `layer’ in the deep network, i.e., <span class="math inline">\(\boldsymbol{F}_i(\boldsymbol{F}_{i-1}(\cdot)) := \boldsymbol{f}_i(\boldsymbol{W}_i \boldsymbol{F}_{i-1}(\cdot) + \boldsymbol{b}_i)\)</span>, where <span class="math inline">\(\boldsymbol{W}_i\)</span>, <span class="math inline">\(\boldsymbol{b}_i\)</span> and <span class="math inline">\(\boldsymbol{f}_i(\cdot)\)</span> are the weight, bias, and activation function associated with the <span class="math inline">\(i^\text{th}\)</span> layer.</p>
+<div id="fig-feedforwardNN" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-feedforwardNN-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/feed_forward_nn.svg" class="img-fluid figure-img" style="width:4in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-feedforwardNN-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.9: A feed-forward neural network.
+</figcaption>
+</figure>
+</div>
+<p>Notably, the full connectivity of FFNNs makes them prone to overfitting, which is commonly avoided by localizing the influence with regularization techniques such as weight decay or trimming connectivity. We often classify the architecture with multiple layers as a multi-layered feed-forward neural network. FFNNs are less complex and are easy to design and maintain. However, evaluating large networks can be computationally demanding. Also, they have numerical issues related to vanishing and exploding gradients during the optimization of network parameters.</p>
+<section id="example-approximation-of-a-function-with-ffnns" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="example-approximation-of-a-function-with-ffnns">Example: Approximation of a Function with FFNNs</h4>
+<p>The following Python code demostrates how a nonlinear function can be approximated using FFNNs with TensorFlow.</p>
+<div id="aa148e30" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the function</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> target_function(x):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.exp(<span class="op">-</span>(x <span class="op">-</span> <span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span>) <span class="op">+</span> np.exp(<span class="op">-</span><span class="fl">0.15</span><span class="op">*</span>(x <span class="op">+</span> <span class="dv">2</span>)<span class="op">**</span><span class="dv">4</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate training data</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">100</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> target_function(x_train)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a simple neural network model</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">32</span>, activation<span class="op">=</span><span class="st">'tanh'</span>, input_shape<span class="op">=</span>(<span class="dv">1</span>,)),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">32</span>, activation<span class="op">=</span><span class="st">'tanh'</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">32</span>, activation<span class="op">=</span><span class="st">'tanh'</span>),</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile the model</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>, loss<span class="op">=</span><span class="st">'mse'</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>model.fit(x_train, y_train, epochs<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict using the trained model</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>x_test <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1000</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(x_test)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>plt.plot(x_train, y_train, <span class="st">'r'</span>, label<span class="op">=</span><span class="st">'Target Function'</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>plt.plot(x_test, y_pred, <span class="st">'b'</span>, label<span class="op">=</span><span class="st">'Approximation'</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Approximation of the target function using a neural network'</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-FFNN" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-FFNN-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/FFNN.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-FFNN-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.10: Approximation of <span class="math inline">\(e^{-(x-2)^2} + e^{-0.15(x+2)^4}\)</span> with a simple feed-forward neural network.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="recurrent-neural-networks-rnns" class="level3" data-number="10.3.2">
+<h3 data-number="10.3.2" class="anchored" data-anchor-id="recurrent-neural-networks-rnns"><span class="header-section-number">10.3.2</span> Recurrent Neural Networks (RNNs)</h3>
+<p>RNNs are designed for sequential data, such as time series or natural language. They have looping connections, allowing them to maintain a memory of previous inputs and capture temporal dependencies as shown in <a href="#fig-rnn" class="quarto-xref">Figure&nbsp;<span>10.11</span></a>.</p>
+<div id="fig-rnn" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rnn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-rnn" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-rnn1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-rnn1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/rnn1.svg" class="img-fluid figure-img" style="width:75.0%" data-ref-parent="fig-rnn">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-rnn1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) A reccurent neural network feeds back its hidden state to incorporate memory.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-rnn" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-rnn2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-rnn2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/rnn2.svg" class="img-fluid figure-img" style="width:100.0%" data-ref-parent="fig-rnn">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-rnn2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) A multi-step RNN where an input sequence <span class="math inline">\(x_0,\cdots,x_4\)</span> is fed in to match the sequence <span class="math inline">\(y_0,\cdots, y_4\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rnn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.11: Recurrent neural network architecture.
+</figcaption>
+</figure>
+</div>
+<p>RNNs can model the sequential nature of time series data by processing one time step at a time and maintaining a hidden state that encapsulates information from previous time steps. This allows RNNs to capture temporal patterns and dependencies in the data.</p>
+<p>Mathematically, we can express RNNs as <span class="math display">\[
+\boldsymbol{h}_t = \boldsymbol{F}(\boldsymbol{W}_{xh}\boldsymbol{x}_t + \boldsymbol{W}_{hh}\boldsymbol{h}_{t-1} + \boldsymbol{b}_h),\; \boldsymbol{y}_t = \boldsymbol{g}(\boldsymbol{W}_{hy}\boldsymbol{h}_t + \boldsymbol{b}_y),
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{W}_{xh}\)</span>, <span class="math inline">\(\boldsymbol{W}_{hh}\)</span>, <span class="math inline">\(\boldsymbol{W}_{hy}\)</span>, <span class="math inline">\(\boldsymbol{b}_{h}\)</span>, and <span class="math inline">\(\boldsymbol{b}_{y}\)</span> are model parameters that will be determined from the optimization.</p>
+<section id="example-classification-with-rnn" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="example-classification-with-rnn">Example: Classification with RNN</h4>
+<p>RNNs can also be used for classification tasks in time series analysis, such as classifying time series data into different categories based on their temporal patterns.</p>
+<p><strong>Step1: Import Libraries</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.models <span class="im">import</span> Sequential</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> SimpleRNN, Dense</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.optimizers <span class="im">import</span> Adam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Step2: Generate Synthetic Sine Wave Dataset</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_sine_wave_data(num_samples, num_points, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    freq_range<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">5</span>), phase_range<span class="op">=</span>(<span class="dv">0</span>, np.pi)):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.zeros((num_samples, num_points))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> np.zeros((num_samples, <span class="dv">1</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_samples):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        freq <span class="op">=</span> np.random.uniform(<span class="op">*</span>freq_range)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        phase <span class="op">=</span> np.random.uniform(<span class="op">*</span>phase_range)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, num_points)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        X[i, :] <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> freq <span class="op">*</span> t <span class="op">+</span> phase)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        y[i] <span class="op">=</span> freq</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X.reshape((num_samples, num_points, <span class="dv">1</span>)), y</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>num_samples <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>num_points <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> generate_sine_wave_data(num_samples, num_points)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Step3: Build the RNN Model</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Sequential([</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    SimpleRNN(num_points, input_shape<span class="op">=</span>(num_points, <span class="dv">1</span>), </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        return_sequences<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    SimpleRNN(num_points),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">1</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Step 4: Train the Model</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>, loss<span class="op">=</span><span class="st">'mse'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>model.fit(X, y, epochs<span class="op">=</span><span class="dv">10</span>, batch_size<span class="op">=</span><span class="dv">32</span>, validation_split<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Step 5: Evaluate the Model</strong></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate test data</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>X_test, y_test <span class="op">=</span> generate_sine_wave_data(<span class="dv">100</span>, num_points)  </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize one example</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>plt.plot(X_test[<span class="dv">0</span>, :, <span class="dv">0</span>], label<span class="op">=</span><span class="st">'Input Sine Wave'</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Actual Frequency: </span><span class="sc">{</span>y_test[<span class="dv">0</span>][<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss"> Hz, </span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="er">    Predicted Frequency: {y_pred</span>[<span class="dv">0</span>][<span class="dv">0</span>]:<span class="fl">.2</span><span class="er">f</span>} Hz<span class="st">')</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="er">plt.legend</span>()</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-RNN_Time_Series" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-RNN_Time_Series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/RNN_Time_Series.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-RNN_Time_Series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.12: Prediction of Frequency from Time Series (equivalent to FFT)
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-RNN_Time_Series" class="quarto-xref">Figure&nbsp;<span>10.12</span></a> presents the classification results, where we predicted the frequency of a sinusoidal function from data. While this task could have been achieved using Fast Fourier Transform (FFT), RNNs are capable of predicting sequences of frequencies in time series data, which FFT cannot accomplish. FFT can only determine the frequencies present in a time series but not the order in which they occur.</p>
+<p>A practical example where the sequence of frequencies is important is in speech analysis. Speech signals contain sequences of frequencies and their variations over time, which are essential for recognizing words and phrases. Traditional methods like FFT might not effectively capture these temporal dynamics. In contrast, RNNs can model the sequential nature of the data, making them more suitable for such tasks.</p>
+<p>An aerospace engineering application is explored next under LSTM.</p>
+</section>
+</section>
+<section id="long-short-term-memory-lstm-networks" class="level3" data-number="10.3.3">
+<h3 data-number="10.3.3" class="anchored" data-anchor-id="long-short-term-memory-lstm-networks"><span class="header-section-number">10.3.3</span> Long Short-Term Memory (LSTM) Networks</h3>
+<p>Long Short-Term Memory (LSTM) networks are a type of Recurrent Neural Network (RNN) designed to address the limitations of traditional RNNs, particularly in handling long-term dependencies. While RNNs can theoretically capture temporal sequences, they often struggle with vanishing and exploding gradients when dealing with long sequences, leading to poor performance. LSTMs overcome this issue with their unique architecture, which includes memory cells and gates (input, output, and forget gates) that regulate the flow of information.</p>
+<p>This architecture allows LSTMs to retain information over extended periods, making them more effective in learning from long sequences. As a result, LSTMs are better suited for tasks that require understanding context over long time spans, such as language modeling, speech recognition, and time series forecasting. They can capture patterns that span several time steps, which traditional RNNs might overlook. This capability makes LSTMs a preferred choice in many applications where long-term dependencies are critical for accurate predictions.</p>
+</section>
+<section id="autoencoders" class="level3" data-number="10.3.4">
+<h3 data-number="10.3.4" class="anchored" data-anchor-id="autoencoders"><span class="header-section-number">10.3.4</span> Autoencoders</h3>
+<p>Autoencoders are used for unsupervised learning tasks like dimensionality reduction. They consist of an encoder that compresses the input into a latent space representation and a decoder that reconstructs the input.</p>
+</section>
+<section id="convolutional-neural-networks-cnns" class="level3" data-number="10.3.5">
+<h3 data-number="10.3.5" class="anchored" data-anchor-id="convolutional-neural-networks-cnns"><span class="header-section-number">10.3.5</span> Convolutional Neural Networks (CNNs)</h3>
+<p>Designed for grid-like data such as images, CNNs use convolutional layers to extract spatial features and reduce parameters through weight sharing. They are commonly used in image recognition and classification.</p>
+</section>
+<section id="generative-adversarial-networks-gans" class="level3" data-number="10.3.6">
+<h3 data-number="10.3.6" class="anchored" data-anchor-id="generative-adversarial-networks-gans"><span class="header-section-number">10.3.6</span> Generative Adversarial Networks (GANs)</h3>
+<p>GANs comprise two networks, a generator and a discriminator, trained simultaneously. The generator creates fake data samples, while the discriminator distinguishes between real and fake samples. GANs are used for image generation and style transfer.</p>
+</section>
+<section id="transformer-networks" class="level3" data-number="10.3.7">
+<h3 data-number="10.3.7" class="anchored" data-anchor-id="transformer-networks"><span class="header-section-number">10.3.7</span> Transformer Networks</h3>
+<p>Transformers, popular in natural language processing, handle long-range dependencies and parallelize computation through self-attention mechanisms.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -671,10 +926,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -684,8 +956,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -697,7 +978,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -741,6 +1145,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -766,6 +1171,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -827,17 +1258,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./function_approximation.html" class="pagination-link">
+      <a href="./function_approximation.html" class="pagination-link" aria-label="Function Approximation">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./algorithms.html" class="pagination-link">
+      <a href="./algorithms.html" class="pagination-link" aria-label="Machine Learning Algorithms">
         <span class="nav-page-text">Machine Learning Algorithms</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
