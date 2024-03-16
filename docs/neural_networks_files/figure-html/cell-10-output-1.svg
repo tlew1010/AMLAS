@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="200" height="100" viewBox="-100.0 -50.0 200 100">
+<defs>
+</defs>
+<path d="M-80,45 L70,49 L95,-49 L-90,-40" fill="#eeee00" stroke="black" />
+<rect x="-80" y="-50" width="40" height="50" fill="#1248ff">
+<title>Our first rectangle</title>
+</rect>
+</svg>
