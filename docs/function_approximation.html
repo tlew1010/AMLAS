@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -106,6 +113,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -114,12 +148,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./function_approximation.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./function_approximation.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -129,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Applied Machine Learning for Aerospace Systems</a> 
@@ -292,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
@@ -320,7 +354,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./function_approximation.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Function Approximation</span></h1>
 </div>
@@ -335,7 +369,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>Function approximation is a core concept in mathematics, statistics, and machine learning, involving the estimation of a function using a simpler or more tractable form. This process is essential when the exact form of a function is unknown, too complex, or when an analytical expression is not available.</p>
 <p>Key aspects of function approximation include:</p>
@@ -379,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="300"></p>
-<figcaption class="figure-caption">Different sets of orthogonal basis to represent the same 2D Euclidean space.</figcaption>
+<figcaption>Different sets of orthogonal basis to represent the same 2D Euclidean space.</figcaption>
 </figure>
 </div>
 </div>
@@ -461,7 +497,7 @@ x_i = \left\langle \boldsymbol{x},\boldsymbol{e}_i \right\rangle.
 <pre><code>3</code></pre>
 </div>
 </div>
-<p>Let us now represent a vector <span class="math inline">\(\boldsymbol{x}:=\begin{bmatrix} 1 &amp; 1 &amp; 1\end{bmatrix}^T\)</span> with the basis provided. Using (<a href="#eq-optmal-ls-euclidean">Equation&nbsp;<span>9.1</span></a>), the optimal components of <span class="math inline">\(\boldsymbol{x}\)</span> in <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^5\)</span> is given by:</p>
+<p>Let us now represent a vector <span class="math inline">\(\boldsymbol{x}:=\begin{bmatrix} 1 &amp; 1 &amp; 1\end{bmatrix}^T\)</span> with the basis provided. Using (<a href="#eq-optmal-ls-euclidean" class="quarto-xref">Equation&nbsp;<span>9.1</span></a>), the optimal components of <span class="math inline">\(\boldsymbol{x}\)</span> in <span class="math inline">\(\{\boldsymbol{e}_i\}_{i=1}^5\)</span> is given by:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>yopt <span class="op">=</span> np.linalg.pinv(E.T<span class="op">@</span>E)<span class="op">@</span>E.T<span class="op">@</span>x</span>
@@ -576,7 +612,7 @@ x_i = \left\langle \boldsymbol{x},\boldsymbol{e}_i \right\rangle.
 <p>The optimal representation of <span class="math inline">\(\boldsymbol{x}\in\mathcal{R}\)</span> in that case satisfies <span id="eq-projection-theorem"><span class="math display">\[
 \left\langle \boldsymbol{r},\boldsymbol{e}_i \right\rangle = 0, \text{ for } i = 1,\cdots,m.
 \tag{9.2}\]</span></span></p>
-<p>Recalling that <span class="math inline">\(\boldsymbol{r}:=\boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}\)</span> and <span class="math inline">\(\left\langle \boldsymbol{r},\boldsymbol{e}_i \right\rangle\)</span> for vectors is simply <span class="math inline">\(\boldsymbol{r}^T \boldsymbol{e}_i = \boldsymbol{e}_i^T\boldsymbol{r}\)</span>, <a href="#eq-projection-theorem">Equation&nbsp;<span>9.2</span></a> can be written as <span class="math display">\[\begin{align*}
+<p>Recalling that <span class="math inline">\(\boldsymbol{r}:=\boldsymbol{x}- \boldsymbol{E}\boldsymbol{y}\)</span> and <span class="math inline">\(\left\langle \boldsymbol{r},\boldsymbol{e}_i \right\rangle\)</span> for vectors is simply <span class="math inline">\(\boldsymbol{r}^T \boldsymbol{e}_i = \boldsymbol{e}_i^T\boldsymbol{r}\)</span>, <a href="#eq-projection-theorem" class="quarto-xref">Equation&nbsp;<span>9.2</span></a> can be written as <span class="math display">\[\begin{align*}
 &amp; \boldsymbol{e}_i^T\boldsymbol{x}- \boldsymbol{e}_i^T\boldsymbol{E}\boldsymbol{y}= 0,\\
 \text{ or }&amp; \boldsymbol{e}_i^T\boldsymbol{E}\boldsymbol{y}= \boldsymbol{e}_i^T\boldsymbol{x}, \text{ for } i = 1,\cdots,m,
 \end{align*}\]</span> or more compactly as <span class="math display">\[
@@ -584,7 +620,7 @@ x_i = \left\langle \boldsymbol{x},\boldsymbol{e}_i \right\rangle.
 \]</span></p>
 <p>Therefore, the coefficients <span class="math inline">\(\boldsymbol{y}\)</span> can be solved as <span class="math display">\[
 \boldsymbol{y}= (\boldsymbol{E}^T\boldsymbol{E})^\dagger\boldsymbol{E}^T\boldsymbol{x},
-\]</span> which is the same as <a href="#eq-optmal-ls-euclidean">Equation&nbsp;<span>9.1</span></a>. Therefore, projecting the residual on each basis results in the optimal approximation.</p>
+\]</span> which is the same as <a href="#eq-optmal-ls-euclidean" class="quarto-xref">Equation&nbsp;<span>9.1</span></a>. Therefore, projecting the residual on each basis results in the optimal approximation.</p>
 </section>
 </section>
 <section id="matrix-spaces" class="level3" data-number="9.2.4">
@@ -659,7 +695,7 @@ e(\boldsymbol{x}) := f(\boldsymbol{x}) - \boldsymbol{\Phi}^T(\boldsymbol{x})\bol
 \vdots \\
 \langle f(\boldsymbol{x})\phi_N(\boldsymbol{x})\rangle
 \end{bmatrix}}_{\text{This is equal to } \langle \boldsymbol{\Phi}(\boldsymbol{x})f(\boldsymbol{x})\rangle = \boldsymbol{r}.}.
-\]</span> Therefore, the system of linear equations has a solution <span class="math inline">\(\boldsymbol{\alpha}^\ast = \boldsymbol{Q}^\dagger\boldsymbol{r}\)</span>, which is the same solution as <a href="#eq-optimal-L2-error">Equation&nbsp;<span>9.4</span></a>.</p>
+\]</span> Therefore, the system of linear equations has a solution <span class="math inline">\(\boldsymbol{\alpha}^\ast = \boldsymbol{Q}^\dagger\boldsymbol{r}\)</span>, which is the same solution as <a href="#eq-optimal-L2-error" class="quarto-xref">Equation&nbsp;<span>9.4</span></a>.</p>
 <section id="example-exact-polynomial-representation" class="level4" data-number="9.3.2.1">
 <h4 data-number="9.3.2.1" class="anchored" data-anchor-id="example-exact-polynomial-representation"><span class="header-section-number">9.3.2.1</span> Example: Exact Polynomial Representation</h4>
 <p>Here we consider approximation of <span class="math inline">\(f(x) = 1+x^2 - x^3\)</span> with monomial basis <span class="math inline">\(\boldsymbol{\Phi}(x) = \begin{bmatrix}1 &amp; x &amp; x^2 &amp; x^3 &amp; x^4 \end{bmatrix}^T\)</span>. This is a simple problem, where <span class="math inline">\(f(x)\)</span> is in the space spanned by <span class="math inline">\(\boldsymbol{\Phi}(x)\)</span> and we should expect zero residual error.</p>
@@ -705,7 +741,6 @@ e(\boldsymbol{x}) := f(\boldsymbol{x}) - \boldsymbol{\Phi}^T(\boldsymbol{x})\bol
 e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} + \cdots
 \]</span></p>
 <p>Therefore, if we treat each monomial as a basis function, we will need infinite basis to exactly represent <span class="math inline">\(e^x\)</span>. Consequently, we can only <em>approximate</em> <span class="math inline">\(e^x\)</span> with a finite number of monomial basis functions. However, if the approximation interval is small, we may get satisfactorily high accuracy with a few basis functions, as demonstrated next. The following Python code approximates <span class="math inline">\(e^x\)</span> with increasing number of basis functions.</p>
-<div>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sp</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -741,21 +776,19 @@ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} 
 <span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Coefficients of various basis functions.'</span>)</span>
 <span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
 <span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="614"></p>
-<figcaption class="figure-caption">Approximation of <span class="math inline">\(e^x\)</span> with monomial basis functions in the interval <span class="math inline">\([-1,1]\)</span>. The plot shows coefficients associated with each basis function.</figcaption>
+<figcaption>Approximation of <span class="math inline">\(e^x\)</span> with monomial basis functions in the interval <span class="math inline">\([-1,1]\)</span>. The plot shows coefficients associated with each basis function.</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
 <p>We see that the coefficient for basis number six on onwards are zero, implying we are able accurately represent <span class="math inline">\(e^x\)</span> in the interval <span class="math inline">\([-1,1]\)</span> with the first six basis functions. This is supported by the next set of plots where we plot approximations of <span class="math inline">\(e^x\)</span> with increasing number of basis functions.</p>
-<div>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>k1<span class="op">=</span><span class="dv">3</span><span class="op">;</span> fhat1 <span class="op">=</span> sp.lambdify(x,<span class="bu">sum</span>(basis[:k1]<span class="op">*</span>alp[:k1]))</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>k2<span class="op">=</span><span class="dv">4</span><span class="op">;</span> fhat2 <span class="op">=</span> sp.lambdify(x,<span class="bu">sum</span>(basis[:k2]<span class="op">*</span>alp[:k2]))</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>k3<span class="op">=</span><span class="dv">5</span><span class="op">;</span> fhat3 <span class="op">=</span> sp.lambdify(x,<span class="bu">sum</span>(basis[:k3]<span class="op">*</span>alp[:k3]))</span>
@@ -776,15 +809,14 @@ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} 
 <span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-14-3.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Comparison of <span class="math inline">\(e^x\)</span> with its approximation with increasing number of basis functions in the interval <span class="math inline">\([-1,1]\)</span>.</figcaption>
+<figcaption>Comparison of <span class="math inline">\(e^x\)</span> with its approximation with increasing number of basis functions in the interval <span class="math inline">\([-1,1]\)</span>.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -797,7 +829,6 @@ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} 
 \boldsymbol{\Phi}(x):= \begin{bmatrix} 1, &amp; \cos(\frac{\pi}{L}x), &amp; \sin(\frac{\pi}{L}x), &amp;\cdots, &amp; \cos(\frac{N\pi}{L}x), &amp; \sin(\frac{N\pi}{L}x) \end{bmatrix}^T,
 \]</span> over the interval <span class="math inline">\([-L,L]\)</span>. These basis functions are orthogonal.</p>
 <p>The following Python code approximates <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> using trigonometric basis functions over the interval <span class="math inline">\([-1,1]\)</span></p>
-<div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sp</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -847,38 +878,43 @@ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} 
 <span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Approximation Error.'</span>)</span>
 <span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-periodic_function" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="function_approximation_files/figure-html/fig-periodic_function-5.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9.1: Approximation of a periodic function in the interval <span class="math inline">\([-1,1]\)</span> using trigonometric basis functions.</figcaption>
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-periodic_function" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-periodic_function-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="function_approximation_files/figure-html/fig-periodic_function-5.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-periodic_function-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: Approximation of a periodic function in the interval <span class="math inline">\([-1,1]\)</span> using trigonometric basis functions.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p><a href="#fig-periodic_function">Figure&nbsp;<span>9.1</span></a> shows that we are able to approximate <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> with <span class="math inline">\(15\)</span> basis functions with small errors. We can reduce the error further by increasing the number of basis functions.</p>
-<div>
+<p><a href="#fig-periodic_function" class="quarto-xref">Figure&nbsp;<span>9.1</span></a> shows that we are able to approximate <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> with <span class="math inline">\(15\)</span> basis functions with small errors. We can reduce the error further by increasing the number of basis functions.</p>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>plt.stem(<span class="bu">range</span>(nBasis),alp)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Basis Index'</span>)</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Basis Coefficient'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-periodic_function_coeff" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="function_approximation_files/figure-html/fig-periodic_function_coeff-7.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9.2: Coefficients of basis functions.</figcaption>
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-periodic_function_coeff" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-periodic_function_coeff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="function_approximation_files/figure-html/fig-periodic_function_coeff-7.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-periodic_function_coeff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: Coefficients of basis functions.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p><a href="#fig-periodic_function_coeff">Figure&nbsp;<span>9.2</span></a> show the coefficients, which are projections of <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> on each of the <span class="math inline">\(15\)</span> basis functions. We see that most of the coefficients are zero indicating the function lies in a much smaller dimensional space than assumed.</p>
+<p><a href="#fig-periodic_function_coeff" class="quarto-xref">Figure&nbsp;<span>9.2</span></a> show the coefficients, which are projections of <span class="math inline">\(f(x) = \sin(\frac{3\pi}{2}x)^3(1-x^2)\)</span> on each of the <span class="math inline">\(15\)</span> basis functions. We see that most of the coefficients are zero indicating the function lies in a much smaller dimensional space than assumed.</p>
 <p>The basis functions are essentially Fourier modes. Therefore, the approximation is nothing but Fourier series expansion of the function and the coefficients of the basis functions gives rise to the discrete Fourier transform of the signal. If chose wavelets as basis, then we would get wavelet transform of the function. Therefore, we can think of all these transforms as projections of a function on different basis functions.</p>
 </section>
 </section>
@@ -902,7 +938,6 @@ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} 
 I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p>
 <p>This method is particularly efficient and accurate for polynomial functions, ensuring exact results for polynomials of degree up to <span class="math inline">\(2n-1\)</span> with just <span class="math inline">\(n\)</span> function evaluations.</p>
 <p>We next use Gaussian quadrature to integrate polynomial functions and compare it with the analytical solution. Let us consider polynomial <span class="math inline">\(f(x) = x^3 - 3x^2 + 2x\)</span>. We will integrate this function over an interval <span class="math inline">\([0,5]\)</span>, both analytically and numerically using Gaussian quadrature, and then compare the results. The following Python code demonstrates it.</p>
-<div>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> quad, quadrature</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -928,27 +963,25 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Gaussian Quadrature Result: </span><span class="sc">{</span>result_gauss<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Analytical Result: </span><span class="sc">{</span>result_analytical<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Error:</span><span class="sc">{</span>result_analytical <span class="op">-</span> result_gauss<span class="sc">}</span><span class="ss">, which is machine precision."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Gaussian Quadrature Result: 56.25000000000001</code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Analytical Result: 56.25</code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Error:-7.105427357601002e-15, which is machine precision.</code></pre>
-</div>
 </div>
 </div>
 </div>
 <p>This script uses the <code>quadrature</code> function from SciPy, which implements Gaussian quadrature for numerical integration. It also defines an <code>analytical_integration</code> function that computes the integral of the given polynomial analytically. We see that the numerical integration matches the analytical solution upto machine precision.</p>
 <p>We next show the performance of Gaussian quadrature for integrating non-polynomial functions. We consider integration of <span class="math inline">\(f(x) = e^{-x^2}\)</span> over <span class="math inline">\([0,1]\)</span>, which analytically is <span class="math inline">\(\frac{\sqrt{\pi}}{2}\text{erf}(1)\)</span>, where <span class="math inline">\(\text{erf}(\cdot)\)</span> is the error function.</p>
-<div>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> quad, quadrature</span>
@@ -970,21 +1003,20 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Gaussian Quadrature Result: </span><span class="sc">{</span>result_gauss<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Analytical Result: </span><span class="sc">{</span>result_analytical<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Error:</span><span class="sc">{</span>result_analytical <span class="op">-</span> result_gauss<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Gaussian Quadrature Result: 0.7468241328901553</code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Analytical Result: 0.7468241328124269</code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Error:-7.772837928854415e-11</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -1007,8 +1039,7 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 </section>
 <section id="least-squares-approximation-using-legendre-polynomials." class="level4" data-number="9.3.3.3">
 <h4 data-number="9.3.3.3" class="anchored" data-anchor-id="least-squares-approximation-using-legendre-polynomials."><span class="header-section-number">9.3.3.3</span> Least-Squares Approximation Using Legendre Polynomials.</h4>
-<p>The following Python code illustrates a method for approximating a function using Legendre polynomials on scattered 1D data. Initially, a set of scattered data points is generated. These data points (x) are randomly selected and associated with values (y) derived from a noisy sine wave. The core of this approach lies in constructing a Vandermonde-like matrix for Legendre polynomials. Each column of this matrix, denoted as <span class="math inline">\(\boldsymbol{A}\)</span>, corresponds to a Legendre polynomial of a specific degree evaluated at the data points. To approximate the function, a least squares problem is formulated and solved using <code>np.linalg.lstsq</code>, which essentially returns the optimal solution given by <a href="#eq-lsq_scattered_data">Equation&nbsp;<span>9.5</span></a>.</p>
-<div>
+<p>The following Python code illustrates a method for approximating a function using Legendre polynomials on scattered 1D data. Initially, a set of scattered data points is generated. These data points (x) are randomly selected and associated with values (y) derived from a noisy sine wave. The core of this approach lies in constructing a Vandermonde-like matrix for Legendre polynomials. Each column of this matrix, denoted as <span class="math inline">\(\boldsymbol{A}\)</span>, corresponds to a Legendre polynomial of a specific degree evaluated at the data points. To approximate the function, a least squares problem is formulated and solved using <code>np.linalg.lstsq</code>, which essentially returns the optimal solution given by <a href="#eq-lsq_scattered_data" class="quarto-xref">Equation&nbsp;<span>9.5</span></a>.</p>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1041,15 +1072,14 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
 <span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Function Approximation with Legendre Polynomials Up to Degree </span><span class="sc">{</span>degree<span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-19-9.png" class="img-fluid figure-img" width="1152"></p>
-<figcaption class="figure-caption">Function approximation using Legendre polynomials.</figcaption>
+<figcaption>Function approximation using Legendre polynomials.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1061,7 +1091,6 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <p>This behavior is most prominently seen when using equidistant interpolation points. As the degree of the interpolating polynomial increases, the approximation becomes excellent near the center of the interval but worsens towards the ends. The polynomial starts to exhibit large oscillations, particularly near the endpoints, which severely affects the accuracy of the interpolation. This counterintuitive result is contrary to the expectation that higher-degree polynomials should provide better approximations.</p>
 <p>The Runge phenomenon highlights a fundamental limitation of polynomial interpolation, particularly with equidistant points. It can be mitigated by choosing points that are not evenly spaced, like Chebyshev nodes. Another solution is to use methods like spline interpolation, which involve breaking the range into smaller pieces and using lower-degree polynomials over each piece. This approach avoids the big swings and inaccuracies seen with high-degree polynomials.</p>
 <p>The Runge phenomenon is demonstrated with the approximation of the functon <span class="math inline">\(f(x) = \frac{1}{1 + 25x^2}\)</span> using high-degree polynomials with both equidistant points (which leads to the Runge phenomenon) and Chebyshev nodes (to mitigate the phenomenon). It is demonstrated in the following Python code.</p>
-<div>
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.polynomial.polynomial <span class="im">import</span> Polynomial</span>
@@ -1105,15 +1134,18 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb44-41"><a href="#cb44-41" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'f(x)'</span>)</span>
 <span id="cb44-42"><a href="#cb44-42" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb44-43"><a href="#cb44-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-runge_phenomenon" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="function_approximation_files/figure-html/fig-runge_phenomenon-11.png" class="img-fluid figure-img" width="1152"></p>
-<figcaption class="figure-caption">Figure&nbsp;9.3: Demonstration of Runge phenomenon and its mitigation.</figcaption>
-</figure>
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-runge_phenomenon" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-runge_phenomenon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="function_approximation_files/figure-html/fig-runge_phenomenon-11.png" class="img-fluid figure-img" width="1152">
 </div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-runge_phenomenon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.3: Demonstration of Runge phenomenon and its mitigation.
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -1131,7 +1163,6 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <p>For a spline of degree <span class="math inline">\(n\)</span>, each piece is a polynomial of degree <span class="math inline">\(n\)</span> defined on a subinterval <span class="math inline">\([x_i, x_{i+1}]\)</span>. For example, a cubic spline (<span class="math inline">\(n = 3\)</span>) is a piecewise-defined function where each piece is a cubic polynomial.</p>
 <p>Splines have continuity properties at the points where the polynomial pieces meet (called knots). For instance, cubic splines are often constructed to have continuous first and second derivatives across these knots.</p>
 <p>Here is a Python code that demonstrates cubic spline interpolation.</p>
-<div>
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> interp1d</span>
@@ -1156,11 +1187,10 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
 <span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-21-13.png" class="img-fluid" width="960"></p>
-</div>
 </div>
 </div>
 </div>
@@ -1169,7 +1199,6 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <h4 data-number="9.3.4.2" class="anchored" data-anchor-id="b-splines"><span class="header-section-number">9.3.4.2</span> B-Splines</h4>
 <p>B-splines or Basis splines are a generalization of the spline concept. They provide a basis for the spline space and are defined by a degree and a set of knot points. A B-spline of degree <span class="math inline">\(n\)</span> is defined piecewise by polynomial segments of degree <span class="math inline">\(n\)</span>. Its shape is influenced by a set of control points, and it is non-zero only in a range defined by <span class="math inline">\(n+1\)</span> consecutive knots. B-splines have local control (adjusting one control point affects the spline shape only in a local region) and are widely used in computer graphics and data fitting due to their stability and flexibility.</p>
 <p>The following code shows the B-spline basis functions.</p>
-<div>
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> BSpline</span>
@@ -1202,21 +1231,19 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
 <span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-22-15.png" class="img-fluid figure-img" width="960"></p>
-<figcaption class="figure-caption">B-Spline basis functions satisfying partition of unity, i.e., the sum of all the basis function is equal to one at every point. Note that each basis function is locally supported, i.e., it goes to zero far away from the location of its peak value.</figcaption>
+<figcaption>B-Spline basis functions satisfying partition of unity, i.e., the sum of all the basis function is equal to one at every point. Note that each basis function is locally supported, i.e., it goes to zero far away from the location of its peak value.</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
 <p>We next show how to interpolate data using B-Splines.</p>
-<div>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> splrep, splev</span>
@@ -1241,11 +1268,10 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)<span class="op">;</span></span>
 <span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span></span>
 <span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-23-17.png" class="img-fluid" width="960"></p>
-</div>
 </div>
 </div>
 </div>
@@ -1254,7 +1280,6 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <h4 data-number="9.3.4.3" class="anchored" data-anchor-id="wavelets"><span class="header-section-number">9.3.4.3</span> Wavelets</h4>
 <p>Wavelets are functions used to divide a given function or continuous-time signal into different scale components. They have localized support in both time and frequency domains. A wavelet function <span class="math inline">\(\psi(t)\)</span> is typically defined over a finite interval and is used to generate a family of functions through scaling and translation: <span class="math inline">\(\psi_{a,b}(t) = \frac{1}{\sqrt{a}} \psi\left(\frac{t - b}{a}\right)\)</span>, where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are the scaling and translation parameters. Wavelets are useful in signal processing and image compression, as they can represent data at different levels of resolution and are particularly effective in analyzing transient or high-frequency features.</p>
 <p>Here is a Python code that applies Daubechies wavelets to approximate a function. We first show the Daubechies wavelets followed by approximation of a sine function with it.</p>
-<div>
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1282,20 +1307,18 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the plot</span></span>
 <span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-24-19.png" class="img-fluid figure-img" width="1152"></p>
-<figcaption class="figure-caption">Daubechies wavelets with increasing complexity.</figcaption>
+<figcaption>Daubechies wavelets with increasing complexity.</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div>
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
@@ -1327,15 +1350,14 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'f(x)'</span>)</span>
 <span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-25-21.png" class="img-fluid figure-img" width="960"></p>
-<figcaption class="figure-caption">Approximation of <span class="math inline">\(\sin(x)\)</span> with Daubechies wavelets.</figcaption>
+<figcaption>Approximation of <span class="math inline">\(\sin(x)\)</span> with Daubechies wavelets.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1354,7 +1376,6 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 </ol>
 <p>Radial Basis Functions stand out due to their flexibility and effectiveness in handling multidimensional data, their ability to create smooth interpolants, and their applicability in a wide range of scientific and engineering disciplines. Their unique radial property ensures that the influence of a point diminishes with distance, making them suitable for localized approximations in high-dimensional spaces.</p>
 <p>The following code uses multiquadric radial basis functions to approximate <span class="math inline">\(\sin(x)\)</span>.</p>
-<div>
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> Rbf</span>
@@ -1384,17 +1405,15 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'f(x)'</span>)</span>
 <span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-26-23.png" class="img-fluid" width="960"></p>
-</div>
 </div>
 </div>
 </div>
 <p>RBF interpolation is especially useful for scattered data in multiple dimensions, but this example shows its application in a simple 1D case for simplicity.</p>
 <p>We next show how multiquadric RBFs can be used to approximate <span class="math inline">\(\sin(x)\cos(y)\)</span> from scattered data.</p>
-<div>
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> Rbf</span>
@@ -1436,15 +1455,14 @@ I \approx \sum_{i=1}^{n} \frac{2 f(x_i)}{(1 - x_i^2) [P_n'(x_i)]^2}.\]</span></p
 <span id="cb51-39"><a href="#cb51-39" aria-hidden="true" tabindex="-1"></a>ax2.set_zlabel(<span class="st">'f(X, Y)'</span>)</span>
 <span id="cb51-40"><a href="#cb51-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb51-41"><a href="#cb51-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function_approximation_files/figure-html/unnamed-chunk-27-25.png" class="img-fluid figure-img" width="1152"></p>
-<figcaption class="figure-caption">Function approximation in 2D with radial basis functions.</figcaption>
+<figcaption>Function approximation in 2D with radial basis functions.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1535,10 +1553,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1548,8 +1583,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1561,7 +1605,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1605,6 +1772,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1630,6 +1798,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1691,17 +1885,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./optimization.html" class="pagination-link">
+      <a href="./optimization.html" class="pagination-link" aria-label="Optimization">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./neural_networks.html" class="pagination-link">
+      <a href="./neural_networks.html" class="pagination-link" aria-label="Neural Networks">
         <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neural Networks</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

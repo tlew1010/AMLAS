@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -106,6 +113,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -114,12 +148,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./random_variables.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./random_variables.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -129,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Applied Machine Learning for Aerospace Systems</a> 
@@ -292,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
@@ -354,7 +388,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Foundational Mathematics</a></li><li class="breadcrumb-item"><a href="./random_variables.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random Variables</span></h1>
 </div>
@@ -369,7 +403,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>In this chapter, we delve into the fundamental concepts of random variables and stochastic processes, essential components of probability theory and statistical analysis in the realm of machine learning. This section aims to provide an introduction to the principles governing probability, characteristics of random variables, and the nature of stochastic processes. Central to understanding data’s inherent randomness and uncertainty, these topics are indispensable for developing a solid theoretical foundation in machine learning algorithms. This overview encompasses a spectrum of topics, from elementary probability distributions to sophisticated techniques such as Bayesian inference and Monte Carlo methods. Emphasizing both theoretical acumen and practical application, the course integrates Python-based examples to demonstrate the real-world applicability of these concepts. This overview is designed to equip students with the essential knowledge and skills to become experts in machine learning.</p>
 <section id="definitions-and-probability-axioms" class="level2" data-number="4.1">
@@ -422,7 +458,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Expression</strong>: For a random variable <span class="math inline">\(X\)</span>, the CDF <span class="math inline">\(F(x)\)</span> is defined as <span class="math inline">\(F(x) = P(X \leq x)\)</span>. In the case of a discrete random variable, it is the sum of the probabilities up to <span class="math inline">\(x\)</span>; for a continuous variable, it is the integral of the PDF up to <span class="math inline">\(x\)</span>.</li>
 </ul>
 <p>We’ll use Python to generate illustrations for PMFs, PDFs, and CDFs. For PMFs, we’ll consider a simple binomial distribution, and for PDFs and CDFs, we’ll use a normal distribution.</p>
-<div>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> binom, norm</span>
@@ -459,15 +494,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="1">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="1" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img" width="1141"></p>
-<figcaption class="figure-caption">The Python code creates a figure with three subplots: the first showing the PMF of a binomial distribution, the second showing the PDF of a normal distribution, and the third displaying the CDF of the same normal distribution.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-2-output-1.png" width="1141" height="372" class="figure-img"></p>
+<figcaption>The Python code creates a figure with three subplots: the first showing the PMF of a binomial distribution, the second showing the PDF of a normal distribution, and the third displaying the CDF of the same normal distribution.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -489,7 +523,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Significance in Machine Learning</strong>: In machine learning, variance is a key concept in understanding the model’s behavior, particularly in the bias-variance tradeoff, which is crucial for understanding model performance and overfitting.</p></li>
 </ul>
 <p>We’ll use Python to illustrate the computation of expected value and variance for a simple discrete distribution (e.g., rolling a fair six-sided die) and a continuous distribution (e.g., normal distribution).</p>
-<div>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> randint, norm</span>
@@ -528,23 +561,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Density'</span>)</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="2">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="2" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Expected Value (Die Roll): 3.5
 Variance (Die Roll): 2.9166666666666665
 Expected Value (Normal Distribution): 7.112539897498498e-17
 Variance (Normal Distribution): 0.9999849286984711</code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-3-output-2.png" class="img-fluid figure-img" width="969"></p>
-<figcaption class="figure-caption">This code calculates and prints the expected value and variance for both a fair die roll (discrete) and a normal distribution (continuous). It also provides visualizations of their probability distributions. These examples demonstrate how expected value and variance are computed and their importance in describing the characteristics of a distribution.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-3-output-2.png" width="969" height="449" class="figure-img"></p>
+<figcaption>This code calculates and prints the expected value and variance for both a fair die roll (discrete) and a normal distribution (continuous). It also provides visualizations of their probability distributions. These examples demonstrate how expected value and variance are computed and their importance in describing the characteristics of a distribution.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -567,7 +599,6 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 </ul>
 <p>The Law of Large Numbers is a cornerstone of probability theory and statistics, providing a rationale for the apparent regularity of large systems and the basis for making inferences about population parameters based on sample statistics. It essentially underlines the reliability of averages in large datasets, a key concept in many practical applications across various disciplines.</p>
 <p>A simple demonstration of LLN is achieved by the following Python code.</p>
-<div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -598,15 +629,14 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Sample Mean'</span>)</span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="3">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="3" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img" width="812"></p>
-<figcaption class="figure-caption">In the plot, the x-axis represents the number of trials (on a logarithmic scale for clarity), ranging from small to large sample sizes. The y-axis shows the sample mean for each set of trials. The red dashed line indicates the true mean of the distribution (0 in this case). We observe that as the number of samples increases, the emprical mean converges to the true mean.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-4-output-1.png" width="812" height="525" class="figure-img"></p>
+<figcaption>In the plot, the x-axis represents the number of trials (on a logarithmic scale for clarity), ranging from small to large sample sizes. The y-axis shows the sample mean for each set of trials. The red dashed line indicates the true mean of the distribution (0 in this case). We observe that as the number of samples increases, the emprical mean converges to the true mean.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -629,7 +659,6 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 </ul>
 <p>In summary, while the LLN tells us that the sample mean will be a good estimate of the population mean for large sample sizes, the CLT tells us about the distribution of this estimate, enabling the use of normal distribution-based inference methods even when the underlying data does not follow a normal distribution.</p>
 <p>The following Python script demonstrates the Central Limit Theorem (CLT) by generating distributions of sample means from an original normal distribution (with a mean of 5 and standard deviation of 2) for different sample sizes. The script creates multiple samples for each specified sample size and computes the mean of each sample.</p>
-<div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -654,15 +683,14 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="4">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="4" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img" width="965"></p>
-<figcaption class="figure-caption">In the figure, each histogram represents the distribution of sample means for a particular sample size. As the sample size increases, the distribution of the sample means becomes more tightly clustered around the true mean of the original distribution (5 in this case). The shape of these distributions of sample means increasingly resembles a normal distribution, especially as the sample size gets larger.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-5-output-1.png" width="965" height="671" class="figure-img"></p>
+<figcaption>In the figure, each histogram represents the distribution of sample means for a particular sample size. As the sample size increases, the distribution of the sample means becomes more tightly clustered around the true mean of the original distribution (5 in this case). The shape of these distributions of sample means increasingly resembles a normal distribution, especially as the sample size gets larger.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -711,7 +739,6 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <li><strong>PDF</strong>: <span class="math inline">\(f(x) = \lambda e^{-\lambda x}\)</span> for <span class="math inline">\(x \geq 0\)</span>.</li>
 </ul>
 <p>Let’s illustrate these distributions using Python:</p>
-<div>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> binom, poisson, norm, uniform, expon</span>
@@ -755,15 +782,14 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="5">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="5" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img" width="1435"></p>
-<figcaption class="figure-caption">This code will generate a series of plots illustrating the probability mass or density functions for each of the five distributions. These visualizations help in understanding the characteristics and differences of these common distributions, which are widely used in various machine learning and statistical modeling scenarios.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-6-output-1.png" width="1435" height="277" class="figure-img"></p>
+<figcaption>This code will generate a series of plots illustrating the probability mass or density functions for each of the five distributions. These visualizations help in understanding the characteristics and differences of these common distributions, which are widely used in various machine learning and statistical modeling scenarios.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -845,7 +871,6 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <li><p><strong>Model Assumptions</strong>: Certain models assume independence between features, which can be examined by comparing joint and marginal distributions.</p></li>
 <li><p><strong>Probabilistic Models</strong>: In probabilistic modeling, marginal distributions are crucial for making predictions and understanding the behavior of a system when only partial information is available.</p></li>
 </ol>
-<div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
@@ -907,15 +932,14 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>ax_histy.set_xlabel(<span class="st">'Density'</span>)</span>
 <span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="6">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="6" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img" width="729"></p>
-<figcaption class="figure-caption">The plot shows a joint distribution of two continuous random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> as a contour plot in the center and the marginal distributions along the X and Y axes. The use of additional axes for the marginal distributions alongside the contour plot offers a comprehensive view of how the marginals relate to the joint distribution.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-7-output-1.png" width="729" height="717" class="figure-img"></p>
+<figcaption>The plot shows a joint distribution of two continuous random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> as a contour plot in the center and the marginal distributions along the X and Y axes. The use of additional axes for the marginal distributions alongside the contour plot offers a comprehensive view of how the marginals relate to the joint distribution.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -927,7 +951,6 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <p>For discrete random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, the conditional probability mass function (PMF) of <span class="math inline">\(X\)</span> given <span class="math inline">\(Y = y\)</span> is defined as: <span class="math display">\[ P(X = x | Y = y) = \frac{P(X = x, Y = y)}{P(Y = y)}.\]</span> provided <span class="math inline">\(P(Y = y) &gt; 0\)</span>.</p>
 <p>For continuous random variables, the conditional probability density function (PDF) is defined similarly. If <span class="math inline">\(f_{X,Y}(x, y)\)</span> is the joint PDF of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, and <span class="math inline">\(f_Y(y)\)</span> is the marginal PDF of <span class="math inline">\(Y\)</span>, then the conditional PDF of <span class="math inline">\(X\)</span> given <span class="math inline">\(Y = y\)</span> is: <span class="math display">\[ f_{X|Y}(x | y) = \frac{f_{X,Y}(x, y)}{f_Y(y)},\]</span> again, provided <span class="math inline">\(f_Y(y) &gt; 0\)</span>.</p>
 <p>We will create a bivariate distribution using sampling from a Beta distribution and a Gaussian distribution, and then compute the conditional distribution.</p>
-<div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> beta, norm</span>
@@ -959,15 +982,14 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="7">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="7" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img" width="1141"></p>
-<figcaption class="figure-caption">Figure shows a joint Beta-Gaussian for (x,y). It also shows the conditional distribution of y for x = 0.5. This conditional distribution is visualized in the form of a histogram. The scatter plot of the bivariate distribution helps visualize the dependency between x and y.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-8-output-1.png" width="1141" height="564" class="figure-img"></p>
+<figcaption>Figure shows a joint Beta-Gaussian for (x,y). It also shows the conditional distribution of y for x = 0.5. This conditional distribution is visualized in the form of a histogram. The scatter plot of the bivariate distribution helps visualize the dependency between x and y.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -984,7 +1006,6 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <h3 data-number="4.11.5" class="anchored" data-anchor-id="correlation"><span class="header-section-number">4.11.5</span> Correlation</h3>
 <p>Correlation, specifically the Pearson correlation coefficient, measures the strength and direction of a linear relationship between two variables. Unlike covariance, it is dimensionless and normalized. It is defined as <span class="math display">\[\rho_{X,Y} = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y},\]</span> where <span class="math inline">\(\sigma_X\)</span> and <span class="math inline">\(\sigma_Y\)</span> are the standard deviations of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, respectively.The correlation coefficient ranges from -1 to 1. A value of 1 implies a perfect positive linear relationship, -1 implies a perfect negative linear relationship, and 0 implies no linear relationship.</p>
 <p>We’ll use a simple dataset to compute and visualize the covariance and correlation between two variables:</p>
-<div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1010,21 +1031,20 @@ Variance (Normal Distribution): 0.9999849286984711</code></pre>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Y"</span>)</span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="8">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="8" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Covariance between X and Y: 0.1682441569776687
 Correlation between X and Y: 0.9863442594104381</code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-9-output-2.png" class="img-fluid figure-img" width="589"></p>
-<figcaption class="figure-caption">The script generates two variables, X and Y, where Y is linearly dependent on X with some added noise. It calculates the covariance and correlation between these variables and then plots them to show their relationship visually. The scatter plot provides a clear picture of how Y changes with X, and the covariance and correlation values quantify this relationship.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-9-output-2.png" width="589" height="449" class="figure-img"></p>
+<figcaption>The script generates two variables, X and Y, where Y is linearly dependent on X with some added noise. It calculates the covariance and correlation between these variables and then plots them to show their relationship visually. The scatter plot provides a clear picture of how Y changes with X, and the covariance and correlation values quantify this relationship.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1054,7 +1074,6 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <p>Systematic sampling is a streamlined and efficient approach to sampling, particularly effective when dealing with large, ordered populations. This method starts by arranging the population in a sequence, after which a fixed interval or step size, known as the sampling interval, is determined. This interval is typically calculated by dividing the total population size by the desired sample size. The key to systematic sampling is the selection of a random starting point within the first interval, which ensures an element of randomness in the process. From this point, every <span class="math inline">\(k^\text{th}\)</span> member of the population is selected to be part of the sample, where <span class="math inline">\(k\)</span> is the sampling interval.</p>
 <p>One of the significant advantages of systematic sampling is its simplicity and the uniform coverage it provides across the population. It’s particularly useful when a comprehensive list of the population is available, and the sampling process needs to be quick and straightforward. However, it’s important to be aware of the potential for bias, especially if the population’s ordering has a hidden periodicity that aligns with the sampling interval. Despite this, systematic sampling is a popular choice in various fields due to its ease of implementation, which can be efficiently executed in Python and other programming environments. This sampling method strikes a balance between the randomness of simple random sampling and the convenience of having a structured approach to selecting a sample.</p>
 <p>Here’s a Python script illustrating these sampling techniques:</p>
-<div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1093,15 +1112,14 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="9">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="9" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img" width="950"></p>
-<figcaption class="figure-caption">Histograms visualizing various distributions of the samples obtained through each technique described above.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-10-output-1.png" width="950" height="757" class="figure-img"></p>
+<figcaption>Histograms visualizing various distributions of the samples obtained through each technique described above.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1149,7 +1167,7 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="random_variables_files/figure-html/cell-11-output-1.png" width="589" height="449" class="figure-img"></p>
-<figcaption class="figure-caption">Samples from exponential distribution using inverse CDF technique.</figcaption>
+<figcaption>Samples from exponential distribution using inverse CDF technique.</figcaption>
 </figure>
 </div>
 </div>
@@ -1168,7 +1186,6 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 </ol>
 <p>The efficiency of rejection sampling depends on how closely <span class="math inline">\(g(x)\)</span> approximates <span class="math inline">\(f(x)\)</span> and on the value of <span class="math inline">\(M\)</span>. If <span class="math inline">\(M\)</span> is too large or if <span class="math inline">\(g(x)\)</span> is a poor approximation of <span class="math inline">\(f(x)\)</span>, the rejection rate will be high, making the method inefficient.</p>
 <p>Let’s demonstrate rejection sampling in Python, where we sample from an exponential distribution using a uniform proposal distribution.</p>
-<div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> expon</span>
@@ -1204,15 +1221,14 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Rejection Sampling from an Exponential Distribution'</span>)</span>
 <span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="11">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="11" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img" width="571"></p>
-<figcaption class="figure-caption">Samples from the exponential distribution using rejection sampling and uniform proposal distribution.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-12-output-1.png" width="571" height="431" class="figure-img"></p>
+<figcaption>Samples from the exponential distribution using rejection sampling and uniform proposal distribution.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1329,7 +1345,7 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="random_variables_files/figure-html/cell-14-output-1.png" width="597" height="449" class="figure-img"></p>
-<figcaption class="figure-caption">Samples from a unimodal Gaussian using the Metropolis-Hastings algorithm.</figcaption>
+<figcaption>Samples from a unimodal Gaussian using the Metropolis-Hastings algorithm.</figcaption>
 </figure>
 </div>
 </div>
@@ -1469,7 +1485,6 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <p><strong>Example: Numerical Approach</strong></p>
 <p>We can also apply a numerical approach to compute the distribution of a transformed variable. We first generate a large number of values of <span class="math inline">\(X\)</span> and apply <span class="math inline">\(g\)</span> to each value to get corresponding values of <span class="math inline">\(Y\)</span>. We then <em>count</em> the frequency of each value of <span class="math inline">\(Y\)</span> and divide by the total number of simulations to approximate the PMF. For die roll problem, we first simulate rolling a die a large number of times, say 10,000 times. For each roll, we compute compute the square of the outcome. Then we count the frequency of each squared value and divide by 10,000 to estimate the PMF of <span class="math inline">\(Y\)</span>.</p>
 <p>This is shown in the following Python code.</p>
-<div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1489,15 +1504,14 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Empirical PMF of Y = X^2'</span>)</span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>plt.xticks(values)</span>
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="14">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="14" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img" width="597"></p>
-<figcaption class="figure-caption">Emprical determination of the distributions of a transformed variable.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-15-output-1.png" width="597" height="449" class="figure-img"></p>
+<figcaption>Emprical determination of the distributions of a transformed variable.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1527,7 +1541,6 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <li><p><strong>Density Estimation</strong>: To get a smoother estimate of the PDF of <span class="math inline">\(Y\)</span>, kernel density estimation (KDE) can be used. KDE is a non-parametric way to estimate the probability density function of a random variable and can provide a clearer view of the distribution, especially when the transformation <span class="math inline">\(g\)</span> leads to a complex distribution.</p></li>
 </ul>
 <p>The following Python code illustrates the steps involved in empirically determing the distribution of the square of a normal distribution. Let <span class="math inline">\(X\)</span> be a standard normal variable. We first simulate a large number of values from <span class="math inline">\(X\)</span> and compute <span class="math inline">\(Y = X^2\)</span>. We then plot a histogram of the <span class="math inline">\(Y\)</span> values to approximate its distribution.</p>
-<div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1542,15 +1555,14 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Y values'</span>)</span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Density'</span>)</span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="15">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="15" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img" width="589"></p>
-<figcaption class="figure-caption">Numerical estimation of the distribution of <span class="math inline">\(Y=X^2\)</span>, where <span class="math inline">\(X\)</span> is normally distributed.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-16-output-1.png" width="589" height="449" class="figure-img"></p>
+<figcaption>Numerical estimation of the distribution of <span class="math inline">\(Y=X^2\)</span>, where <span class="math inline">\(X\)</span> is normally distributed.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1610,7 +1622,6 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <li><strong>JAGS/BUGS</strong>: Software for analysis of Bayesian hierarchical models using Markov Chain Monte Carlo (MCMC) simulation.</li>
 </ol>
 <p>Here’s a simple example using TensorFlow Probability (TFP) to infer the distribution of <span class="math inline">\(Y = e^X\)</span>, where <span class="math inline">\(X\)</span> is normal.</p>
-<div>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow_probability <span class="im">as</span> tfp</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1647,15 +1658,14 @@ Correlation between X and Y: 0.9863442594104381</code></pre>
 <span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Density'</span>)</span>
 <span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="17">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-execution_count="17" data-layout-ncol="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="random_variables_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img" width="661"></p>
-<figcaption class="figure-caption">Use of TensorFlow Probability to estimate distribution of <span class="math inline">\(Y=e^X\)</span>, where <span class="math inline">\(X\)</span> is normal.</figcaption>
+<p><img src="random_variables_files/figure-html/cell-18-output-1.png" width="661" height="468" class="figure-img"></p>
+<figcaption>Use of TensorFlow Probability to estimate distribution of <span class="math inline">\(Y=e^X\)</span>, where <span class="math inline">\(X\)</span> is normal.</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -1745,10 +1755,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1758,8 +1785,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1771,7 +1807,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1815,6 +1974,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1840,6 +2000,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1901,17 +2087,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./functions.html" class="pagination-link">
+      <a href="./functions.html" class="pagination-link" aria-label="Functions &amp; Function Spaces">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions &amp; Function Spaces</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./random_processes.html" class="pagination-link">
+      <a href="./random_processes.html" class="pagination-link" aria-label="Random Processes and Sequences">
         <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random Processes and Sequences</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

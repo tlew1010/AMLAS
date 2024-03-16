@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -106,6 +113,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -114,12 +148,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./algorithms.html">Machine Learning Algorithms</a></li><li class="breadcrumb-item"><a href="./supervised_learning.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Supervised Learning</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./algorithms.html">Machine Learning Algorithms</a></li><li class="breadcrumb-item"><a href="./supervised_learning.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Supervised Learning</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -129,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Applied Machine Learning for Aerospace Systems</a> 
@@ -292,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="7">
@@ -327,7 +361,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./algorithms.html">Machine Learning Algorithms</a></li><li class="breadcrumb-item"><a href="./supervised_learning.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Supervised Learning</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Supervised Learning</span></h1>
 </div>
@@ -342,7 +376,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>Supervised learning is one of the fundamental paradigms in machine learning, where the goal is to learn a mapping from input data to output labels based on a set of labeled training data. The “supervised” aspect refers to the presence of known output labels or targets that guide the learning process. <em>Classification</em> and <em>regression</em> are two primary types of tasks in supervised machine learning, distinguished mainly by the nature of their output variables.</p>
 <p><strong>Classification</strong>: In classification, the goal is to assign discrete labels or <em>categories</em> to input data. The output is categorical, such as ‘spam’ or ‘not spam’ in email filtering, or a set of predefined classes in image recognition. Common algorithms used in classification include logistic regression, decision trees, and neural networks, and the performance of classification models is typically evaluated using metrics like accuracy, precision, recall, and F1 score.</p>
@@ -363,19 +399,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Applications</strong>: KNN is used in a variety of applications such as finance (for credit scoring and market research), healthcare (for classifying patient health risk), and recommendation systems (like suggesting similar products or services).</p></li>
 </ol>
 <p>In essence, KNN is a versatile algorithm suitable for tackling problems with a smaller dataset and fewer dimensions, where the intuition of “likeness” <em>based on proximity</em> in a feature space is a good indicator of similarity or relatedness.</p>
-<div class="cell quarto-layout-panel" data-execution_count="1">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-knn-demo" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="supervised_learning_files/figure-html/fig-knn-demo-output-1.png" class="img-fluid figure-img" width="662"></p>
-<figcaption class="figure-caption">Figure&nbsp;12.1: Five nearest neighbors of a given point in a scattered data set.</figcaption>
+<div>
+
+</div>
+<div class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="1">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-knn-demo" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-knn-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="supervised_learning_files/figure-html/fig-knn-demo-output-1.png" width="662" height="465" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-knn-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.1: Five nearest neighbors of a given point in a scattered data set.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<p><a href="#fig-knn-demo">Figure&nbsp;<span class="quarto-unresolved-ref">fig-knn-demo</span></a> illustrates 5 nearest neighbors of a point in a data set.</p>
+<p><a href="#fig-knn-demo" class="quarto-xref">Figure&nbsp;<span>12.1</span></a> illustrates 5 nearest neighbors of a point in a data set.</p>
 <section id="confusion-matrix" class="level3" data-number="12.1.1">
 <h3 data-number="12.1.1" class="anchored" data-anchor-id="confusion-matrix"><span class="header-section-number">12.1.1</span> Confusion Matrix</h3>
 <p>A confusion matrix is a tool often used in machine learning to visualize the performance of a classification algorithm. It is a table with two rows and two columns that reports the number of false positives, false negatives, true positives, and true negatives. This allows us to see how well our classification model is performing, and to understand the types of errors it is making.</p>
@@ -420,18 +463,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="example-classification" class="level3" data-number="12.1.2">
 <h3 data-number="12.1.2" class="anchored" data-anchor-id="example-classification"><span class="header-section-number">12.1.2</span> Example: Classification</h3>
 <p>We next show how KNNs can be used to classify stable and unstable modes of a linear dynamical system based on its eigen-values. This is a contrived example to demonstrate how proximity can be used to solve a classification problem.</p>
-<p>We understand that for a dynamical system defined by the equation <span class="math inline">\(\dot{\boldsymbol{x}} = \boldsymbol{A}\boldsymbol{x}\)</span>, where <span class="math inline">\(\boldsymbol{A}\)</span> is the matrix governing the system, stability is determined by the eigenvalues of <span class="math inline">\(\boldsymbol{A}\)</span>. Specifically, the system is stable if the real part of an eigenvalue is negative, and unstable if this real part is positive. In this example, eigenvalues with a zero real part are considered unstable. This categorization is visually represented in <a href="#fig-ev_distribution">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ev_distribution</span></a>, where stable eigenvalues are marked in green and unstable ones in red. The aim is to develop a KNN classifier trained on this dataset, enabling it to accurately classify any given eigenvalue as either stable or unstable.</p>
+<p>We understand that for a dynamical system defined by the equation <span class="math inline">\(\dot{\boldsymbol{x}} = \boldsymbol{A}\boldsymbol{x}\)</span>, where <span class="math inline">\(\boldsymbol{A}\)</span> is the matrix governing the system, stability is determined by the eigenvalues of <span class="math inline">\(\boldsymbol{A}\)</span>. Specifically, the system is stable if the real part of an eigenvalue is negative, and unstable if this real part is positive. In this example, eigenvalues with a zero real part are considered unstable. This categorization is visually represented in <a href="#fig-ev_distribution" class="quarto-xref">Figure&nbsp;<span>12.2</span></a>, where stable eigenvalues are marked in green and unstable ones in red. The aim is to develop a KNN classifier trained on this dataset, enabling it to accurately classify any given eigenvalue as either stable or unstable.</p>
 <div class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<div id="fig-ev_distribution" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="supervised_learning_files/figure-html/fig-ev_distribution-output-1.png" width="675" height="453" class="figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;12.2: Distribution of stable and unstable eigen values.</figcaption>
+<div id="fig-ev_distribution" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ev_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="supervised_learning_files/figure-html/fig-ev_distribution-output-1.png" width="675" height="453" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ev_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.2: Distribution of stable and unstable eigen values.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-
 <!-- 1. Data Set: Eigen Values. Classify an eigen value as stable or unstable. Can't check negative sign of real part. The machine should learn it from the data.
 1. Something in higher dimension -- like a fault detection of sensors or actuators.
 1. Regression -- could be interpolation of scattered data -- aero dynamics. -->
@@ -501,8 +547,7 @@ weighted avg       0.98      0.98      0.98       100
 <section id="example-regression" class="level3" data-number="12.1.3">
 <h3 data-number="12.1.3" class="anchored" data-anchor-id="example-regression"><span class="header-section-number">12.1.3</span> Example: Regression</h3>
 <p>Here we consider application of KNN in a scattered data interpolation application. Such a scenarion can occur in aerospace engineering, for example in aerodynamics. In aerodynamics, engineers often deal with experimental data obtained from wind tunnel tests or flight tests. This data, representing various aerodynamic properties like lift, drag, and pressure distribution over aircraft surfaces, is often scattered. Approximating this data accurately is crucial for predicting the performance of the aircraft under different flight conditions.</p>
-<p>In the following Python code we use KNN to approximate <span class="math inline">\(\sin(x)\)</span> from a set noisy scattered data. The interpolation is performed as the average of values from <span class="math inline">\(k\)</span> nearest neighbouring points. The results are shown in <a href="#fig-knn_fcn_apprx">Figure&nbsp;<span class="quarto-unresolved-ref">fig-knn_fcn_apprx</span></a>.</p>
-<div>
+<p>In the following Python code we use KNN to approximate <span class="math inline">\(\sin(x)\)</span> from a set noisy scattered data. The interpolation is performed as the average of values from <span class="math inline">\(k\)</span> nearest neighbouring points. The results are shown in <a href="#fig-knn_fcn_apprx" class="quarto-xref">Figure&nbsp;<span>12.3</span></a>.</p>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsRegressor</span>
@@ -534,15 +579,18 @@ weighted avg       0.98      0.98      0.98       100
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"KNN approximation with </span><span class="sc">{</span>n_neighbors<span class="sc">}</span><span class="ss"> neighbors"</span>)</span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="5">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-knn_fcn_apprx" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="supervised_learning_files/figure-html/fig-knn_fcn_apprx-output-1.png" class="img-fluid figure-img" width="590"></p>
-<figcaption class="figure-caption">Figure&nbsp;12.3: Function approximation with KNN. Here we approximate <span class="math inline">\(\sin(x)\)</span> from noisy data.</figcaption>
-</figure>
+<div class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="5">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-knn_fcn_apprx" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-knn_fcn_apprx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="supervised_learning_files/figure-html/fig-knn_fcn_apprx-output-1.png" width="590" height="431" class="figure-img">
 </div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-knn_fcn_apprx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.3: Function approximation with KNN. Here we approximate <span class="math inline">\(\sin(x)\)</span> from noisy data.
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -592,7 +640,6 @@ weighted avg       0.98      0.98      0.98       100
 </section>
 <section id="example" class="level3" data-number="12.2.3">
 <h3 data-number="12.2.3" class="anchored" data-anchor-id="example"><span class="header-section-number">12.2.3</span> Example</h3>
-<div>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_classification</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
@@ -627,9 +674,9 @@ weighted avg       0.98      0.98      0.98       100
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model Accuracy:"</span>, accuracy)</span>
 <span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Classification Report:</span><span class="ch">\n</span><span class="st">"</span>, report)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="6">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="6">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Model Accuracy: 1.0
 Classification Report:
                precision    recall  f1-score   support
@@ -643,19 +690,22 @@ weighted avg       1.00      1.00      1.00        30
 </code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-logistic_regression" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="supervised_learning_files/figure-html/fig-logistic_regression-output-2.png" class="img-fluid figure-img" width="666"></p>
-<figcaption class="figure-caption">Figure&nbsp;12.4: Data used for training and testing logistic regression.</figcaption>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-logistic_regression" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logistic_regression-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="supervised_learning_files/figure-html/fig-logistic_regression-output-2.png" width="666" height="469" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logistic_regression-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.4: Data used for training and testing logistic regression.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p>The above Python code implements data classification based on logistic regression. The training and testing data are shown in <a href="#fig-logistic_regression">Figure&nbsp;<span class="quarto-unresolved-ref">fig-logistic_regression</span></a>.</p>
+<p>The above Python code implements data classification based on logistic regression. The training and testing data are shown in <a href="#fig-logistic_regression" class="quarto-xref">Figure&nbsp;<span>12.4</span></a>.</p>
 </section>
 </section>
 <section id="support-vector-machines" class="level2" data-number="12.3">
@@ -717,7 +767,11 @@ weighted avg       1.00      1.00      1.00        30
 <span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="supervised_learning_files/figure-html/cell-8-output-1.png" width="596" height="449"></p>
+<div>
+<figure class="figure">
+<p><img src="supervised_learning_files/figure-html/cell-8-output-1.png" width="596" height="449" class="figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The resulting plot visually demonstrates how the linear SVM successfully separates the two classes with a clear margin. The support vectors are the points that lie on the margins of the classifier.</p>
@@ -740,7 +794,6 @@ weighted avg       1.00      1.00      1.00        30
 </ol>
 <p>The kernel trick is primarily used in SVMs but is also applicable in other areas like principal component analysis (kernel PCA), ridge regression, and more. It allows these algorithms to solve non-linear problems by implicitly using higher-dimensional feature spaces, thereby greatly expanding their applicability without a significant increase in computational cost. However, the choice of the kernel and its parameters can significantly affect the performance of the algorithm and requires careful tuning based on the specific data and problem.</p>
 <p><strong>Example</strong><br> Here is a Python example demonstrating non-linear classification using Support Vector Machines (SVMs) with a Radial Basis Function (RBF) kernel.</p>
-<div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -789,22 +842,25 @@ weighted avg       1.00      1.00      1.00        30
 <span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Feature 1"</span>)</span>
 <span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Feature 2"</span>)</span>
 <span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="8">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-nonlinear_svm" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="supervised_learning_files/figure-html/fig-nonlinear_svm-output-1.png" class="img-fluid figure-img" width="587"></p>
-<figcaption class="figure-caption">Figure&nbsp;12.5: Nonlinear classification using SVM.</figcaption>
+<div class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="8">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-nonlinear_svm" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nonlinear_svm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="supervised_learning_files/figure-html/fig-nonlinear_svm-output-1.png" width="587" height="449" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nonlinear_svm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.5: Nonlinear classification using SVM.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-</div>
 <p>In this Python example, a non-linear classification is demonstrated using Support Vector Machines (SVMs) with a Radial Basis Function (RBF) kernel. The process starts with generating a non-linearly separable dataset using Scikit-learn’s <code>make_moons</code> function, which creates two interleaving half-circles. The dataset is then split into training and testing sets and standardized using <code>StandardScaler</code> to ensure equal contribution of each feature in the SVM’s distance calculations.</p>
-<p>The SVM model is configured with an RBF kernel (<code>SVC(kernel='rbf')</code>), chosen for its effectiveness in handling non-linear data. Parameters <code>C</code> and <code>gamma</code> are set to balance between low training error and generalization. A custom function, <code>plot_decision_boundary</code>, visualizes the decision boundary of the SVM. It produces a contour plot (see <a href="#fig-nonlinear_svm">Figure&nbsp;<span class="quarto-unresolved-ref">fig-nonlinear_svm</span></a>) showing how the SVM with an RBF kernel successfully classifies the complex dataset, with the support vectors prominently highlighted. This example showcases the SVM’s capability to handle non-linear data and the adaptability of the RBF kernel to complex data patterns.</p>
-<p><a href="#fig-nonlinear_svm">Figure&nbsp;<span class="quarto-unresolved-ref">fig-nonlinear_svm</span></a> shows that the classification is not clean. Non-linear Support Vector Machines (SVMs) may struggle to cleanly separate data classes due to several inherent challenges related to the data and the model itself. The primary issue often lies in the inherent overlap within the data: real-world datasets frequently exhibit classes with overlapping distributions, meaning some data points naturally share characteristics of more than one class. This overlap makes perfect separation, even with sophisticated models, inherently challenging.</p>
+<p>The SVM model is configured with an RBF kernel (<code>SVC(kernel='rbf')</code>), chosen for its effectiveness in handling non-linear data. Parameters <code>C</code> and <code>gamma</code> are set to balance between low training error and generalization. A custom function, <code>plot_decision_boundary</code>, visualizes the decision boundary of the SVM. It produces a contour plot (see <a href="#fig-nonlinear_svm" class="quarto-xref">Figure&nbsp;<span>12.5</span></a>) showing how the SVM with an RBF kernel successfully classifies the complex dataset, with the support vectors prominently highlighted. This example showcases the SVM’s capability to handle non-linear data and the adaptability of the RBF kernel to complex data patterns.</p>
+<p><a href="#fig-nonlinear_svm" class="quarto-xref">Figure&nbsp;<span>12.5</span></a> shows that the classification is not clean. Non-linear Support Vector Machines (SVMs) may struggle to cleanly separate data classes due to several inherent challenges related to the data and the model itself. The primary issue often lies in the inherent overlap within the data: real-world datasets frequently exhibit classes with overlapping distributions, meaning some data points naturally share characteristics of more than one class. This overlap makes perfect separation, even with sophisticated models, inherently challenging.</p>
 <p>The effectiveness of a non-linear SVM greatly depends on the choice of the kernel function, such as RBF, polynomial, or sigmoid, and the tuning of its parameters. An inappropriate kernel or poorly chosen parameters can lead to inadequate separation of the classes. Furthermore, non-linear SVMs can suffer from overfitting, especially if the decision boundary becomes excessively complex in an attempt to capture subtle patterns in the training data. This complexity might make the model too sensitive to the noise and outliers in the data, impairing its ability to generalize to new, unseen data.</p>
 <p>The transformation of data into a higher-dimensional space, a common strategy in non-linear SVMs to achieve separability, can paradoxically complicate the relationships within the data, making clean separation more difficult. Additionally, the presence of noise and outliers can significantly skew the decision boundary. Non-linear SVMs, in their effort to accommodate these anomalies, might fail to establish a clear division between classes.</p>
 <p>Lastly, the representation and preprocessing of features play a crucial role. If the features do not adequately capture the distinct characteristics of each class, the SVM may not be able to effectively differentiate between them. Thus, while non-linear SVMs are powerful tools for complex, non-linear datasets, their success in cleanly separating classes hinges on the nature of the data, the selection and tuning of the kernel, and the presence of noise and outliers. Effective separation often requires meticulous data preprocessing, feature engineering, and model parameter tuning.</p>
@@ -906,7 +962,6 @@ CV Scores: 0.8699999999999999</code></pre>
 <p><strong>Kernel Extension</strong><br> For non-linear regression, the optimization problem can incorporate the kernel trick, where the dot product <span class="math inline">\(\boldsymbol{w}^T\boldsymbol{x}_i\)</span> is replaced by a kernel function <span class="math inline">\(K(\boldsymbol{x}_i, \boldsymbol{x}_j)\)</span>. This allows the SVR to capture non-linear relationships without explicitly transforming the data into a higher-dimensional space.</p>
 <p>In summary, the SVR optimization problem in vector form involves minimizing a function that balances the flatness of the regression model and the penalty for errors exceeding an ε-margin, subject to constraints that allow some flexibility for deviations. This formulation is solved using quadratic programming techniques, and the incorporation of the kernel trick extends its applicability to non-linear regression problems.</p>
 <p><strong>Example</strong><br></p>
-<div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVR</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_regression</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -963,21 +1018,24 @@ CV Scores: 0.8699999999999999</code></pre>
 <span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>)<span class="op">;</span> plot_results(X_train_scaled, X_test_scaled, y_train, y_test, y_pred2, epsilon2)</span>
 <span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-execution_count="10">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="10">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <pre><code>Mean square error (nominal):0.0054106869508642776
 Mean square error (high accuracy):0.00011740223018556576</code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="fig-svr_sine" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="supervised_learning_files/figure-html/fig-svr_sine-output-2.png" class="img-fluid figure-img" width="949"></p>
-<figcaption class="figure-caption">Figure&nbsp;12.6: Approximation of <span class="math inline">\(\sin(x)\)</span> from scattered data using SVR with an RBF kernel. Parameters <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(C\)</span> and <span class="math inline">\(\epsilon\)</span> control tradeoff between overfit and accuracy.</figcaption>
-</figure>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-svr_sine" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-svr_sine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="supervised_learning_files/figure-html/fig-svr_sine-output-2.png" width="949" height="563" class="figure-img">
 </div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-svr_sine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.6: Approximation of <span class="math inline">\(\sin(x)\)</span> from scattered data using SVR with an RBF kernel. Parameters <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(C\)</span> and <span class="math inline">\(\epsilon\)</span> control tradeoff between overfit and accuracy.
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -986,7 +1044,7 @@ Mean square error (high accuracy):0.00011740223018556576</code></pre>
 <p>The dataset is then divided into training and testing sets to enable model evaluation. Before training the model, the data undergoes standardization using <code>StandardScaler</code>. This step ensures that each feature contributes equally to the distance calculations in the SVR model, which is particularly important for kernels like RBF that are sensitive to the scale of input features.</p>
 <p>The SVR model is instantiated with an RBF kernel by setting <code>kernel='rbf'</code>. Parameters such as <code>C</code>, <code>gamma</code>, and <code>epsilon</code> are configured to control the complexity of the model and its sensitivity to deviations from the training data. The model is trained on the scaled training data and subsequently used to make predictions on the scaled test data.</p>
 <p>To evaluate the performance of the model, the mean squared error (MSE) is calculated, comparing the predicted values with the actual values in the test set. A lower MSE value indicates a better fit of the model to the data.</p>
-<p>Finally, the results are visualized through a scatter plot that displays the training data, test data, and the predictions made by the SVR model. <a href="#fig-svr_sine">Figure&nbsp;<span class="quarto-unresolved-ref">fig-svr_sine</span></a> clearly shows how the SVR with an RBF kernel is able to capture the underlying non-linear pattern in the data. The calculated MSE of approximately 0.0054, with <span class="math inline">\(\epsilon = 0.1\)</span>, further confirms the model’s effectiveness in accurately modeling the complex, non-linear relationships present in the dataset. Reducing <span class="math inline">\(\epsilon\)</span> to <span class="math inline">\(0.01\)</span> further reduces the MSE.</p>
+<p>Finally, the results are visualized through a scatter plot that displays the training data, test data, and the predictions made by the SVR model. <a href="#fig-svr_sine" class="quarto-xref">Figure&nbsp;<span>12.6</span></a> clearly shows how the SVR with an RBF kernel is able to capture the underlying non-linear pattern in the data. The calculated MSE of approximately 0.0054, with <span class="math inline">\(\epsilon = 0.1\)</span>, further confirms the model’s effectiveness in accurately modeling the complex, non-linear relationships present in the dataset. Reducing <span class="math inline">\(\epsilon\)</span> to <span class="math inline">\(0.01\)</span> further reduces the MSE.</p>
 </section>
 <section id="example-fault-diagnostics-using-classification" class="level3" data-number="12.3.7">
 <h3 data-number="12.3.7" class="anchored" data-anchor-id="example-fault-diagnostics-using-classification"><span class="header-section-number">12.3.7</span> Example: Fault Diagnostics Using Classification</h3>
@@ -1076,10 +1134,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1089,8 +1164,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1102,7 +1186,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1146,6 +1353,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1171,6 +1379,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1232,17 +1466,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./data_pre_processing.html" class="pagination-link">
+      <a href="./data_pre_processing.html" class="pagination-link" aria-label="Data Pre-Processing">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Pre-Processing</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./unsupervised_learning.html" class="pagination-link">
+      <a href="./unsupervised_learning.html" class="pagination-link" aria-label="Unsupervised Learning">
         <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Unsupervised Learning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

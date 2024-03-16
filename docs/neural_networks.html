@@ -447,7 +447,7 @@ Table&nbsp;10.1: Commonly used activation functions in ANN.
 <div>
 
 </div>
-<div id="cell-fig-activFcn" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="1">
+<div id="cell-fig-activFcn" class="cell quarto-layout-panel" data-execution_count="1" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-activfcn" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -470,7 +470,7 @@ y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2),
 \]</span> we can represent this parameterized nonlinear function as <span class="math display">\[y = f(\boldsymbol{x},\boldsymbol{\rho}).\]</span></p>
 <p>Therefore, the neural network can be thought of as a <em>graphical architecture for defining parameterized nonlinear functions</em> by composing simpler parameterized functions, such as those shown in <a href="#tbl-activFcn" class="quarto-xref">Table&nbsp;<span>10.1</span></a>. This network representation is motivated by the neural network in the brain where millions of simple processing nodes, such as the functions in <a href="#tbl-activFcn" class="quarto-xref">Table&nbsp;<span>10.1</span></a>, are densely interconnected. In the ANN parlance, these functions are called <em>activation functions</em>, since their inputs only affect the outputs when they are above a threshold.</p>
 <p>Using TensorFlow, we can easily create such a function as shown next</p>
-<div id="7d77a5d3" class="cell" data-execution_count="2">
+<div id="63618f43" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> keras.models <span class="im">import</span> Sequential</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> keras.layers <span class="im">import</span> Dense</span>
@@ -482,7 +482,7 @@ y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2),
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fhat.add(Dense(<span class="dv">1</span>,activation<span class="op">=</span><span class="st">"sigmoid"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In this code, the parameters are randomly initialized. We can plot this function like a regular function.</p>
-<div id="17f1a985" class="cell" data-execution_count="3">
+<div id="370e1cd3" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> fhat(x)</span>
@@ -493,7 +493,7 @@ y = f_3\left(f_1(x_1,x_2,\boldsymbol{\rho}_1), f_2(x_3,x_4,\boldsymbol{\rho}_2),
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can compute gradient of the function with respect to <span class="math inline">\(x\)</span> and <span class="math inline">\(\boldsymbol{\rho}\)</span> using the automatic differentiation capability in TensorFlow. Both function and its derivative is shown in <a href="#fig-nn_func_deriv" class="quarto-xref">Figure&nbsp;<span>10.4</span></a>.</p>
-<div id="51919b3e" class="cell" data-execution_count="4">
+<div id="dd382938" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> tf.linspace(<span class="op">-</span><span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the function with Reverse AD enabled.</span></span>
@@ -564,7 +564,7 @@ Figure&nbsp;10.5: Effect of weights and biases on a sigmoid.
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="cell-fig-bellnn" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="5">
+<div id="cell-fig-bellnn" class="cell quarto-layout-panel" data-execution_count="5" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-bellnn" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -592,7 +592,7 @@ Figure&nbsp;10.6: Bell-shaped function using neural networks.
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="cell-fig-boxnn" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="6">
+<div id="cell-fig-boxnn" class="cell quarto-layout-panel" data-execution_count="6" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-boxnn" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -621,7 +621,7 @@ Figure&nbsp;10.7: Box-Wavelet shaped function using neural networks.
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> plt.plot(x,y1<span class="op">+</span>y2<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> plt.title(<span class="st">'$y_1+y_2-1$'</span>)</span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="cell-fig-asymnn" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="7">
+<div id="cell-fig-asymnn" class="cell quarto-layout-panel" data-execution_count="7" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-asymnn" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -663,7 +663,7 @@ Figure&nbsp;10.9: A feed-forward neural network.
 <section id="example-approximation-of-a-function-with-ffnns" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="example-approximation-of-a-function-with-ffnns">Example: Approximation of a Function with FFNNs</h4>
 <p>The following Python code demostrates how a nonlinear function can be approximated using FFNNs with TensorFlow.</p>
-<div id="aa148e30" class="cell" data-execution_count="8">
+<div id="3500219e" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -823,7 +823,30 @@ Figure&nbsp;10.12: Prediction of Frequency from Time Series (equivalent to FFT)
 </section>
 <section id="long-short-term-memory-lstm-networks" class="level3" data-number="10.3.3">
 <h3 data-number="10.3.3" class="anchored" data-anchor-id="long-short-term-memory-lstm-networks"><span class="header-section-number">10.3.3</span> Long Short-Term Memory (LSTM) Networks</h3>
-<p>Long Short-Term Memory (LSTM) networks are a type of Recurrent Neural Network (RNN) designed to address the limitations of traditional RNNs, particularly in handling long-term dependencies. While RNNs can theoretically capture temporal sequences, they often struggle with vanishing and exploding gradients when dealing with long sequences, leading to poor performance. LSTMs overcome this issue with their unique architecture, which includes memory cells and gates (input, output, and forget gates) that regulate the flow of information.</p>
+<p>Long Short-Term Memory (LSTM) networks are a type of Recurrent Neural Network (RNN) designed to address the limitations of traditional RNNs, particularly in handling long-term dependencies. While RNNs can theoretically capture temporal sequences, they often struggle with vanishing and exploding gradients when dealing with long sequences, leading to poor performance. LSTMs overcome this issue with their unique architecture as shown in <a href="#fig-lstm_archi" class="quarto-xref">Figure&nbsp;<span>10.13</span></a>, which includes memory cells and gates (input, output, and forget gates) that regulate the flow of information.</p>
+<p>The main components and workings of an LSTM are:</p>
+<ol type="1">
+<li><p><strong>Memory Cell:</strong> The memory cell is the core of the LSTM unit. It stores the long-term information and has the ability to maintain its state over time.</p></li>
+<li><p><strong>Gates:</strong> LSTMs have three types of gates that control the flow of information in and out of the memory cell. These gates are composed of sigmoid neural net layers and pointwise multiplication operations.</p>
+<ul>
+<li><strong>Input Gate:</strong> This gate decides how much of the new information to store in the memory cell. It takes the current input and the previous hidden state as inputs and outputs a value between 0 and 1 for each number in the cell state. A value of 1 means “let all information through,” while 0 means “block all information.”</li>
+<li><strong>Forget Gate:</strong> This gate determines how much of the existing information in the memory cell should be kept or forgotten. It also takes the current input and the previous hidden state as inputs and outputs a value between 0 and 1 for each number in the cell state. A value of 1 means “keep all information,” while 0 means “forget all information.”</li>
+<li><strong>Output Gate:</strong> This gate decides how much of the information in the memory cell should be used to compute the current output. It uses the current input, the previous hidden state, and the updated cell state to produce an output.</li>
+</ul></li>
+<li><p><strong>Updating the Cell State:</strong> The cell state is updated based on the outputs of the input and forget gates. The forget gate’s output determines which parts of the existing cell state should be kept, and the input gate’s output determines which parts of the new information should be added to the cell state.</p></li>
+<li><p><strong>Computing the Output:</strong> The output of the LSTM unit is computed based on the updated cell state and the output gate. The cell state is passed through a tanh function to ensure the values are between -1 and 1, and then it is multiplied by the output gate’s output to determine which parts of the cell state should be output.</p></li>
+</ol>
+<div id="fig-lstm_archi" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lstm_archi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lstm.svg" class="img-fluid figure-img" style="width:6in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lstm_archi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.13: LSTM architecture with cells and gates. Functions <span class="math inline">\(\boldsymbol{F}_i(\cdot)\)</span> are feed-forward neural networks with respective weights, biases, and activation functions.
+</figcaption>
+</figure>
+</div>
+<p>With reference to <a href="#fig-lstm_archi" class="quarto-xref">Figure&nbsp;<span>10.13</span></a>, the input gate involves mapping the previous output <span class="math inline">\(\boldsymbol{y}_{t-1}\)</span> and the current input <span class="math inline">\(\boldsymbol{x}_t\)</span> to the current output through the feed-forward neural network <span class="math inline">\(F_1(\cdot)\)</span>, which is then constrained within the range <span class="math inline">\([-1,1]\)</span> by the <span class="math inline">\(\tanh(\cdot)\)</span> function to ensure the feedback loop’s stability. A portion of this output is disregarded by multiplying it with the <strong>Ignoring</strong> sigmoid function, controlled by a second feed-forward neural network <span class="math inline">\(\boldsymbol{F}_2(\cdot)\)</span>. The updated output is then combined with a selectively retained memory, facilitated by a third feed-forward neural network <span class="math inline">\(\boldsymbol{F}_3(\cdot)\)</span> and regulated by the <strong>Forgetting</strong> sigmoid function. The aggregate of these signals is once again modulated by a <span class="math inline">\(\tanh(\cdot)\)</span> function for stability. This new output is further regulated by the <strong>Selecting</strong> sigmoid, driven by a fourth feed-forward neural network <span class="math inline">\(\boldsymbol{F}_4(\cdot)\)</span>. The resulting signal becomes the current output <span class="math inline">\(\boldsymbol{y}_t\)</span>, which is also recirculated for the prediction at the next time step.</p>
 <p>This architecture allows LSTMs to retain information over extended periods, making them more effective in learning from long sequences. As a result, LSTMs are better suited for tasks that require understanding context over long time spans, such as language modeling, speech recognition, and time series forecasting. They can capture patterns that span several time steps, which traditional RNNs might overlook. This capability makes LSTMs a preferred choice in many applications where long-term dependencies are critical for accurate predictions.</p>
 </section>
 <section id="autoencoders" class="level3" data-number="10.3.4">
